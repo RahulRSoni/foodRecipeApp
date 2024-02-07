@@ -10,6 +10,7 @@ import {
 	Error,
 	Faq,
 	RecipeIndex,
+	Home,
 } from './pages/Pages.jsx';
 
 const router = createBrowserRouter([
@@ -17,6 +18,11 @@ const router = createBrowserRouter([
 		path: '/',
 		element: <App />,
 		children: [
+			{
+				path: '/',
+				element: <Home />,
+				errorElement: <Error />,
+			},
 			{
 				path: '/about',
 				element: <About />,
