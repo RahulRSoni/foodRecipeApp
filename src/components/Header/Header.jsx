@@ -94,9 +94,9 @@ export function Header() {
 	);
 
 	return (
-		<div className=' w-[calc(100%)] max-h-[768px] fixed z-50'>
-			<Navbar className='sticky top-0 z-10 h-max max-w-full rounded-none px-4 py-2 lg:px-8 lg:py-4'>
-				<div className='flex items-center justify-between text-blue-gray-900'>
+		<div className=' w-[calc(100%)] max-h-[768px] fixed z-[100] '>
+			<Navbar className='sticky top-0 z-10 h-max max-w-full rounded-none px-4 py-2 lg:px-8 lg:py-4  drop-shadow-lg border-none'>
+				<div className='flex items-center justify-between'>
 					<div className='mr-10 hidden lg:block'>{navList1}</div>
 					<Typography
 						as='a'
@@ -104,14 +104,14 @@ export function Header() {
 						className='mx-20 font-bold cursor-pointer'>
 						<img
 							alt='logo'
-							className=' w-[10rem] '
-							src='public/logo.svg'
+							className=' w-[10rem] mix-blend-multiply'
+							src='/logo.svg'
 						/>
 					</Typography>
 					<div className='mr-4 hidden lg:block'>{navList2}</div>
 					<div className='flex items-center gap-x-1 '>
 						<Button
-							variant='text'
+							variant='gradient'
 							size='sm'
 							className='hidden lg:inline-block'>
 							<span>Log In</span>
