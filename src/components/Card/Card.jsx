@@ -10,7 +10,7 @@ import {
 
 export function BlogCard() {
 	return (
-		<Card className='max-w-[24rem] overflow-hidden shadow-xl '>
+		<Card className='max-w-[24rem] overflow-hidden shadow-xl  '>
 			<div className='rounded-lg'>
 				<CardHeader
 					floated={false}

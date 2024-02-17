@@ -16,20 +16,25 @@ const items = [
 
 function Menu() {
 	return (
-		<div className=' h-[40vh] my-10 flex items-center justify-evenly '>
-			{items.map((item, index) => (
-				<div
-					key={index}
-					className=' flex flex-col justify-evenly items-center gap-2 '>
-					<img
-						src={item.image}
-						className='cursor-pointer rounded-full object-cover transition-all h-28 w-28 border-double border-8 border-blue-gray-300'
-					/>
-					<span className='font-semibold uppercase text-sm border-blue-gray-500'>
-						{item.name}
-					</span>
-				</div>
-			))}
+		<div className='flex flex-col justify-center items-center '>
+			<span className='mt-10  text-xl font-semibold text-blue-gray-500 border-b-4 border-gray-400'>
+				Our food menu
+			</span>
+			<div className=' h-[40vh] mb-5 flex items-center justify-evenly '>
+				{items.map((item, index) => (
+					<div
+						key={index}
+						className=' flex flex-col justify-evenly items-center gap-2 '>
+						<img
+							src={item.image}
+							className='cursor-pointer rounded-full object-cover transition-all h-28 w-28 border-double border-8 border-blue-gray-300'
+						/>
+						<span className='font-semibold uppercase text-sm border-blue-gray-500'>
+							{item.name}
+						</span>
+					</div>
+				))}
+			</div>
 		</div>
 	);
 }

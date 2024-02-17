@@ -42,9 +42,9 @@ export default function Banner() {
 			<div className='h-full w-auto'>
 				<Carousel
 					loop
-					autoplayDelay={1000}
+					autoplay
+					transition={{ duration: 1.5 }}
 					className='rounded-2xl'
-					transition={{ duration: 1 }}
 					navigation={({ setActiveIndex, activeIndex }) => (
 						<div className='absolute bottom-2 left-2/4 z-50 flex -translate-x-3/4 gap-1'>
 							{image.map((item, i) => {
