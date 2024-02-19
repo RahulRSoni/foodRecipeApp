@@ -6,9 +6,11 @@ import {
 	Button,
 	IconButton,
 } from '@material-tailwind/react';
+import { useNavigate } from 'react-router-dom';
 
 export function Header() {
 	const [openNav, setOpenNav] = React.useState(false);
+	const navigate = useNavigate();
 
 	React.useEffect(() => {
 		window.addEventListener(
@@ -93,6 +95,10 @@ export function Header() {
 		</ul>
 	);
 
+	const handleClick = () => {
+		navigate('/signup'); // Call navigate when button is clicked
+	};
+
 	return (
 		<div className=' w-[calc(100%)] max-h-[768px] fixed z-[100] '>
 			<Navbar className='sticky top-0 z-10 h-max max-w-full rounded-none px-4 py-2 lg:px-8 lg:py-4  drop-shadow-lg border-none'>
@@ -119,8 +125,15 @@ export function Header() {
 						<Button
 							variant='gradient'
 							size='sm'
+							onClick={handleClick}
 							className='hidden lg:inline-block'>
-							<span>Sign in</span>
+							<span>Sign up</span>
+						</Button>
+						<Button
+							className='select-none rounded-lg bg-gradient-to-tr from-gray-900 to-gray-800 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none'
+							data-ripple-light='true'
+							data-dialog-target='animated-dialog'>
+							Open Dialog
 						</Button>
 					</div>
 					<IconButton
@@ -174,9 +187,16 @@ export function Header() {
 						<Button
 							fullWidth
 							variant='gradient'
+							onClick={handleClick}
 							size='sm'
 							className=''>
-							<span className='text-blue-gray-200'>Sign in</span>
+							<span className='text-blue-gray-200'>Sign up</span>
+						</Button>
+						<Button
+							className='select-none rounded-lg bg-gradient-to-tr from-gray-900 to-gray-800 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none'
+							data-ripple-light='true'
+							data-dialog-target='animated-dialog'>
+							Open Dialog
 						</Button>
 					</div>
 				</Collapse>
