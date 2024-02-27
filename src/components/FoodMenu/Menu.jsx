@@ -20,11 +20,11 @@ function Menu() {
 			<span className='mt-10  text-xl font-semibold text-blue-gray-500 border-b-4 border-gray-400'>
 				Our food menu
 			</span>
-			<div className=' h-[40vh] mb-5 flex items-center justify-evenly '>
+			<div className=' h-[40vh] mb-5 flex items-center justify-evenly gap-2'>
 				{items.map((item, index) => (
 					<div
 						key={index}
-						className=' flex flex-col justify-evenly items-center gap-2 '>
+						className=' flex flex-col justify-evenly items-center gap-3 '>
 						<img
 							src={item.image}
 							className='cursor-pointer rounded-full object-cover transition-all h-28 w-28 border-double border-8 border-blue-gray-300'

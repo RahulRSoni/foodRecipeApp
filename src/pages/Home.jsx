@@ -11,7 +11,7 @@ function Home() {
 			<Banner />
 			<Gallery />
 			<Menu />
-			<div className='grid grid-cols-2 w-[70%] content-center'>
+			<div className='grid grid-cols-2 w-[70%] content-center '>
 				<BlogCard />
 				<BlogCard />
 				<CardPlacehoderSkeleton />

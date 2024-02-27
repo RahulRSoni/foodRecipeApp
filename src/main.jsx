@@ -4,6 +4,7 @@ import App from './App.jsx';
 import './index.css';
 import { ThemeProvider } from '@material-tailwind/react';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import AboutCard from './components/Card/AboutCard.jsx';
 import {
 	About,
 	Contact,
@@ -17,6 +18,10 @@ import {
 
 const router = createBrowserRouter([
 	{
+		path: '/about-card',
+		element: <AboutCard />,
+	},
+	{
 		path: '/',
 		element: <App />,
 		children: [
@@ -25,6 +30,7 @@ const router = createBrowserRouter([
 				element: <Home />,
 				errorElement: <Error />,
 			},
+
 			{
 				path: '/about',
 				element: <About />,
