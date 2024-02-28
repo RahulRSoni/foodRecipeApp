@@ -4,6 +4,7 @@ import Menu from '../components/FoodMenu/Menu.jsx';
 import { BlogCard } from '../components/Card/Card.jsx';
 import { Gallery } from '../components/gallery/gallery.jsx';
 import CardPlacehoderSkeleton from '../components/Loaders/Skeleton.jsx';
+import AboutCard from '../components/Card/AboutCard.jsx';
 
 function Home() {
 	return (
@@ -11,10 +12,21 @@ function Home() {
 			<Banner />
 			<Gallery />
 			<Menu />
-			<div className='grid grid-cols-2 w-[70%] content-center '>
-				<BlogCard />
-				<BlogCard />
-				<CardPlacehoderSkeleton />
+			<div className='grid grid-cols-6 justify-items-center  '>
+				<div className='grid col-span-4'>
+					<div className='flex flex-wrap gap-4'>
+						<BlogCard />
+						<BlogCard />
+						<BlogCard />
+						<BlogCard />
+						<BlogCard />
+						<BlogCard />
+						<CardPlacehoderSkeleton />
+					</div>
+				</div>
+				<div className='grid col-span-2 px-2'>
+					<AboutCard />
+				</div>
 			</div>
 		</div>
 	);
