@@ -8,7 +8,7 @@ import { NewsLetterCard } from './NewsLetterCard';
 
 function AboutCard() {
 	return (
-		<div className='w-full flex flex-col justify-center items-center p-4 '>
+		<div className='w-full flex flex-col  items-center p-4 '>
 			<div className='border border-blue-gray-200 rounded-full border-dashed'>
 				<img
 					className='h-96 w-96 rounded-full object-cover object-center p-2'
