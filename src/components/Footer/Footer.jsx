@@ -33,7 +33,7 @@ export function Footer() {
 							className=' w-[10rem] mix-blend-multiply'
 							src='/logo2.svg'
 						/>
-						<span>"Bringing Families Together, One Recipe at a Time"</span>
+						<span>"Where Every Meal is a Hug for Your Taste Buds"</span>
 					</Typography>
 					<div className='grid grid-cols-2 w-[40%] gap-5 content-end justify-end'>
 						{LINKS.map(({ title, items }) => (
