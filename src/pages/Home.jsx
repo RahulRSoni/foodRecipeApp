@@ -1,10 +1,11 @@
 import React from 'react';
 import Banner from '../components/Banner/Banner.jsx';
 import Menu from '../components/FoodMenu/Menu.jsx';
-import { BlogCard } from '../components/Card/Card.jsx';
+
 import { Gallery } from '../components/gallery/gallery.jsx';
 import CardPlacehoderSkeleton from '../components/Loaders/Skeleton.jsx';
 import AboutCard from '../components/Card/AboutCard.jsx';
+import { BlogCard } from '../components/Card/ItemCard.jsx';
 
 function Home() {
 	return (

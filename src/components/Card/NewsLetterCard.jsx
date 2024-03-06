@@ -16,6 +16,10 @@ export function NewsLetterCard() {
 				variant='gradient'
 				className='mb-4 grid h-28 place-items-center'>
 				<Typography variant='h3'>Never Miss a Recipe!</Typography>
+				<Typography variant='lead'>
+					Join thousands of dad's Kitchen subscribers and get our best recipes
+					delivered each week!
+				</Typography>
 			</CardHeader>
 			<CardBody className='flex flex-col gap-4'>
 				<Input
@@ -27,7 +31,7 @@ export function NewsLetterCard() {
 				<Button
 					variant='gradient'
 					fullWidth>
-					Sign In
+					Subscribers
 				</Button>
 				<Typography
 					variant='small'

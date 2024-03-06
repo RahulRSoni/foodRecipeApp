@@ -129,12 +129,6 @@ export function Header() {
 							className='hidden lg:inline-block'>
 							<span>Sign up</span>
 						</Button>
-						<Button
-							className='select-none rounded-lg bg-gradient-to-tr from-gray-900 to-gray-800 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none'
-							data-ripple-light='true'
-							data-dialog-target='animated-dialog'>
-							Open Dialog
-						</Button>
 					</div>
 					<IconButton
 						variant='text'
@@ -191,12 +185,6 @@ export function Header() {
 							size='sm'
 							className=''>
 							<span className='text-blue-gray-200'>Sign up</span>
-						</Button>
-						<Button
-							className='select-none rounded-lg bg-gradient-to-tr from-gray-900 to-gray-800 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none'
-							data-ripple-light='true'
-							data-dialog-target='animated-dialog'>
-							Open Dialog
 						</Button>
 					</div>
 				</Collapse>

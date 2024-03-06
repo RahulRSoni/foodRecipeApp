@@ -23,11 +23,11 @@ export function Footer() {
 	return (
 		<footer className='relative w-full border-t-4 font-normal transition-colors px-4 hover:text-blue-gray-900 mt-4 '>
 			<div className='mx-auto w-full max-w-7xl px-8 mt-3'>
-				<div className='grid grid-cols-1 space-x-96 gap-5 md:grid-cols-2'>
+				<div className='grid grid-rows-2 md:grid-rows-1 justify-items-center  md:space-x-52 md:gap-5 md:grid-cols-2'>
 					<Typography
 						as='a'
 						href='/'
-						className='mx-20 font-bold cursor-pointer'>
+						className='font-bold cursor-pointer flex flex-col md:items-start justify-center items-center gap-2'>
 						<img
 							alt='logo2'
 							className=' w-[10rem] mix-blend-multiply'
@@ -35,7 +35,7 @@ export function Footer() {
 						/>
 						<span>"Where Every Meal is a Hug for Your Taste Buds"</span>
 					</Typography>
-					<div className='grid grid-cols-2 w-[40%] gap-5 content-end justify-end'>
+					<div className='grid md:grid-cols-2 grid-cols-2 md:w-[40%]  gap-14 content-end justify-end '>
 						{LINKS.map(({ title, items }) => (
 							<ul key={title}>
 								<Typography
