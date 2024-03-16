@@ -4,35 +4,35 @@ import { Carousel } from '@material-tailwind/react';
 const image = [
 	{
 		name: 'image 1',
-		src: '/img12.jpg',
+		src: 'https://firebasestorage.googleapis.com/v0/b/foodblog-dc4fb.appspot.com/o/img12.jpg?alt=media&token=c0f82799-dd31-425c-ad17-cc5399a01faf',
 	},
 	{
 		name: 'image 2',
-		src: '/img2.jpg',
+		src: 'https://firebasestorage.googleapis.com/v0/b/foodblog-dc4fb.appspot.com/o/img2.jpg?alt=media&token=d0054ee7-af0c-4c88-b164-03980c49245d',
 	},
 	{
 		name: 'image 3',
-		src: '/img3.jpg',
+		src: 'https://firebasestorage.googleapis.com/v0/b/foodblog-dc4fb.appspot.com/o/img3.jpg?alt=media&token=63073fa6-e067-4120-8b37-3131cf04f1d2',
 	},
 	{
 		name: 'image 4',
-		src: '/img4.jpg',
+		src: 'https://firebasestorage.googleapis.com/v0/b/foodblog-dc4fb.appspot.com/o/img4.jpg?alt=media&token=90f12b5e-b385-4b2b-a0b7-464fb2101626',
 	},
 	{
 		name: 'image 5',
-		src: '/img5.jpg',
+		src: 'https://firebasestorage.googleapis.com/v0/b/foodblog-dc4fb.appspot.com/o/img5.jpg?alt=media&token=ba0c6fae-b4f9-4149-892c-21c2b48f6794',
 	},
 	{
 		name: 'image 6',
-		src: '/img6.jpg',
+		src: 'https://firebasestorage.googleapis.com/v0/b/foodblog-dc4fb.appspot.com/o/img6.jpg?alt=media&token=26164a19-4f7a-4d32-ab8b-9caf6afce262',
 	},
 	{
 		name: 'image 7',
-		src: '/img7.jpg',
+		src: 'https://firebasestorage.googleapis.com/v0/b/foodblog-dc4fb.appspot.com/o/img7.jpg?alt=media&token=8ae2fc97-ba49-4161-b74a-a85cdafaf203',
 	},
 	{
 		name: 'image 8',
-		src: '/img8.jpg',
+		src: 'https://firebasestorage.googleapis.com/v0/b/foodblog-dc4fb.appspot.com/o/img8.jpg?alt=media&token=82a26720-4d5d-4d44-8160-969230462ea2',
 	},
 ];
 

@@ -106,7 +106,7 @@ export default function About() {
 		<div className='px-4 py-20 h-full w-full'>
 			<div className='h-full mb-16'>
 				<img
-					src='./aboutme.jpg'
+					src='https://firebasestorage.googleapis.com/v0/b/foodblog-dc4fb.appspot.com/o/aboutme.jpg?alt=media&token=2f7e2976-1cf3-4e4c-92eb-8cfd38a74444'
 					className='h-[28rem] w-full object-cover'
 				/>
 			</div>
