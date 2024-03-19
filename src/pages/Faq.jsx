@@ -191,7 +191,7 @@ export default function Faq() {
 					src='https://images.unsplash.com/photo-1613135491235-eb6b76a58ead?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
 					className='h-[28rem] w-full object-cover'
 				/>
-				<div className='absolute -bottom-10 px-10 py-5 backdrop-blur-xl rounded-lg border-spacing-0 '>
+				<div className='absolute sm:-bottom-10 -bottom-16 px-10 py-5 backdrop-blur-xl rounded-lg border-spacing-0 '>
 					<Typography
 						variant='h3'
 						className=''>
@@ -199,12 +199,12 @@ export default function Faq() {
 					</Typography>
 				</div>
 			</div>
-			<div className='grid grid-cols-6 p-2 border-b-4'>
-				<div className='grid col-span-5 justify-items-start px-16  py-6'>
+			<div className='grid lg:grid-cols-6 p-2 border-b-4'>
+				<div className='grid md:col-span-5 justify-items-start px-8 md:py-16  py-6'>
 					<DefaultAccordion />
 				</div>
 			</div>
-			<div className='px-56 mt-20'>
+			<div className='lg:px-56 px-8 mt-20'>
 				<NewsLetterCard />
 			</div>
 		</div>

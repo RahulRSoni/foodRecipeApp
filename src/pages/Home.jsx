@@ -13,10 +13,9 @@ function Home() {
 			<Banner />
 			<Gallery />
 			<Menu />
-			<div className='grid grid-cols-6 justify-items-center  '>
-				<div className='grid col-span-4'>
-					<div className='flex flex-wrap gap-4'>
-						<BlogCard />
+			<div className='grid lg:grid-cols-6  justify-items-center gap-8'>
+				<div className='grid lg:col-span-4 justify-items-center'>
+					<div className='flex flex-wrap gap-4 justify-center'>
 						<BlogCard />
 						<BlogCard />
 						<BlogCard />
@@ -25,7 +24,7 @@ function Home() {
 						<CardPlacehoderSkeleton />
 					</div>
 				</div>
-				<div className='grid col-span-2 px-2'>
+				<div className='lg:grid lg:col-span-2 px-2'>
 					<AboutCard />
 				</div>
 			</div>

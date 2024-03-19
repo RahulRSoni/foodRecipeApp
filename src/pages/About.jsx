@@ -107,11 +107,11 @@ export default function About() {
 			<div className='h-full mb-16'>
 				<img
 					src='https://firebasestorage.googleapis.com/v0/b/foodblog-dc4fb.appspot.com/o/aboutme.jpg?alt=media&token=2f7e2976-1cf3-4e4c-92eb-8cfd38a74444'
-					className='h-[28rem] w-full object-cover'
+					className='h-[28rem] w-full md:object-cover object-contain'
 				/>
 			</div>
-			<div className='grid grid-cols-6 p-2'>
-				<div className='grid col-span-4 justify-items-start'>
+			<div className='grid lg:grid-cols-6 p-2'>
+				<div className='grid lg:col-span-4 justify-items-center'>
 					<div className='px-6 '>
 						<Typography variant='h2'>About Me</Typography>
 						<div className='py-6 border-b-2 border-gray-300'>
@@ -214,7 +214,7 @@ export default function About() {
 										alt=''
 									/>
 								</div>
-								<div className='grid grid-cols-4 justify-items-center '>
+								<div className='grid md:grid-cols-4 grid-cols-2 gap-2 justify-items-center'>
 									{item2.map(({ imgelink }, index) => (
 										<div key={index}>
 											<img
@@ -251,7 +251,7 @@ export default function About() {
 						</div>
 					</div>
 				</div>
-				<div className='grid col-span-2 px-2 border-l-blue-gray-100 border-l justify-self-start'>
+				<div className='grid lg:col-span-2 px-2 border-l-blue-gray-100 lg:border-l border-t justify-items-center'>
 					<AboutCard />
 				</div>
 			</div>
