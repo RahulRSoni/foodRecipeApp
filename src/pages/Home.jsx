@@ -9,7 +9,7 @@ import { BlogCard } from '../components/Card/ItemCard.jsx';
 
 function Home() {
 	return (
-		<div className='px-5 py-20'>
+		<div className='px-5 pt-20'>
 			<Banner />
 			<Gallery />
 			<Menu />

@@ -14,6 +14,8 @@ import {
 	RecipeIndex,
 	SignUpPage,
 	Home,
+	SignInPage,
+	Log,
 } from './pages/Pages.jsx';
 
 const router = createBrowserRouter([
@@ -59,6 +61,16 @@ const router = createBrowserRouter([
 			{
 				path: '/signup',
 				element: <SignUpPage />,
+				errorElement: <Error />,
+			},
+			{
+				path: '/signin',
+				element: <SignInPage />,
+				errorElement: <Error />,
+			},
+			{
+				path: '/log',
+				element: <Log />,
 				errorElement: <Error />,
 			},
 		],

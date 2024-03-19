@@ -6,5 +6,18 @@ import Faq from './Faq';
 import RecipeIndex from './RecipeIndex';
 import Home from './Home';
 import SignUpPage from './Signup';
+import SignInPage from './Signin';
+import Log from './Login';
 
-export { About, Contact, Courses, Error, Faq, RecipeIndex, Home, SignUpPage };
+export {
+	About,
+	Contact,
+	Courses,
+	Error,
+	Faq,
+	RecipeIndex,
+	Home,
+	SignUpPage,
+	SignInPage,
+	Log,
+};
