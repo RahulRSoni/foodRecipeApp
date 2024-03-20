@@ -15,13 +15,18 @@ import {
 	SignUpPage,
 	Home,
 	SignInPage,
-	Log,
+	AuthPage,
 } from './pages/Pages.jsx';
 
 const router = createBrowserRouter([
 	{
 		path: '/about-card',
 		element: <AboutCard />,
+	},
+	{
+		path: '/log',
+		element: <AuthPage />,
+		errorElement: <Error />,
 	},
 	{
 		path: '/',
@@ -66,11 +71,6 @@ const router = createBrowserRouter([
 			{
 				path: '/signin',
 				element: <SignInPage />,
-				errorElement: <Error />,
-			},
-			{
-				path: '/log',
-				element: <Log />,
 				errorElement: <Error />,
 			},
 		],

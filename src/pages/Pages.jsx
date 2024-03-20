@@ -7,7 +7,7 @@ import RecipeIndex from './RecipeIndex';
 import Home from './Home';
 import SignUpPage from './Signup';
 import SignInPage from './Signin';
-import Log from './Login';
+import AuthPage from './Login';
 
 export {
 	About,
@@ -19,5 +19,5 @@ export {
 	Home,
 	SignUpPage,
 	SignInPage,
-	Log,
+	AuthPage,
 };
