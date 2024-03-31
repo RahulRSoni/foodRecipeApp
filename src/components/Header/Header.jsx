@@ -96,7 +96,7 @@ export function Header() {
 	);
 
 	const handleClick = () => {
-		navigate('/signup'); // Call navigate when button is clicked
+		navigate('/auth'); // Call navigate when button is clicked
 	};
 
 	return (
@@ -119,6 +119,7 @@ export function Header() {
 						<Button
 							variant='gradient'
 							size='sm'
+							onClick={handleClick}
 							className='hidden lg:inline-block'>
 							<span>Log In</span>
 						</Button>
@@ -173,17 +174,16 @@ export function Header() {
 					<div className='flex items-center gap-x-1'>
 						<Button
 							fullWidth
-							variant='text'
-							size='sm'
-							className=''>
-							<span className='text-blue-gray-600'>Log In</span>
+							variant='gradient'
+							onClick={handleClick}
+							size='sm'>
+							<span className='text-blue-gray-200'>Log in</span>
 						</Button>
 						<Button
 							fullWidth
 							variant='gradient'
 							onClick={handleClick}
-							size='sm'
-							className=''>
+							size='sm'>
 							<span className='text-blue-gray-200'>Sign up</span>
 						</Button>
 					</div>
