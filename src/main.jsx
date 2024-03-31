@@ -12,17 +12,11 @@ import {
 	Error,
 	Faq,
 	RecipeIndex,
-	SignUpPage,
 	Home,
-	SignInPage,
 	AuthPage,
 } from './pages/Pages.jsx';
 
 const router = createBrowserRouter([
-	{
-		path: '/about-card',
-		element: <AboutCard />,
-	},
 	{
 		path: '/log',
 		element: <AuthPage />,
@@ -31,6 +25,7 @@ const router = createBrowserRouter([
 	{
 		path: '/',
 		element: <App />,
+		errorElement: <Error />,
 		children: [
 			{
 				path: '/',
@@ -61,16 +56,6 @@ const router = createBrowserRouter([
 			{
 				path: '/recipe',
 				element: <RecipeIndex />,
-				errorElement: <Error />,
-			},
-			{
-				path: '/signup',
-				element: <SignUpPage />,
-				errorElement: <Error />,
-			},
-			{
-				path: '/signin',
-				element: <SignInPage />,
 				errorElement: <Error />,
 			},
 		],
