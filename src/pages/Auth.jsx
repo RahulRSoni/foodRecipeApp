@@ -1,13 +1,39 @@
-import React, { useState } from 'react';
 import { FaGoogle, FaFacebook, FaLinkedin } from 'react-icons/fa';
 import '../Auth.css';
-import { Link } from 'react-router-dom';
 import { Button, Input, Typography } from '@material-tailwind/react';
 import { Navbar2 } from '../components/Header/Header2';
+import React, { useState } from 'react';
+// import { useAuthState } from 'react-firebase-hooks/auth';
+import { Link, useNavigate } from 'react-router-dom';
+import {
+	currentUser,
+	registerWithEmailAndPassword,
+	signInWithGoogle,
+} from '../api/authService.js';
+import { useForm } from 'react-hook-form';
 
 function AuthPage() {
 	const [isSignUpActive, setIsSignUpActive] = useState(false);
+	const [error, setError] = useState('');
+	const navigate = useNavigate();
 
+	const { register, handleSubmit } = useForm();
+
+	const createUser = async (data) => {
+		setError('');
+		try {
+			console.log(data);
+			const user = await registerWithEmailAndPassword(data);
+			console.log(user);
+
+			if (user) {
+				navigate('/auth');
+			}
+		} catch (error) {
+			console.log(error.message);
+			setError(error?.message);
+		}
+	};
 	const handleSignUpClick = () => {
 		setIsSignUpActive(true);
 	};
@@ -27,7 +53,7 @@ function AuthPage() {
 					id='container'>
 					<div className='form-container sign-up-container sm:w-[50%] w-full'>
 						<form
-							action='#'
+							onSubmit={handleSubmit(createUser)}
 							className='bg-white flex items-center justify-center flex-col px-12 h-full text-center w-full'>
 							<Typography variant='h4'>Create Account</Typography>
 							<div className='flex justify-center items-center gap-4 py-2'>
@@ -39,7 +65,10 @@ function AuthPage() {
 								<Link
 									href='#'
 									className='rounded-full border-solid border-2 border-s-blue-gray-100 p-2'>
-									<FaGoogle className='h-4 w-auto ' />
+									<FaGoogle
+										className='h-4 w-auto '
+										onClick={signInWithGoogle}
+									/>
 								</Link>
 								<Link
 									href='#'
@@ -52,31 +81,73 @@ function AuthPage() {
 								className='mt-1 font-thin text-xs'>
 								Nice to meet you! Enter your details to register.
 							</Typography>
-
+							{error && (
+								<p className='text-red-500 mt-8 text-center'>{error}</p>
+							)}
 							<div className='w-full flex flex-col gap-4 py-4'>
 								<Input
 									label='Full Name'
+									type='text'
+									{...register('name', {
+										required: true,
+										minLength: 4,
+										maxLength: 40,
+									})}
+									minLength={4}
+									maxLength={40}
+									placeholder='Full Name'
 									size='lg'
 									required
 								/>
 								<Input
 									label='Mobile'
+									{...register('Mobile', {
+										required: true,
+										minLength: 10,
+										maxLength: 10,
+									})}
+									minLength={10}
+									maxLength={10}
+									placeholder='Mobile'
+									type='tel'
 									size='lg'
 									required
 								/>
 								<Input
 									label='Email'
+									type='email'
+									{...register('Email', {
+										required: true,
+										validate: {
+											matchPattern: (value) =>
+												/^\w+([.-]?\w+)+@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(
+													value,
+												) || 'Email address must be a valid address',
+										},
+									})}
+									placeholder='E-mail Address'
 									size='lg'
 									required
 								/>
 								<Input
 									label='Password'
 									size='lg'
+									{...register('password', {
+										required: true,
+										minLength: 6,
+										maxLength: 20,
+									})}
+									placeholder='Password'
 									required
 									type='password'
+									minLength={6}
+									maxLength={20}
 								/>
 							</div>
-							<Button className='bg-red-500 transition-all duration-800 ease-in rounded-full'>
+
+							<Button
+								type='submit'
+								className='bg-red-500 transition-all duration-800 ease-in rounded-full'>
 								Sign Up
 							</Button>
 							<Typography

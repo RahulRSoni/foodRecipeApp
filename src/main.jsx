@@ -20,7 +20,7 @@ const router = createBrowserRouter([
 	{
 		path: '/auth',
 		element: <AuthPage />,
-		errorElement: <Error />,
+		
 	},
 	{
 		path: '/',

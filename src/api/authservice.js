@@ -79,6 +79,14 @@ const sendPasswordReset = async (email) => {
 const logout = () => {
 	signOut(auth);
 };
+
+const currentUser = () => {
+	const auth = getAuth();
+	const currentUser = auth.currentUser;
+	if (currentUser) {
+		console.log(currentUser);
+	}
+};
 export {
 	auth,
 	db,
@@ -87,4 +95,5 @@ export {
 	registerWithEmailAndPassword,
 	sendPasswordReset,
 	logout,
+	currentUser,
 };
