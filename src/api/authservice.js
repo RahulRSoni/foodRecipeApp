@@ -20,6 +20,31 @@ import app from './firebase.config.js';
 
 const auth = getAuth(app);
 const db = getFirestore(app);
+
+const registerWithEmailAndPassword = async (name, email, password, phone) => {
+	try {
+		const userCredential = await createUserWithEmailAndPassword(
+			auth,
+			email,
+			password,
+		);
+		const user = userCredential.user;
+		await addDoc(collection(db, 'user'), {
+			uid: user.uid,
+			phone,
+			name,
+			authProvider: 'local',
+			email,
+			password,
+		});
+	} catch (error) {
+		const errorCode = error.code;
+		const errorMessage = error.message;
+		// Handle error
+		console.error(errorCode, errorMessage);
+	}
+};
+
 const googleProvider = new GoogleAuthProvider();
 const signInWithGoogle = async () => {
 	try {
@@ -45,23 +70,6 @@ const signInWithGoogle = async () => {
 const logInWithEmailAndPassword = async (email, password) => {
 	try {
 		await signInWithEmailAndPassword(auth, email, password);
-	} catch (err) {
-		console.error(err);
-		alert(err.message);
-	}
-};
-const registerWithEmailAndPassword = async (name, email, password, phone) => {
-	try {
-		const res = await createUserWithEmailAndPassword(auth, email, password);
-		const user = res.user;
-		await addDoc(collection(db, 'users'), {
-			uid: user.uid,
-			phone,
-			name,
-			authProvider: 'local',
-			email,
-			password,
-		});
 	} catch (err) {
 		console.error(err);
 		alert(err.message);
