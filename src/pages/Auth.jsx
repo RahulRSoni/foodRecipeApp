@@ -9,7 +9,7 @@ import {
 	currentUser,
 	registerWithEmailAndPassword,
 	signInWithGoogle,
-} from '../api/authService.js';
+} from '../api/auth.services.js';
 import { useForm } from 'react-hook-form';
 
 function AuthPage() {
@@ -22,9 +22,7 @@ function AuthPage() {
 	const createUser = async (data) => {
 		setError('');
 		try {
-			console.log(data);
 			const user = await registerWithEmailAndPassword(data);
-			console.log(user);
 
 			if (user) {
 				navigate('/auth');
@@ -88,7 +86,7 @@ function AuthPage() {
 								<Input
 									label='Full Name'
 									type='text'
-									{...register('name', {
+									{...register('displayName', {
 										required: true,
 										minLength: 4,
 										maxLength: 40,
@@ -101,7 +99,7 @@ function AuthPage() {
 								/>
 								<Input
 									label='Mobile'
-									{...register('Mobile', {
+									{...register('phoneNumber', {
 										required: true,
 										minLength: 10,
 										maxLength: 10,
@@ -116,7 +114,7 @@ function AuthPage() {
 								<Input
 									label='Email'
 									type='email'
-									{...register('Email', {
+									{...register('email', {
 										required: true,
 										validate: {
 											matchPattern: (value) =>

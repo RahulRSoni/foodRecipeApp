@@ -121,14 +121,7 @@ export function Header() {
 							size='sm'
 							onClick={handleClick}
 							className='hidden lg:inline-block'>
-							<span>Log In</span>
-						</Button>
-						<Button
-							variant='gradient'
-							size='sm'
-							onClick={handleClick}
-							className='hidden lg:inline-block'>
-							<span>Sign up</span>
+							<span>Log In / Sign Up</span>
 						</Button>
 					</div>
 					<IconButton
@@ -177,14 +170,7 @@ export function Header() {
 							variant='gradient'
 							onClick={handleClick}
 							size='sm'>
-							<span className='text-blue-gray-200'>Log in</span>
-						</Button>
-						<Button
-							fullWidth
-							variant='gradient'
-							onClick={handleClick}
-							size='sm'>
-							<span className='text-blue-gray-200'>Sign up</span>
+							<span className='text-blue-gray-200'>Log In / Sign Up</span>
 						</Button>
 					</div>
 				</Collapse>

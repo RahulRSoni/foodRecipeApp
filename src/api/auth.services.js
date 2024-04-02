@@ -6,6 +6,7 @@ import {
 	createUserWithEmailAndPassword,
 	sendPasswordResetEmail,
 	signOut,
+	connectAuthEmulator,
 } from 'firebase/auth';
 import {
 	getFirestore,
@@ -15,28 +16,36 @@ import {
 	where,
 	addDoc,
 } from 'firebase/firestore';
-
 import app from './firebase.config.js';
 
-const auth = getAuth(app);
+const auth = getAuth();
+
 const db = getFirestore(app);
 
-const registerWithEmailAndPassword = async (name, email, password, phone) => {
+const registerWithEmailAndPassword = async (data) => {
+	const { displayName, email, password, phoneNumber } = data;
+
 	try {
 		const userCredential = await createUserWithEmailAndPassword(
 			auth,
 			email,
 			password,
 		);
+
 		const user = userCredential.user;
-		await addDoc(collection(db, 'user'), {
+
+		const docRef = await addDoc(collection(db, 'users'), {
 			uid: user.uid,
-			phone,
-			name,
+			phoneNumber,
+			displayName,
 			authProvider: 'local',
 			email,
 			password,
 		});
+
+		console.log(docRef);
+
+		return user;
 	} catch (error) {
 		const errorCode = error.code;
 		const errorMessage = error.message;
