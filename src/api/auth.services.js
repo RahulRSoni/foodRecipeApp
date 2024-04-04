@@ -6,7 +6,6 @@ import {
 	createUserWithEmailAndPassword,
 	sendPasswordResetEmail,
 	signOut,
-	connectAuthEmulator,
 } from 'firebase/auth';
 import {
 	getFirestore,
@@ -18,7 +17,7 @@ import {
 } from 'firebase/firestore';
 import app from './firebase.config.js';
 
-const auth = getAuth();
+const auth = getAuth(app);
 
 const db = getFirestore(app);
 
@@ -34,18 +33,18 @@ const registerWithEmailAndPassword = async (data) => {
 
 		const user = userCredential.user;
 
-		const docRef = await addDoc(collection(db, 'users'), {
+		const orderCollection = collection(db, 'users');
+
+		await addDoc(orderCollection, {
 			uid: user.uid,
-			phoneNumber,
-			displayName,
+			name: displayName,
+			phone: phoneNumber,
 			authProvider: 'local',
-			email,
-			password,
+			avatar: '',
+			email: email,
 		});
 
-		console.log(docRef);
-
-		return user;
+		console.log(`User created successfully!!`);
 	} catch (error) {
 		const errorCode = error.code;
 		const errorMessage = error.message;
@@ -70,6 +69,7 @@ const signInWithGoogle = async () => {
 				avatar: user.photoURL,
 				email: user.email,
 			});
+			console.log(`User created successfully!!`);
 		}
 	} catch (err) {
 		console.error(err);
@@ -79,6 +79,7 @@ const signInWithGoogle = async () => {
 const logInWithEmailAndPassword = async (email, password) => {
 	try {
 		await signInWithEmailAndPassword(auth, email, password);
+		console.log(`User login successfully!!`);
 	} catch (err) {
 		console.error(err);
 		alert(err.message);
