@@ -15,12 +15,12 @@ import {
 	Home,
 	AuthPage,
 } from './pages/Pages.jsx';
+import Profile from './pages/Profile.jsx';
 
 const router = createBrowserRouter([
 	{
 		path: '/auth',
 		element: <AuthPage />,
-		
 	},
 	{
 		path: '/',
@@ -56,6 +56,11 @@ const router = createBrowserRouter([
 			{
 				path: '/recipe',
 				element: <RecipeIndex />,
+				errorElement: <Error />,
+			},
+			{
+				path: '/profile',
+				element: <Profile />,
 				errorElement: <Error />,
 			},
 		],
