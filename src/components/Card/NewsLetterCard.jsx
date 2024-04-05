@@ -33,19 +33,18 @@ export function NewsLetterCard() {
 					fullWidth>
 					Subscribers
 				</Button>
-				<Typography
-					variant='small'
-					className='mt-6 flex justify-center items-center'>
-					<Checkbox label=' I have read and agree to the ' />{' '}
-					<Typography
-						as='a'
+				<div className='text-sm mt-6 flex justify-center items-center gap-1'>
+					<input
+						type='checkbox'
+						className='form-checkbox mr-1 h-4 w-4 text-blue-500'
+					/>
+					<p className='text-blue-gray-300 '>I have read and agree to the</p>
+					<a
 						href='#signup'
-						variant='small'
-						color='blue-gray'
-						className='ml-1 font-bold underline'>
+						className='text-blue-gray-500 font-bold underline'>
 						terms & conditions.
-					</Typography>
-				</Typography>
+					</a>
+				</div>
 			</CardFooter>
 		</Card>
 	);

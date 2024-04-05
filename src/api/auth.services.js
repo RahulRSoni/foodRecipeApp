@@ -23,7 +23,6 @@ const db = getFirestore(app);
 
 const registerWithEmailAndPassword = async (data) => {
 	const { displayName, email, password, phoneNumber } = data;
-
 	try {
 		const userCredential = await createUserWithEmailAndPassword(
 			auth,
@@ -35,7 +34,7 @@ const registerWithEmailAndPassword = async (data) => {
 
 		const orderCollection = collection(db, 'users');
 
-		await addDoc(orderCollection, {
+		const userInfo = await addDoc(orderCollection, {
 			uid: user.uid,
 			name: displayName,
 			phone: phoneNumber,
@@ -45,6 +44,8 @@ const registerWithEmailAndPassword = async (data) => {
 		});
 
 		console.log(`User created successfully!!`);
+
+		return userInfo.path;
 	} catch (error) {
 		const errorCode = error.code;
 		const errorMessage = error.message;
@@ -56,12 +57,12 @@ const registerWithEmailAndPassword = async (data) => {
 const googleProvider = new GoogleAuthProvider();
 const signInWithGoogle = async () => {
 	try {
-		const res = await signInWithPopup(auth, googleProvider);
-		const user = res.user;
+		const userCredential = await signInWithPopup(auth, googleProvider);
+		const user = userCredential.user;
 		const q = query(collection(db, 'users'), where('uid', '==', user.uid));
 		const docs = await getDocs(q);
 		if (docs.docs.length === 0) {
-			await addDoc(collection(db, 'users'), {
+			const userInfo = await addDoc(collection(db, 'users'), {
 				uid: user.uid,
 				name: user.displayName,
 				phone: user.phoneNumber,
@@ -69,22 +70,35 @@ const signInWithGoogle = async () => {
 				avatar: user.photoURL,
 				email: user.email,
 			});
-			console.log(`User created successfully!!`);
+			return userInfo;
 		}
+		console.log(`User created successfully!!`);
+		return userInfo.path;
 	} catch (err) {
 		console.error(err);
 		alert(err.message);
 	}
 };
-const logInWithEmailAndPassword = async (email, password) => {
+const logInWithEmailAndPassword = async (data) => {
+	const { email, password } = data;
 	try {
-		await signInWithEmailAndPassword(auth, email, password);
+		const userCredential = await signInWithEmailAndPassword(
+			auth,
+			email,
+			password,
+		);
+
+		const userInfo = userCredential.user;
+
 		console.log(`User login successfully!!`);
+
+		return userInfo;
 	} catch (err) {
 		console.error(err);
 		alert(err.message);
 	}
 };
+
 const sendPasswordReset = async (email) => {
 	try {
 		await sendPasswordResetEmail(auth, email);
@@ -94,8 +108,10 @@ const sendPasswordReset = async (email) => {
 		alert(err.message);
 	}
 };
+
 const logout = () => {
 	signOut(auth);
+	console.log(`User logout successfully!!`);
 };
 
 const currentUser = () => {
@@ -105,6 +121,7 @@ const currentUser = () => {
 		console.log(currentUser);
 	}
 };
+
 export {
 	auth,
 	db,

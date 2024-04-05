@@ -3,41 +3,57 @@ import '../Auth.css';
 import { Button, Input, Typography } from '@material-tailwind/react';
 import { Navbar2 } from '../components/Header/Header2';
 import React, { useState } from 'react';
-// import { useAuthState } from 'react-firebase-hooks/auth';
 import { Link, useNavigate } from 'react-router-dom';
 import {
-	currentUser,
 	registerWithEmailAndPassword,
 	signInWithGoogle,
+	logInWithEmailAndPassword,
 } from '../api/auth.services.js';
 import { useForm } from 'react-hook-form';
 
 function AuthPage() {
 	const [isSignUpActive, setIsSignUpActive] = useState(false);
-	const [error, setError] = useState('');
 	const navigate = useNavigate();
+	const { register, handleSubmit } = useForm({
+		mode: 'onBlur',
+	});
 
-	const { register, handleSubmit } = useForm();
+	const { register: register2, handleSubmit: handleSubmit2 } = useForm({
+		mode: 'onBlur',
+	});
 
-	const createUser = async (data) => {
-		setError('');
-		try {
-			const user = await registerWithEmailAndPassword(data);
-
-			if (user) {
-				navigate('/auth');
-			}
-		} catch (error) {
-			console.log(error.message);
-			setError(error?.message);
-		}
-	};
+	//toggle auth pages.
 	const handleSignUpClick = () => {
 		setIsSignUpActive(true);
 	};
 
 	const handleSignInClick = () => {
 		setIsSignUpActive(false);
+	};
+
+	//form handle for user registration
+	const createUser = async (data) => {
+		try {
+			const user = await registerWithEmailAndPassword(data);
+
+			if (user) {
+				handleSignInClick();
+			}
+		} catch (error) {
+			console.log(error.message);
+		}
+	};
+
+	//form handle for user authentication
+	const logInUser = async (data) => {
+		try {
+			const user = await logInWithEmailAndPassword(data);
+			if (user) {
+				navigate('/');
+			}
+		} catch (error) {
+			console.log(error.message);
+		}
 	};
 
 	return (
@@ -54,6 +70,8 @@ function AuthPage() {
 							onSubmit={handleSubmit(createUser)}
 							className='bg-white flex items-center justify-center flex-col px-12 h-full text-center w-full'>
 							<Typography variant='h4'>Create Account</Typography>
+
+							{/*for direct auth with other services */}
 							<div className='flex justify-center items-center gap-4 py-2'>
 								<Link
 									href='#'
@@ -79,9 +97,8 @@ function AuthPage() {
 								className='mt-1 font-thin text-xs'>
 								Nice to meet you! Enter your details to register.
 							</Typography>
-							{error && (
-								<p className='text-red-500 mt-8 text-center'>{error}</p>
-							)}
+
+							{/*for manual registration method*/}
 							<div className='w-full flex flex-col gap-4 py-4'>
 								<Input
 									label='Full Name'
@@ -163,9 +180,11 @@ function AuthPage() {
 					</div>
 					<div className='form-container sign-in-container sm:w-[50%] w-full'>
 						<form
-							action='#'
+							onSubmit={handleSubmit2(logInUser)}
 							className='bg-white flex items-center justify-center flex-col px-12 h-full text-center'>
 							<Typography variant='h4'>Log In</Typography>
+
+							{/*for direct auth with other services */}
 							<div className='flex justify-center items-center gap-4 py-2'>
 								<Link
 									href='#'
@@ -175,7 +194,10 @@ function AuthPage() {
 								<Link
 									href='#'
 									className='rounded-full border-solid border-2 border-s-blue-gray-100 p-2'>
-									<FaGoogle className='h-4 w-auto ' />
+									<FaGoogle
+										className='h-4 w-auto '
+										onClick={signInWithGoogle}
+									/>
 								</Link>
 								<Link
 									href='#'
@@ -189,20 +211,38 @@ function AuthPage() {
 								Nice to meet you! Enter your details to login.
 							</Typography>
 
+							{/*for login*/}
 							<div className='w-full flex flex-col gap-4 py-4'>
 								<Input
 									label='Email'
+									type='email'
+									{...register2('email', {
+										required: true,
+										validate: {
+											matchPattern: (value) =>
+												/^\w+([.-]?\w+)+@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(
+													value,
+												) || 'Email address must be a valid address',
+										},
+									})}
+									placeholder='E-mail Address'
 									size='lg'
 									required
 								/>
 								<Input
 									label='Password'
 									size='lg'
+									{...register2('password', {
+										required: true,
+									})}
+									placeholder='Password'
 									required
 									type='password'
 								/>
 							</div>
-							<Button className='bg-red-500 transition-all duration-800 ease-in rounded-full'>
+							<Button
+								type='submit'
+								className='bg-red-500 transition-all duration-800 ease-in rounded-full'>
 								Log In
 							</Button>
 							<Typography
