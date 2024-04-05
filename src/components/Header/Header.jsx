@@ -7,10 +7,14 @@ import {
 	IconButton,
 } from '@material-tailwind/react';
 import { useNavigate } from 'react-router-dom';
+import { logout } from '../../api/auth.services';
+import ProfileMenu from './ProfileMenu';
 
 export function Header() {
 	const [openNav, setOpenNav] = React.useState(false);
 	const navigate = useNavigate();
+
+	const success = true;
 
 	React.useEffect(() => {
 		window.addEventListener(
@@ -96,6 +100,7 @@ export function Header() {
 	);
 
 	const handleClick = () => {
+		logout();
 		navigate('/auth'); // Call navigate when button is clicked
 	};
 
@@ -116,13 +121,17 @@ export function Header() {
 					</Typography>
 					<div className='mr-4 hidden lg:block'>{navList2}</div>
 					<div className='flex items-center gap-x-1 '>
-						<Button
-							variant='gradient'
-							size='sm'
-							onClick={handleClick}
-							className='hidden lg:inline-block'>
-							<span>Log In / Sign Up</span>
-						</Button>
+						{success ? (
+							<ProfileMenu />
+						) : (
+							<Button
+								variant='gradient'
+								size='sm'
+								onClick={handleClick}
+								className='hidden lg:inline-block'>
+								<span>Log In / Sign Up</span>
+							</Button>
+						)}
 					</div>
 					<IconButton
 						variant='text'
@@ -165,13 +174,17 @@ export function Header() {
 						<div className='flex items-center'>{navList2}</div>
 					</div>
 					<div className='flex items-center gap-x-1'>
-						<Button
-							fullWidth
-							variant='gradient'
-							onClick={handleClick}
-							size='sm'>
-							<span className='text-blue-gray-200'>Log In / Sign Up</span>
-						</Button>
+						{success ? (
+							<ProfileMenu />
+						) : (
+							<Button
+								fullWidth
+								variant='gradient'
+								onClick={handleClick}
+								size='sm'>
+								<span className='text-blue-gray-200'>Log In / Sign Up</span>
+							</Button>
+						)}
 					</div>
 				</Collapse>
 			</Navbar>
