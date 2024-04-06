@@ -4,7 +4,7 @@ import App from './App.jsx';
 import './index.css';
 import { ThemeProvider } from '@material-tailwind/react';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import AboutCard from './components/Card/AboutCard.jsx';
+
 import {
 	About,
 	Contact,
@@ -14,9 +14,9 @@ import {
 	RecipeIndex,
 	Home,
 	AuthPage,
-} from './pages/Pages.jsx';
-import Profile from './pages/Profile.jsx';
-import Logout from './pages/Logout.jsx';
+	Profile,
+	AddPost,
+} from './Pages/Page.jsx';
 
 const router = createBrowserRouter([
 	{
@@ -24,8 +24,8 @@ const router = createBrowserRouter([
 		element: <AuthPage />,
 	},
 	{
-		path: '/logout',
-		element: <Logout />,
+		path: '/addPost',
+		element: <AddPost />,
 	},
 	{
 		path: '/',

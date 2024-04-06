@@ -10,7 +10,7 @@ import {
 	Tooltip,
 } from '@material-tailwind/react';
 
-export function ProfileEditor() {
+export default function UpdatePassword() {
 	const [open, setOpen] = React.useState(false);
 
 	const handleOpen = () => setOpen(!open);
@@ -22,7 +22,7 @@ export function ProfileEditor() {
 					<Typography
 						color='blue-gray'
 						className='text-xs'>
-						Update Profile
+						Update Password
 					</Typography>
 				}
 				className='bg-white shadow-xl shadow-black/10 '
@@ -35,9 +35,8 @@ export function ProfileEditor() {
 					viewBox='0 0 20 20'
 					fill='currentColor'
 					onClick={handleOpen}
-					className='w-auto h-5 text-green-500'>
-					<path d='m5.433 13.917 1.262-3.155A4 4 0 0 1 7.58 9.42l6.92-6.918a2.121 2.121 0 0 1 3 3l-6.92 6.918c-.383.383-.84.685-1.343.886l-3.154 1.262a.5.5 0 0 1-.65-.65Z' />
-					<path d='M3.5 5.75c0-.69.56-1.25 1.25-1.25H10A.75.75 0 0 0 10 3H4.75A2.75 2.75 0 0 0 2 5.75v9.5A2.75 2.75 0 0 0 4.75 18h9.5A2.75 2.75 0 0 0 17 15.25V10a.75.75 0 0 0-1.5 0v5.25c0 .69-.56 1.25-1.25 1.25h-9.5c-.69 0-1.25-.56-1.25-1.25v-9.5Z' />
+					className='w-5 h-5 text-blue-400'>
+					<path d='M17 2.75a.75.75 0 0 0-1.5 0v5.5a.75.75 0 0 0 1.5 0v-5.5ZM17 15.75a.75.75 0 0 0-1.5 0v1.5a.75.75 0 0 0 1.5 0v-1.5ZM3.75 15a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5a.75.75 0 0 1 .75-.75ZM4.5 2.75a.75.75 0 0 0-1.5 0v5.5a.75.75 0 0 0 1.5 0v-5.5ZM10 11a.75.75 0 0 1 .75.75v5.5a.75.75 0 0 1-1.5 0v-5.5A.75.75 0 0 1 10 11ZM10.75 2.75a.75.75 0 0 0-1.5 0v1.5a.75.75 0 0 0 1.5 0v-1.5ZM10 6a2 2 0 1 0 0 4 2 2 0 0 0 0-4ZM3.75 10a2 2 0 1 0 0 4 2 2 0 0 0 0-4ZM16.25 10a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z' />
 				</svg>
 			</Tooltip>
 			<Dialog
@@ -50,35 +49,26 @@ export function ProfileEditor() {
 				<DialogHeader>Update your self.</DialogHeader>
 				<DialogBody>
 					<div className='text-gray-700'>
-						<div className='grid md:grid-cols-2 text-sm'>
+						<div className='grid md:grid-cols-1 text-sm'>
 							<div className='grid grid-cols-1 p-5'>
 								<Input
 									variant='static'
-									label='First Name'
-									placeholder='Jhone'
+									label='Old Password'
+									type='password'
 								/>
 							</div>
 							<div className='grid grid-cols-1 p-5'>
 								<Input
 									variant='static'
-									label='Last Name'
-									placeholder='Doe'
+									label='New Password'
+									type='password'
 								/>
 							</div>
 							<div className='grid grid-cols-1 p-5'>
 								<Input
 									variant='static'
-									label='Contact No.'
-									placeholder='+91 9806331218'
-								/>
-							</div>
-
-							<div className='grid grid-cols-1 p-5'>
-								<Input
-									variant='static'
-									label='Email'
-									placeholder='abc@gamil.com'
-									disabled
+									label='Confirm Password'
+									type='password'
 								/>
 							</div>
 						</div>

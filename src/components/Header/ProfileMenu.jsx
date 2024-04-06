@@ -16,6 +16,7 @@ import {
 	PowerIcon,
 } from '@heroicons/react/24/solid';
 import { Link } from 'react-router-dom';
+import { logout } from '../../api/auth.services.js';
 
 // profile menu component
 const profileMenuItems = [
@@ -34,15 +35,12 @@ const profileMenuItems = [
 		icon: LifebuoyIcon,
 		path: '/contact',
 	},
-	{
-		label: 'Sign Out',
-		icon: PowerIcon,
-		path: '/logout',
-	},
 ];
 
 export default function ProfileMenu() {
 	const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+
+	const handleLogOut = () => logout();
 
 	const closeMenu = () => setIsMenuOpen(false);
 
@@ -72,33 +70,42 @@ export default function ProfileMenu() {
 				</Button>
 			</MenuHandler>
 			<MenuList className='p-1'>
-				{profileMenuItems.map(({ path, label, icon }, key) => {
-					const isLastItem = key === profileMenuItems.length - 1;
+				{profileMenuItems.map(({ path, label, icon }, index) => {
 					return (
-						<>
-							<MenuItem
-								key={label}
-								onClick={closeMenu}
-								className={`flex items-center gap-2 rounded ${
-									isLastItem
-										? 'hover:bg-red-500/10 focus:bg-red-500/10 active:bg-red-500/10'
-										: ''
-								}`}>
-								{React.createElement(icon, {
-									className: `h-4 w-4 ${isLastItem ? 'text-red-500' : ''}`,
-									strokeWidth: 2,
-								})}
-								<Typography
-									as='span'
-									variant='small'
-									className='font-normal'
-									color={isLastItem ? 'red' : 'inherit'}>
-									<Link to={`${path}`}>{label}</Link>
-								</Typography>
-							</MenuItem>
-						</>
+						<MenuItem
+							key={label}
+							onClick={closeMenu}
+							className={`flex items-center gap-2 rounded `}>
+							{React.createElement(icon, {
+								className: `h-4 w-4 `,
+								strokeWidth: 2,
+							})}
+							<Typography
+								as='span'
+								variant='small'
+								className='font-normal'
+								color='inherit'>
+								<Link to={`${path}`}>{label}</Link>
+							</Typography>
+						</MenuItem>
 					);
 				})}
+				<MenuItem
+					onClick={closeMenu}
+					className='flex items-center gap-2 rounded hover:bg-red-500/10 focus:bg-red-500/10 active:bg-red-500/10'>
+					{React.createElement(PowerIcon, {
+						className: `h-4 w-4 `,
+						strokeWidth: 2,
+					})}
+					<Typography
+						as='span'
+						variant='small'
+						className='font-normal'
+						onClick={handleLogOut}
+						color='red'>
+						Sign out
+					</Typography>
+				</MenuItem>
 			</MenuList>
 		</Menu>
 	);

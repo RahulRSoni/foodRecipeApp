@@ -14,7 +14,7 @@ export function Header() {
 	const [openNav, setOpenNav] = React.useState(false);
 	const navigate = useNavigate();
 
-	const success = false;
+	const success = true;
 
 	React.useEffect(() => {
 		window.addEventListener(
