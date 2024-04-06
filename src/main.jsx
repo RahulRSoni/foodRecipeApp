@@ -16,11 +16,16 @@ import {
 	AuthPage,
 } from './pages/Pages.jsx';
 import Profile from './pages/Profile.jsx';
+import Logout from './pages/Logout.jsx';
 
 const router = createBrowserRouter([
 	{
 		path: '/auth',
 		element: <AuthPage />,
+	},
+	{
+		path: '/logout',
+		element: <Logout />,
 	},
 	{
 		path: '/',

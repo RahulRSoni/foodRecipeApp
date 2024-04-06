@@ -1,5 +1,5 @@
 import React from 'react';
-import ProfileEdit from '../components/Dialog/ProfileEdit';
+import { ProfileEditor } from '../components/Dialog/ProfileEditor';
 
 export default function Profile() {
 	return (
@@ -50,7 +50,7 @@ export default function Profile() {
 								Jane Doe
 							</h1>
 							<h3 className='text-gray-600 font-lg text-semibold leading-6'>
-								Owner at Her Company Inc.
+								About my Self
 							</h3>
 							<p className='text-sm text-gray-500 hover:text-gray-600 leading-6'>
 								Lorem ipsum dolor sit amet consectetur adipisicing elit.
@@ -71,49 +71,11 @@ export default function Profile() {
 									<span className='ml-auto'>Nov 07, 2016</span>
 								</li>
 							</ul>
-							<button
-								data-ripple-light='true'
-								data-dialog-target='dialog'
-								className='select-none rounded-lg bg-gradient-to-tr from-gray-900 to-gray-800 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none'>
-								Open Dialog
-							</button>
-							<div
-								data-dialog-backdrop='dialog'
-								data-dialog-backdrop-close='true'
-								className='pointer-events-none fixed inset-0 z-[999] grid h-screen w-screen place-items-center bg-black bg-opacity-60 opacity-0 backdrop-blur-sm transition-opacity duration-300'>
-								<div
-									data-dialog='dialog'
-									className='relative m-4 w-2/5 min-w-[40%] max-w-[40%] rounded-lg bg-white font-sans text-base font-light leading-relaxed text-blue-gray-500 antialiased shadow-2xl'>
-									<div className='flex items-center p-4 font-sans text-2xl antialiased font-semibold leading-snug shrink-0 text-blue-gray-900'>
-										Its a simple dialog.
-									</div>
-									<div className='relative p-4 font-sans text-base antialiased font-light leading-relaxed border-t border-b border-t-blue-gray-100 border-b-blue-gray-100 text-blue-gray-500'>
-										The key to more success is to have a lot of pillows. Put it
-										this way, it took me twenty five years to get these plants,
-										twenty five years of blood sweat and tears, and I&apos;m
-										never giving up, I&apos;m just getting started. I&apos;m up
-										to something. Fan luv.
-									</div>
-									<div className='flex flex-wrap items-center justify-end p-4 shrink-0 text-blue-gray-500'>
-										<button
-											data-ripple-dark='true'
-											data-dialog-close='true'
-											className='px-6 py-3 mr-1 font-sans text-xs font-bold text-red-500 uppercase transition-all rounded-lg middle none center hover:bg-red-500/10 active:bg-red-500/30 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none'>
-											Cancel
-										</button>
-										<button
-											data-ripple-light='true'
-											data-dialog-close='true'
-											className='middle none center rounded-lg bg-gradient-to-tr from-green-600 to-green-400 py-3 px-6 font-sans text-xs font-bold uppercase text-white shadow-md shadow-green-500/20 transition-all hover:shadow-lg hover:shadow-green-500/40 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none'>
-											Confirm
-										</button>
-									</div>
-								</div>
-							</div>
+							<ProfileEditor />
 						</div>
 
 						<div className='my-4'></div>
-
+						{/*
 						<div className='bg-white p-3 hover:shadow'>
 							<div className='flex items-center space-x-3 font-semibold text-gray-900 text-xl leading-8'>
 								<span className='text-green-500'>
@@ -184,6 +146,7 @@ export default function Profile() {
 								</div>
 							</div>
 						</div>
+						 */}
 					</div>
 
 					<div className='w-full md:w-9/12 mx-2 h-64'>
@@ -204,7 +167,7 @@ export default function Profile() {
 										/>
 									</svg>
 								</span>
-								<span className='tracking-wide'>About</span>
+								<span className='tracking-wide'>About Me</span>
 							</div>
 							<div className='text-gray-700'>
 								<div className='grid md:grid-cols-2 text-sm'>
@@ -217,29 +180,10 @@ export default function Profile() {
 										<div className='px-4 py-2'>Doe</div>
 									</div>
 									<div className='grid grid-cols-2'>
-										<div className='px-4 py-2 font-semibold'>Gender</div>
-										<div className='px-4 py-2'>Female</div>
-									</div>
-									<div className='grid grid-cols-2'>
 										<div className='px-4 py-2 font-semibold'>Contact No.</div>
 										<div className='px-4 py-2'>+11 998001001</div>
 									</div>
-									<div className='grid grid-cols-2'>
-										<div className='px-4 py-2 font-semibold'>
-											Current Address
-										</div>
-										<div className='px-4 py-2'>
-											Beech Creek, PA, Pennsylvania
-										</div>
-									</div>
-									<div className='grid grid-cols-2'>
-										<div className='px-4 py-2 font-semibold'>
-											Permanant Address
-										</div>
-										<div className='px-4 py-2'>
-											Arlington Heights, IL, Illinois
-										</div>
-									</div>
+
 									<div className='grid grid-cols-2'>
 										<div className='px-4 py-2 font-semibold'>Email.</div>
 										<div className='px-4 py-2'>
@@ -251,14 +195,20 @@ export default function Profile() {
 										</div>
 									</div>
 									<div className='grid grid-cols-2'>
-										<div className='px-4 py-2 font-semibold'>Birthday</div>
-										<div className='px-4 py-2'>Feb 06, 1998</div>
+										<div className='px-4 py-2 font-semibold'>News Latter</div>
+
+										{false ? (
+											<div className='px-4 py-2 text-green-700 font-bold'>
+												Subscribed
+											</div>
+										) : (
+											<div className='px-4 py-2 text-red-700 font-bold'>
+												Not Subscribe
+											</div>
+										)}
 									</div>
 								</div>
 							</div>
-							<button className='block w-full text-blue-800 text-sm font-semibold rounded-lg hover:bg-gray-100 focus:outline-none focus:shadow-outline focus:bg-gray-100 hover:shadow-xs p-3 my-4'>
-								Show Full Information
-							</button>
 						</div>
 
 						<div className='my-4'></div>

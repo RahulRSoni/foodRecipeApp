@@ -7,14 +7,14 @@ import {
 	IconButton,
 } from '@material-tailwind/react';
 import { useNavigate } from 'react-router-dom';
-import { logout } from '../../api/auth.services';
+
 import ProfileMenu from './ProfileMenu';
 
 export function Header() {
 	const [openNav, setOpenNav] = React.useState(false);
 	const navigate = useNavigate();
 
-	const success = true;
+	const success = false;
 
 	React.useEffect(() => {
 		window.addEventListener(
@@ -100,7 +100,6 @@ export function Header() {
 	);
 
 	const handleClick = () => {
-		logout();
 		navigate('/auth'); // Call navigate when button is clicked
 	};
 
