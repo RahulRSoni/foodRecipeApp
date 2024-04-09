@@ -17,11 +17,16 @@ import {
 	Profile,
 	AddPost,
 } from './Pages/Page.jsx';
-
+import PostPage from './Pages/Post.jsx';
 const router = createBrowserRouter([
 	{
 		path: '/auth',
 		element: <AuthPage />,
+	},
+
+	{
+		path: '/post',
+		element: <PostPage />,
 	},
 	{
 		path: '/addPost',

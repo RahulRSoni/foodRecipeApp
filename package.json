@@ -12,6 +12,8 @@
 	"dependencies": {
 		"@heroicons/react": "^2.1.1",
 		"@material-tailwind/react": "^2.1.9",
+		"@react-spring/parallax": "^9.7.3",
+		"@react-spring/web": "^9.7.3",
 		"@tinymce/tinymce-react": "^5.0.1",
 		"date-fns": "^3.6.0",
 		"firebase": "^10.6.0",

@@ -47,7 +47,7 @@ function TodoApp() {
 	const vols = ['full', 'half'];
 
 	return (
-		<>
+		<div className='flex flex-col gap-3 w-full'>
 			<div className='relative flex w-full items-center gap-2'>
 				<Tooltip
 					placement='bottom'
@@ -209,12 +209,11 @@ function TodoApp() {
 					</IconButton>
 				</div>
 			</div>
-
-			<ul className='flex gap-4 flex-grow'>
+			<ul className='flex flex-wrap gap-1'>
 				{todos.map((todo) => (
 					<li
 						key={todo.id}
-						className='mb-2 flex item-center border-r-2 border-blue-gray-100'>
+						className='mb-2 flex border-r-2 border-blue-gray-100'>
 						{todo.quantity} {todo.volume && todo.volume} {todo.unit}{' '}
 						{todo.ingredient}
 						<svg
@@ -223,7 +222,7 @@ function TodoApp() {
 							viewBox='0 0 24 24'
 							strokeWidth={1.5}
 							stroke='red'
-							className='w-6 h-6 mr-5'
+							className='w-6 h-6 mr-2'
 							onClick={() => handleDelete(todo.id)}>
 							<path
 								strokeLinecap='round'
@@ -234,7 +233,7 @@ function TodoApp() {
 					</li>
 				))}
 			</ul>
-		</>
+		</div>
 	);
 }
 

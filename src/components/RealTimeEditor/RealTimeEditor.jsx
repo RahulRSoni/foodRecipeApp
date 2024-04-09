@@ -18,6 +18,7 @@ export default function RealTimeEditor({
 				render={({ field: { onChange } }) => (
 					<Editor
 						initialValue={defaultValue}
+						apiKey={String(import.meta.env.VITE_API_KEY)}
 						init={{
 							initialValue: defaultValue,
 							height: 500,
