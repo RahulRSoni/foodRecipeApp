@@ -1,7 +1,7 @@
 import { FaGoogle, FaFacebook, FaLinkedin } from 'react-icons/fa';
 import '../Auth.css';
 import { Button, Input, Typography } from '@material-tailwind/react';
-import { Navbar2 } from '../components/Header/Header2';
+import { Navbar2 } from '../components/Header/Header2.jsx';
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {

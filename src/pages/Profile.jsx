@@ -165,7 +165,7 @@ export default function Profile() {
 					</div>
 
 					<div className='w-full md:w-9/12 mx-2 h-full'>
-						<div className='bg-white px-3 shadow-sm rounded-sm'>
+						<div className='bg-white p-3 shadow-sm rounded-sm'>
 							<div className='flex items-center gap-5 font-semibold text-gray-900 leading-8 '>
 								<span className='tracking-wide text-xl'>About Me</span>
 								<ProfileEditor />
