@@ -43,7 +43,12 @@ function ingredient() {
 	};
 
 	const units = ['cup', 'tbsp', 'grams', 'kg', 'ltr', 'ml'];
-	const quantities = [...Array.from({ length: 10 }, (_, i) => String(i + 1))];
+	const quantities = [
+		'1/2',
+		'1/3',
+		'2/3',
+		...Array.from({ length: 10 }, (_, i) => String(i + 1)),
+	];
 	const vols = ['full', 'half'];
 
 	return (

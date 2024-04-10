@@ -5,6 +5,7 @@ import {
 	IconButton,
 	Select,
 	Tooltip,
+	Textarea,
 	Option,
 } from '@material-tailwind/react';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -105,6 +106,7 @@ const PostForm = ({ post }) => {
 							accept='image/png, image/jpg, image/jpeg, image/gif'
 							{...register('image', { required: !post })}
 						/>
+
 						<Tooltip
 							placement='top'
 							className='border border-blue-gray-50 bg-white shadow-xl shadow-black/10'
@@ -143,6 +145,7 @@ const PostForm = ({ post }) => {
 							</div>
 						)}
 					</div>
+					<Textarea label='Content' />
 					<Select
 						label='Status'
 						value={status}
@@ -211,6 +214,53 @@ const PostForm = ({ post }) => {
 								{...register('baking-time', { required: true })}
 							/>
 						</div>
+					</div>
+
+					<div className='relative flex gap-2 w-full'>
+						<Input
+							label='Featured Image 2:'
+							type='file'
+							accept='image/png, image/jpg, image/jpeg, image/gif'
+							{...register('image', { required: !post })}
+						/>
+
+						<Tooltip
+							placement='top'
+							className='border border-blue-gray-50 bg-white shadow-xl shadow-black/10'
+							content={
+								<Typography
+									color='blue-gray'
+									className='font-medium font-serif'>
+									Upload
+								</Typography>
+							}>
+							<IconButton
+								variant='text'
+								className='!absolute right-1 top-1 rounded w-8 h-8'>
+								<svg
+									xmlns='http://www.w3.org/2000/svg'
+									fill='none'
+									viewBox='0 0 24 24'
+									strokeWidth={1.5}
+									stroke='currentColor'
+									className='w-6 h-6'>
+									<path
+										strokeLinecap='round'
+										strokeLinejoin='round'
+										d='M4.5 10.5 12 3m0 0 7.5 7.5M12 3v18'
+									/>
+								</svg>
+							</IconButton>
+						</Tooltip>
+						{post && (
+							<div className='w-full mb-4 flex item-center border-r-2 border-blue-gray-100'>
+								<img
+									src={post.getFilePreview(post.featuredImage)}
+									alt={post.title}
+									className='rounded-lg'
+								/>
+							</div>
+						)}
 					</div>
 					<Typography
 						as='h3'
