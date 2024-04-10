@@ -8,8 +8,9 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Select, Option } from '@material-tailwind/react';
 import { useNavigate } from 'react-router-dom';
-import TodoApp from '../TodoFrom/TodoForm';
+import TodoApp from '../RecipeFrom/Ingredients';
 import RealTimeEditor from '../RealTimeEditor/RealTimeEditor';
+import { CommentBox } from '../RecipeFrom/CommentBox';
 
 const PostForm = ({ post }) => {
 	const navigate = useNavigate();
@@ -159,13 +160,16 @@ const PostForm = ({ post }) => {
 					<Typography
 						as='h3'
 						className='font-semibold'>
-						Recipe Instructions:
+						Recipe Steps:
 					</Typography>
+					{/*
 					<RealTimeEditor
 						name='content'
 						control={control}
 						defaultValue={getValues('content')}
 					/>
+					 */}
+					<CommentBox />
 				</div>
 				<div className='w-full md:w-5/12 px-2 flex flex-col gap-5'>
 					<Typography

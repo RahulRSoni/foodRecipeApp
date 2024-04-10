@@ -10,7 +10,7 @@ import {
 	MenuItem,
 } from '@material-tailwind/react';
 
-function TodoApp() {
+function ingredient() {
 	const [quantity, setQuantity] = useState(1);
 	const [unit, setUnit] = useState('cup');
 	const [vol, setVol] = useState('full');
@@ -237,4 +237,4 @@ function TodoApp() {
 	);
 }
 
-export default TodoApp;
+export default ingredient;
