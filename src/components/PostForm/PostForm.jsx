@@ -3,13 +3,14 @@ import {
 	Button,
 	Typography,
 	IconButton,
+	Select,
+	Tooltip,
+	Option,
 } from '@material-tailwind/react';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Select, Option } from '@material-tailwind/react';
 import { useNavigate } from 'react-router-dom';
 import TodoApp from '../RecipeFrom/Ingredients';
-import RealTimeEditor from '../RealTimeEditor/RealTimeEditor';
 import { CommentBox } from '../RecipeFrom/CommentBox';
 
 const PostForm = ({ post }) => {
@@ -78,8 +79,8 @@ const PostForm = ({ post }) => {
 
 	return (
 		<form onSubmit={handleSubmit(submit)}>
-			<div className='flex  gap-5 px-10'>
-				<div className='w-full md:w-7/12  mb-4 md:mb-0 flex flex-col gap-5'>
+			<div className='flex flex-col sm:flex-row gap-5 px-10'>
+				<div className='w-full md:w-6/12  mb-4 md:mb-0 flex flex-col gap-5'>
 					<Input
 						label='Title :'
 						placeholder='Title'
@@ -97,132 +98,23 @@ const PostForm = ({ post }) => {
 							});
 						}}
 					/>
-					<Select
-						label='Status'
-						value={status}
-						onChange={(val) => setStatus(val)}
-						{...register('status', { required: true })}>
-						<Option value='active'>Active</Option>
-						<Option value='inactive'>Inactive </Option>
-					</Select>
-					<Typography
-						as='h3'
-						className='font-semibold'>
-						Recipe Basic Details
-					</Typography>
-
-					<div className='flex flex-row  gap-2 w-3/12'>
+					<div className='relative flex gap-2 w-full'>
 						<Input
-							label='Serving :'
-							placeholder='How many people for serving.'
-							name='Serving'
-							className='w-full'
-							{...register('serving', { required: true })}
+							label='Featured Image :'
+							type='file'
+							accept='image/png, image/jpg, image/jpeg, image/gif'
+							{...register('image', { required: !post })}
 						/>
-						<Input
-							label='Preparing Time :'
-							placeholder='How much time to prepare.'
-							name='preparing-time'
-							className='w-full'
-							{...register('preparing-time', { required: true })}
-						/>
-						<Input
-							label='Coke Time :'
-							placeholder='How much time to cocking.'
-							name='cocking-time'
-							className='w-full'
-							{...register('cocking-time', { required: true })}
-						/>
-					</div>
-					<div className='flex flex-row  gap-2 w-3/12'>
-						<Input
-							label='Resting Time :'
-							placeholder='How much time to resting.'
-							name='resting-time'
-							className='w-full'
-							{...register('resting-time', { required: true })}
-						/>
-						<Input
-							label='Total time :'
-							placeholder='Total time for preparing.'
-							name='total-time'
-							className='w-full'
-							{...register('total-time', { required: true })}
-						/>
-						<Input
-							label='Baking time :'
-							placeholder='Total time for preparing.'
-							name='baking-time'
-							className='w-full'
-							{...register('baking-time', { required: true })}
-						/>
-					</div>
-					<Typography
-						as='h3'
-						className='font-semibold'>
-						Recipe Steps:
-					</Typography>
-					{/*
-					<RealTimeEditor
-						name='content'
-						control={control}
-						defaultValue={getValues('content')}
-					/>
-					 */}
-					<CommentBox />
-				</div>
-				<div className='w-full md:w-5/12 px-2 flex flex-col gap-5'>
-					<Typography
-						as='h3'
-						className='font-semibold'>
-						Recipe Ingredients:
-					</Typography>
-					<div className='flex flex-col gap-2 w-full'>
-						<TodoApp />
-						<div className='flex justify-between w-full gap-2'>
-							<div className='flex flex-col w-full gap-2 '>
-								<Input
-									label='Keyword :'
-									placeholder='How much time to resting.'
-									name='keyword'
-									className='w-full'
-									{...register('keyword', { required: true })}
-								/>
-								<Input
-									label='Cuisine :'
-									placeholder='Total time for preparing.'
-									name='cuisine'
-									className='w-full'
-									{...register('cuisine', { required: true })}
-								/>
-							</div>
-							<div className='flex flex-col w-full  gap-2 '>
-								<Input
-									label='Course :'
-									placeholder='Total time for preparing.'
-									name='course'
-									className='w-full'
-									{...register('course', { required: true })}
-								/>
-								<Input
-									label='Calories :'
-									placeholder='How much time to resting.'
-									name='calories'
-									className='w-full'
-									{...register('calories', { required: true })}
-								/>
-							</div>
-						</div>
-					</div>
-					<div className='flex w-full justify-between py-1.5'>
-						<div className='relative flex gap-2 w-full'>
-							<Input
-								label='Featured Image :'
-								type='file'
-								multiple
-								accept='image/png, image/jpg, image/jpeg, image/gif'
-								{...register('image', { required: !post })}
-							/>
+						<Tooltip
+							placement='top'
+							className='border border-blue-gray-50 bg-white shadow-xl shadow-black/10'
+							content={
+								<Typography
+									color='blue-gray'
+									className='font-medium font-serif'>
+									Upload
+								</Typography>
+							}>
 							<IconButton
 								variant='text'
 								className='!absolute right-1 top-1 rounded w-8 h-8'>
@@ -240,27 +132,141 @@ const PostForm = ({ post }) => {
 									/>
 								</svg>
 							</IconButton>
-							{post && (
-								<div className='w-full mb-4 flex item-center border-r-2 border-blue-gray-100'>
-									<img
-										src={post.getFilePreview(post.featuredImage)}
-										alt={post.title}
-										className='rounded-lg'
-									/>
-								</div>
-							)}
+						</Tooltip>
+						{post && (
+							<div className='w-full mb-4 flex item-center border-r-2 border-blue-gray-100'>
+								<img
+									src={post.getFilePreview(post.featuredImage)}
+									alt={post.title}
+									className='rounded-lg'
+								/>
+							</div>
+						)}
+					</div>
+					<Select
+						label='Status'
+						value={status}
+						onChange={(val) => setStatus(val)}
+						{...register('status', { required: true })}>
+						<Option value='active'>Active</Option>
+						<Option value='inactive'>Inactive </Option>
+					</Select>
+					<Typography
+						as='h3'
+						className='font-semibold'>
+						Recipe Basic Details
+					</Typography>
+
+					<div className='flex flex-wrap gap-2 w-full'>
+						<div>
+							<Input
+								label='Serving :'
+								placeholder='How many people for serving.'
+								name='Serving'
+								{...register('serving', { required: true })}
+							/>
+						</div>
+						<div>
+							<Input
+								label='Preparing Time :'
+								placeholder='How much time to prepare.'
+								name='preparing-time'
+								{...register('preparing-time', { required: true })}
+							/>
+						</div>
+						<div>
+							<Input
+								label='Coke Time :'
+								placeholder='How much time to cocking.'
+								name='cocking-time'
+								{...register('cocking-time', { required: true })}
+							/>
 						</div>
 					</div>
+					<div className='flex flex-wrap gap-2 w-full'>
+						<div>
+							<Input
+								label='Resting Time :'
+								placeholder='How much time to resting.'
+								name='resting-time'
+								size='sm'
+								{...register('resting-time', { required: true })}
+							/>
+						</div>
+						<div>
+							<Input
+								label='Total time :'
+								placeholder='Total time for preparing.'
+								name='total-time'
+								size='sm'
+								{...register('total-time', { required: true })}
+							/>
+						</div>
+						<div>
+							<Input
+								label='Baking time :'
+								placeholder='Total time for preparing.'
+								name='baking-time'
+								size='sm'
+								{...register('baking-time', { required: true })}
+							/>
+						</div>
+					</div>
+					<Typography
+						as='h3'
+						className='font-semibold'>
+						Recipe Contain:
+					</Typography>
+					<div className='flex justify-between w-full gap-2'>
+						<div className='flex flex-col w-full gap-2 '>
+							<Input
+								label='Keyword :'
+								name='keyword'
+								className='w-full'
+								{...register('keyword', { required: true })}
+							/>
+							<Input
+								label='Cuisine :'
+								name='cuisine'
+								className='w-full'
+								{...register('cuisine', { required: true })}
+							/>
+						</div>
+						<div className='flex flex-col w-full  gap-2 '>
+							<Input
+								label='Course :'
+								name='course'
+								className='w-full'
+								{...register('course', { required: true })}
+							/>
+							<Input
+								label='Calories :'
+								name='calories'
+								className='w-full'
+								{...register('calories', { required: true })}
+							/>
+						</div>
+					</div>
+				</div>
+
+				<div className='w-full md:w-6/12 px-2 flex flex-col gap-5 sm:border-l-2 border-blue-gray-100'>
+					<Typography
+						as='h3'
+						className='font-semibold'>
+						Recipe Ingredients:
+					</Typography>
+					<div className='flex flex-col gap-2 w-full'>
+						<TodoApp />
+					</div>
+					<Typography
+						as='h3'
+						className='font-semibold'>
+						Recipe Steps:
+					</Typography>
+					<CommentBox />
 
 					<div className='w-full'>
 						<div className='flex gap-2 justify-end'>
-							<Button
-								size='sm'
-								color='red'
-								variant='text'
-								className='rounded-md'>
-								Cancel
-							</Button>
 							<Button
 								size='sm'
 								type='submit'
