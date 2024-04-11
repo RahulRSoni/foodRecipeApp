@@ -6,7 +6,7 @@ import {
 	CardHeader,
 } from '@material-tailwind/react';
 
-export default function CardPlacehoderSkeleton() {
+export default function CardPlaceholderSkeleton() {
 	return (
 		<Card className=' max-w-[24rem] overflow-hidden shadow-xl animate-pulse'>
 			<CardHeader

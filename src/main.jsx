@@ -15,23 +15,17 @@ import {
 	Home,
 	AuthPage,
 	Profile,
+	RecipePage,
 	AddPost,
 } from './Pages/Page.jsx';
-import PostPage from './Pages/Post.jsx';
 
 const router = createBrowserRouter([
 	{
 		path: '/auth',
 		element: <AuthPage />,
+		errorElement: <Error />,
 	},
-	{
-		path: '/post',
-		element: <PostPage />,
-	},
-	{
-		path: '/addPost',
-		element: <AddPost />,
-	},
+
 	{
 		path: '/',
 		element: <App />,
@@ -42,7 +36,16 @@ const router = createBrowserRouter([
 				element: <Home />,
 				errorElement: <Error />,
 			},
-
+			{
+				path: '/recipe:bake',
+				element: <RecipePage />,
+				errorElement: <Error />,
+			},
+			{
+				path: '/addPost',
+				element: <AddPost />,
+				errorElement: <Error />,
+			},
 			{
 				path: '/about',
 				element: <About />,

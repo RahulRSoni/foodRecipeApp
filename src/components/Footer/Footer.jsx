@@ -21,7 +21,7 @@ const currentYear = new Date().getFullYear();
 
 export function Footer() {
 	return (
-		<footer className='relative w-full border-t-4 font-normal transition-colors px-4 hover:text-blue-gray-900 mt-4 '>
+		<footer className='relative w-full border-t-4 font-normal transition-colors px-4 hover:text-blue-gray-900 mt-4 bg-white overflow-y-auto'>
 			<div className='mx-auto w-full max-w-7xl px-8 mt-3'>
 				<div className='grid grid-rows-2 md:grid-rows-1 justify-items-center  md:space-x-52 md:gap-5 md:grid-cols-2'>
 					<Typography
