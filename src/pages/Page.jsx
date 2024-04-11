@@ -8,6 +8,7 @@ import Home from './Home.jsx';
 import AuthPage from './Auth.jsx';
 import Profile from './Profile.jsx';
 import AddPost from './AddPost.jsx';
+import RecipePage from './Recipes.jsx';
 
 export {
 	About,
@@ -19,5 +20,6 @@ export {
 	Home,
 	AuthPage,
 	AddPost,
+	RecipePage,
 	Profile,
 };

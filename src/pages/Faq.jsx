@@ -185,28 +185,36 @@ export function DefaultAccordion() {
 
 export default function Faq() {
 	return (
-		<div className='px-4 pt-20 h-full w-full'>
-			<div className='h-full mb-16 relative'>
-				<img
-					src='https://images.unsplash.com/photo-1613135491235-eb6b76a58ead?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
-					className='h-[28rem] w-full object-cover'
-				/>
-				<div className='absolute sm:-bottom-10 -bottom-16 px-10 py-5 backdrop-blur-xl rounded-lg border-spacing-0 '>
-					<Typography
-						variant='h3'
-						className=''>
-						Frequently Asked Questions (FAQ)
-					</Typography>
+		<>
+			<div
+				className='fixed inset-0 bg-cover bg-center bg-blur -z-50'
+				style={{
+					backgroundImage: `url('https://images.unsplash.com/photo-1613135491235-eb6b76a58ead?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')  `,
+					filter: 'blur(2px) contrast(120%) brightness(50%)',
+				}}></div>
+			<div className='px-4 pt-20 h-full w-full '>
+				<div className='h-full mb-16 relative '>
+					<img
+						src='https://images.unsplash.com/photo-1613135491235-eb6b76a58ead?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+						className='h-[28rem] w-full object-cover'
+					/>
+					<div className='absolute sm:-bottom-10 -bottom-16 px-10 py-5 backdrop-blur-xl rounded-lg border-spacing-0 '>
+						<Typography
+							variant='h3'
+							className=''>
+							Frequently Asked Questions (FAQ)
+						</Typography>
+					</div>
+				</div>
+				<div className='grid lg:grid-cols-6 p-2 border-b-4 '>
+					<div className='grid md:col-span-5 justify-items-start px-8 md:py-16  py-6 bg-blue-gray-50 backdrop-blur-sm rounded-lg'>
+						<DefaultAccordion />
+					</div>
+				</div>
+				<div className='lg:px-56 px-8 mt-20'>
+					<NewsLetterCard />
 				</div>
 			</div>
-			<div className='grid lg:grid-cols-6 p-2 border-b-4'>
-				<div className='grid md:col-span-5 justify-items-start px-8 md:py-16  py-6'>
-					<DefaultAccordion />
-				</div>
-			</div>
-			<div className='lg:px-56 px-8 mt-20'>
-				<NewsLetterCard />
-			</div>
-		</div>
+		</>
 	);
 }

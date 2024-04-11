@@ -80,8 +80,8 @@ const PostForm = ({ post }) => {
 
 	return (
 		<form onSubmit={handleSubmit(submit)}>
-			<div className='flex flex-col sm:flex-row gap-5 px-10'>
-				<div className='w-full md:w-6/12  mb-4 md:mb-0 flex flex-col gap-5'>
+			<div className='flex flex-col justify-center items-center p-10 mt-8 '>
+				<div className=' mb-4 flex flex-col justify-center gap-5 bg-blue-gray-50 backdrop-blur-sm py-8 rounded-lg px-6'>
 					<Input
 						label='Title :'
 						placeholder='Title'
@@ -297,9 +297,6 @@ const PostForm = ({ post }) => {
 							/>
 						</div>
 					</div>
-				</div>
-
-				<div className='w-full md:w-6/12 px-2 flex flex-col gap-5 sm:border-l-2 border-blue-gray-100'>
 					<Typography
 						as='h3'
 						className='font-semibold'>
@@ -314,7 +311,6 @@ const PostForm = ({ post }) => {
 						Recipe Steps:
 					</Typography>
 					<CommentBox />
-
 					<div className='w-full'>
 						<div className='flex gap-2 justify-end'>
 							<Button

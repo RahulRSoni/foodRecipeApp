@@ -103,158 +103,166 @@ export default function About() {
 	);
 
 	return (
-		<div className='px-4 py-20 h-full w-full'>
-			<div className='h-full mb-16'>
-				<img
-					src='https://firebasestorage.googleapis.com/v0/b/foodblog-dc4fb.appspot.com/o/aboutme.jpg?alt=media&token=2f7e2976-1cf3-4e4c-92eb-8cfd38a74444'
-					className='h-[28rem] w-full md:object-cover object-contain'
-				/>
-			</div>
-			<div className='grid lg:grid-cols-6 p-2'>
-				<div className='grid lg:col-span-4 justify-items-center'>
-					<div className='px-6 '>
-						<Typography variant='h2'>About Me</Typography>
-						<div className='py-6 border-b-2 border-gray-300'>
-							<Typography
-								variant='h3'
-								className=' py-4'>
-								Our Story
-							</Typography>
-							<Typography
-								variant='paragraph'
-								className='text-lg font-light'>
-								<span className='font-thin text-2xl text-blue-gray-300 text-pretty translate-x-2'>
-									A
-								</span>
-								t Dad's Kitchen, we believe that some of life's best moments
-								happen around the dining table. It all started with my own dad,
-								who instilled in me a love for cooking from a young age. From
-								baking cookies on rainy afternoons to mastering the art of the
-								perfect barbecue, my dad's kitchen was always the heart of our
-								home.
-							</Typography>
-						</div>
-						<div className='py-6 '>
-							<Typography
-								variant='h3'
-								className='py-4'>
-								What We Offer
-							</Typography>
-							<DefaultAccordion />
-						</div>
-						<div className='py-6 border-b-2 border-gray-300'>
-							<div className='grid grid-cols-2 gap-2 '>
-								{data.map(({ imageLink }, index) => (
-									<div key={index}>
-										<img
-											className='rounded-lg object-cover object-center h-60 w-full'
-											src={imageLink}
-											alt=''
-										/>
-									</div>
-								))}
+		<>
+			<div
+				className='fixed inset-0 bg-cover bg-center bg-blur -z-50'
+				style={{
+					backgroundImage: `url('https://images.unsplash.com/photo-1524222717473-730000096953?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')  `,
+					filter: 'blur(2px) contrast(120%) brightness(50%)',
+				}}></div>
+			<div className='px-4 py-20 h-full w-full'>
+				<div className='h-full mb-16'>
+					<img
+						src='https://firebasestorage.googleapis.com/v0/b/foodblog-dc4fb.appspot.com/o/aboutme.jpg?alt=media&token=2f7e2976-1cf3-4e4c-92eb-8cfd38a74444'
+						className='h-[28rem] w-full md:object-cover object-contain'
+					/>
+				</div>
+				<div className='grid lg:grid-cols-6 p-2 gap-6'>
+					<div className='grid lg:col-span-4 justify-items-center'>
+						<div className='px-6 bg-blue-gray-50 backdrop-blur-sm py-8 rounded-lg'>
+							<Typography variant='h2'>About Me</Typography>
+							<div className='py-6 border-b-2 border-gray-300'>
+								<Typography
+									variant='h3'
+									className=' py-4'>
+									Our Story
+								</Typography>
+								<Typography
+									variant='paragraph'
+									className='text-lg font-light'>
+									<span className='font-thin text-2xl text-blue-gray-300 text-pretty translate-x-2'>
+										A
+									</span>
+									t Dad's Kitchen, we believe that some of life's best moments
+									happen around the dining table. It all started with my own
+									dad, who instilled in me a love for cooking from a young age.
+									From baking cookies on rainy afternoons to mastering the art
+									of the perfect barbecue, my dad's kitchen was always the heart
+									of our home.
+								</Typography>
 							</div>
-						</div>
-						<div className='py-6 border-b-2 border-gray-300 '>
-							<Typography
-								variant='h3'
-								className='py-4'>
-								Our Mission
-							</Typography>
-							<Typography
-								variant='paragraph'
-								className='text-lg font-light'>
-								<span className='font-thin text-2xl text-blue-gray-300 text-pretty translate-x-2'>
-									O
-								</span>
-								ur mission at Dad's Kitchen is simple: to inspire families to
-								come together, create memories, and share delicious meals. We're
-								passionate about preserving family recipes, celebrating culinary
-								traditions, and passing down the joy of cooking from one
-								generation to the next.
-							</Typography>
-						</div>
-						<div className='py-6 border-b-2 border-gray-300'>
-							<div className='grid grid-cols-3 gap-2 '>
-								{items.map(({ imageLink }, index) => (
-									<div key={index}>
-										<img
-											className='rounded-lg object-cover object-center h-96 w-full'
-											src={imageLink}
-											alt=''
-										/>
-									</div>
-								))}
+							<div className='py-6 '>
+								<Typography
+									variant='h3'
+									className='py-4'>
+									What We Offer
+								</Typography>
+								<DefaultAccordion />
 							</div>
-						</div>
-						<div className='py-6 border-b-2 border-gray-300 '>
-							<Typography
-								variant='h3'
-								className='py-4'>
-								Get Involved
-							</Typography>
-							<Typography
-								variant='paragraph'
-								className='text-lg font-light'>
-								<span className='font-thin text-2xl text-blue-gray-300 text-pretty translate-x-2'>
-									W
-								</span>
-								hether you're a seasoned chef or a novice in the kitchen,
-								there's a place for you at Dad's Kitchen. Join us on our
-								culinary journey and let's make memories together, one delicious
-								dish at a time.
-							</Typography>
-						</div>
-						<div className='py-6 border-b-2 border-gray-300'>
-							<div className='grid gap-4'>
-								<div>
-									<img
-										className='h-auto w-full max-w-full rounded-lg object-cover object-center md:h-[480px]'
-										src={active}
-										alt=''
-									/>
-								</div>
-								<div className='grid md:grid-cols-4 grid-cols-2 gap-2 justify-items-center'>
-									{item2.map(({ imgelink }, index) => (
+							<div className='py-6 border-b-2 border-gray-300'>
+								<div className='grid grid-cols-2 gap-2 '>
+									{data.map(({ imageLink }, index) => (
 										<div key={index}>
 											<img
-												onClick={() => setActive(imgelink)}
-												src={imgelink}
-												className='h-32 w-full cursor-pointer rounded-lg object-cover object-center'
-												alt='gallery-image'
+												className='rounded-lg object-cover object-center h-60 w-full'
+												src={imageLink}
+												alt=''
 											/>
 										</div>
 									))}
 								</div>
 							</div>
-						</div>
-						<div className='py-6  '>
-							<Typography
-								variant='h3'
-								className='py-4'>
-								Contact Us
-							</Typography>
-							<Typography
-								variant='paragraph'
-								className='text-lg font-light'>
-								<span className='font-thin text-2xl text-blue-gray-300 text-pretty translate-x-2'>
-									H
-								</span>
-								ave a question, suggestion, or just want to say hello? We'd love
-								to hear from you! Get in touch{' '}
+							<div className='py-6 border-b-2 border-gray-300 '>
 								<Typography
-									as='button'
-									className='text-teal-500 hover:text-teal-700/50'>
-									here.
+									variant='h3'
+									className='py-4'>
+									Our Mission
 								</Typography>
-							</Typography>
+								<Typography
+									variant='paragraph'
+									className='text-lg font-light'>
+									<span className='font-thin text-2xl text-blue-gray-300 text-pretty translate-x-2'>
+										O
+									</span>
+									ur mission at Dad's Kitchen is simple: to inspire families to
+									come together, create memories, and share delicious meals.
+									We're passionate about preserving family recipes, celebrating
+									culinary traditions, and passing down the joy of cooking from
+									one generation to the next.
+								</Typography>
+							</div>
+							<div className='py-6 border-b-2 border-gray-300'>
+								<div className='grid grid-cols-3 gap-2 '>
+									{items.map(({ imageLink }, index) => (
+										<div key={index}>
+											<img
+												className='rounded-lg object-cover object-center h-96 w-full'
+												src={imageLink}
+												alt=''
+											/>
+										</div>
+									))}
+								</div>
+							</div>
+							<div className='py-6 border-b-2 border-gray-300 '>
+								<Typography
+									variant='h3'
+									className='py-4'>
+									Get Involved
+								</Typography>
+								<Typography
+									variant='paragraph'
+									className='text-lg font-light'>
+									<span className='font-thin text-2xl text-blue-gray-300 text-pretty translate-x-2'>
+										W
+									</span>
+									hether you're a seasoned chef or a novice in the kitchen,
+									there's a place for you at Dad's Kitchen. Join us on our
+									culinary journey and let's make memories together, one
+									delicious dish at a time.
+								</Typography>
+							</div>
+							<div className='py-6 border-b-2 border-gray-300'>
+								<div className='grid gap-4'>
+									<div>
+										<img
+											className='h-auto w-full max-w-full rounded-lg object-cover object-center md:h-[480px]'
+											src={active}
+											alt=''
+										/>
+									</div>
+									<div className='grid md:grid-cols-4 grid-cols-2 gap-2 justify-items-center'>
+										{item2.map(({ imgelink }, index) => (
+											<div key={index}>
+												<img
+													onClick={() => setActive(imgelink)}
+													src={imgelink}
+													className='h-32 w-full cursor-pointer rounded-lg object-cover object-center'
+													alt='gallery-image'
+												/>
+											</div>
+										))}
+									</div>
+								</div>
+							</div>
+							<div className='py-6  '>
+								<Typography
+									variant='h3'
+									className='py-4'>
+									Contact Us
+								</Typography>
+								<Typography
+									variant='paragraph'
+									className='text-lg font-light'>
+									<span className='font-thin text-2xl text-blue-gray-300 text-pretty translate-x-2'>
+										H
+									</span>
+									ave a question, suggestion, or just want to say hello? We'd
+									love to hear from you! Get in touch{' '}
+									<Typography
+										as='button'
+										className='text-teal-500 hover:text-teal-700/50'>
+										here.
+									</Typography>
+								</Typography>
+							</div>
 						</div>
 					</div>
-				</div>
-				<div className='grid lg:col-span-2 px-2 border-l-blue-gray-100 lg:border-l border-t justify-items-center'>
-					<AboutCard />
+					<div className='grid lg:col-span-2 px-2 border-l-blue-gray-100 lg:border-l border-t justify-items-center bg-blue-gray-50 backdrop-blur-sm py-8 rounded-lg'>
+						<AboutCard />
+					</div>
 				</div>
 			</div>
-		</div>
+		</>
 	);
 }

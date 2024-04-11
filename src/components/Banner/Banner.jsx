@@ -53,7 +53,7 @@ export default function Banner() {
 										key={i}
 										src={`${item.src}`}
 										alt={`image ${i + 1}`}
-										className={`cursor-pointer  rounded-xl transition-all xl:h-20 h-2 ${
+										className={`cursor-pointer  rounded-xl transition-all lg:h-20 h-6 ${
 											activeIndex === i ? '' : 'filter grayscale opacity-70'
 										}`}
 										onClick={() => setActiveIndex(i)}
@@ -67,7 +67,7 @@ export default function Banner() {
 							key={i}
 							src={image.src}
 							alt={image.name}
-							className=' h-[30rem] min-h-min w-full object-cover rounded-2xl'
+							className=' h-[26rem] min-h-min w-full object-cover rounded-2xl'
 						/>
 					))}
 				</Carousel>
