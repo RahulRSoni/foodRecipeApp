@@ -7,6 +7,7 @@ import {
 	IconButton,
 } from '@material-tailwind/react';
 import { useNavigate } from 'react-router-dom';
+import Courses from './CoursesButton';
 
 import ProfileMenu from './ProfileMenu';
 
@@ -40,12 +41,8 @@ export function Header() {
 				as='li'
 				variant='small'
 				color='blue-gray'
-				className='p-1 font-semibold text-blue-gray-400'>
-				<a
-					href='/courses'
-					className='flex items-center'>
-					Courses
-				</a>
+				>
+				<Courses />
 			</Typography>
 			<Typography
 				as='li'

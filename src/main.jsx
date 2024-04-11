@@ -8,7 +8,6 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import {
 	About,
 	Contact,
-	Courses,
 	Error,
 	Faq,
 	RecipeIndex,
@@ -56,11 +55,7 @@ const router = createBrowserRouter([
 				element: <Contact />,
 				errorElement: <Error />,
 			},
-			{
-				path: '/courses',
-				element: <Courses />,
-				errorElement: <Error />,
-			},
+
 			{
 				path: '/faq',
 				element: <Faq />,

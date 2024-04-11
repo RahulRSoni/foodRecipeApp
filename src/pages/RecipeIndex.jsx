@@ -91,6 +91,7 @@ export default function RecipeIndex() {
 								<Option>Main Course</Option>
 								<Option>Side Dish</Option>
 								<Option>Snack</Option>
+								<Option>Salad</Option>
 							</Select>
 							<Select
 								label='Keywords'
