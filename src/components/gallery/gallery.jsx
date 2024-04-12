@@ -3,7 +3,7 @@ import { Typography } from '@material-tailwind/react';
 export function Gallery() {
 	return (
 		<div className='flex flex-col justify-center items-center '>
-			<span className='m-10 text-xl font-semibold text-blue-gray-500 border-b-4 border-gray-400'>
+			<span className='m-10 text-xl font-semibold text-blue-gray-100 border-b-4 border-gray-400'>
 				People whose where like
 			</span>
 			<div className='grid grid-cols-3 gap-4 md:grid-cols-4'>

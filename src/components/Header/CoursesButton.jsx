@@ -35,7 +35,7 @@ const menuItems = [
 		img: 'https://images.unsplash.com/photo-1559847844-5315695dadae?q=80&w=1458&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
 	},
 	{
-		title: 'Side Dish',
+		title: 'Starters',
 		img: 'https://images.unsplash.com/photo-1598515211932-b130a728a769?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
 	},
 	{
@@ -73,7 +73,7 @@ export default function Courses() {
 				<Card
 					color='gray'
 					shadow={false}
-					className='col-span-3 flex h-full items-center justify-center rounded-2xl p-4 hover:scale-105 transition-all duration-700'>
+					className='col-span-3 flex h-full items-center justify-center rounded-2xl p-4 hover:scale-105 transition-all duration-700 '>
 					<CursorArrowRaysIcon
 						strokeWidth={1}
 						className='h-10 w-10'
@@ -81,7 +81,7 @@ export default function Courses() {
 					<Typography
 						className='mt-5 text-center'
 						variant='h5'>
-						Our Courses
+						Courses
 					</Typography>
 				</Card>
 				<ul className='col-span-4 flex flex-wrap w-[50rem] gap-1  '>
@@ -89,11 +89,10 @@ export default function Courses() {
 						<Link
 							href='#'
 							key={title}
-							className='hover:scale-105 transition-all duration-700'>
+							className='hover:scale-105 transition-all duration-700 hover:text-blue-gray-400 text-blue-gray-50'>
 							<MenuItem>
 								<Typography
 									variant='h6'
-									color='white'
 									className='mb-1'>
 									{title}
 								</Typography>

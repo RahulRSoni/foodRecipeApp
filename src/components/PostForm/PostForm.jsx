@@ -11,13 +11,13 @@ import {
 import React, { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import TodoApp from '../RecipeFrom/Ingredients';
 import { CommentBox } from '../RecipeFrom/CommentBox';
+import Ingredient from '../RecipeFrom/Ingredients';
 
 const PostForm = ({ post }) => {
 	const navigate = useNavigate();
 	// const userData = useSelector((state) => state.userData);
-	const [status, setStatus] = useState('active');
+	const [active, setActive] = useState('active');
 	const { register, handleSubmit, watch, setValue, control, getValues } =
 		useForm({
 			defaultValues: {
@@ -26,40 +26,28 @@ const PostForm = ({ post }) => {
 				content: post?.content || '',
 				status: post?.status || 'active',
 				featuredImages: post?.featuredImages || [],
+				keyword: post?.keyword || '',
+				cuisine: post?.cuisine || '',
+				course: post?.course || '',
+				calories: post?.calories || '',
+				serving: post?.serving || '',
+				preparingTime: post?.preparingTime || '',
+				cockingTime: post?.cockingTime || '',
+				restingTime: post?.restingTime || '',
+				totalTime: post?.totalTime || '',
+				bakingTime: post?.bakingTime || '',
 			},
 		});
+
 	const submit = async (data) => {
-		if (post) {
-			const file = data.image[0] ? await post.uploadFile(data.image[0]) : null;
+		try {
+			// Asynchronous operation
 
-			if (file) {
-				await post.deleteFile(file.$id);
-			}
-			const dbPost = await post.updatePost(post.$id, {
-				...data,
-				featuredImage: file ? file.$id : undefined,
-			});
-
-			if (dbPost) {
-				navigate(`/post/${dbPost.$id}`);
-			}
-		} else {
-			const file = data.image[0] ? await post.uploadFile(data.image[0]) : null;
-
-			if (file) {
-				const fileId = file.$id;
-				data.featuredImage = fileId;
-				const dbPost = await post.createPost({
-					...data,
-					userId: 'userData.$id',
-				});
-				if (dbPost) {
-					navigate(`/post/${dbPost.$id}`);
-				}
-			}
+			console.log(data);
+		} catch (error) {
+			console.error('Error occurred:', error);
 		}
 	};
-
 	const slugTransform = useCallback((value) => {
 		if (value && typeof value === 'string')
 			return value.trim().toLowerCase().replace(/\s/g, '-');
@@ -85,12 +73,14 @@ const PostForm = ({ post }) => {
 					<Input
 						label='Title :'
 						placeholder='Title'
+						size='md'
 						name='title'
 						{...register('title', { required: true })}
 					/>
 					<Input
 						label='Slug :'
 						placeholder='Slug'
+						size='md'
 						name='slug'
 						{...register('slug', { required: true })}
 						onInput={(e) => {
@@ -102,9 +92,11 @@ const PostForm = ({ post }) => {
 					<div className='relative flex gap-2 w-full'>
 						<Input
 							label='Featured Image :'
+							size='md'
 							type='file'
+							name='featuredImages'
 							accept='image/png, image/jpg, image/jpeg, image/gif'
-							{...register('image', { required: !post })}
+							{...register('featuredImages', { required: !post })}
 						/>
 
 						<Tooltip
@@ -145,14 +137,19 @@ const PostForm = ({ post }) => {
 							</div>
 						)}
 					</div>
-					<Textarea label='Content' />
+					<Textarea
+						label='Content'
+						name='content'
+						{...register('content', { required: true })}
+					/>
 					<Select
 						label='Status'
-						value={status}
-						onChange={(val) => setStatus(val)}
+						name='status'
+						value={active}
+						onChange={(val) => setActive(val)}
 						{...register('status', { required: true })}>
 						<Option value='active'>Active</Option>
-						<Option value='inactive'>Inactive </Option>
+						<Option value='Inactive'>Inactive </Option>
 					</Select>
 					<Typography
 						as='h3'
@@ -164,6 +161,7 @@ const PostForm = ({ post }) => {
 						<div>
 							<Input
 								label='Serving :'
+								size='md'
 								placeholder='How many people for serving.'
 								name='Serving'
 								{...register('serving', { required: true })}
@@ -172,17 +170,19 @@ const PostForm = ({ post }) => {
 						<div>
 							<Input
 								label='Preparing Time :'
+								size='md'
 								placeholder='How much time to prepare.'
-								name='preparing-time'
+								name='preparingTime'
 								{...register('preparing-time', { required: true })}
 							/>
 						</div>
 						<div>
 							<Input
 								label='Coke Time :'
+								size='md'
 								placeholder='How much time to cocking.'
 								name='cocking-time'
-								{...register('cocking-time', { required: true })}
+								{...register('cockingTime', { required: true })}
 							/>
 						</div>
 					</div>
@@ -190,27 +190,27 @@ const PostForm = ({ post }) => {
 						<div>
 							<Input
 								label='Resting Time :'
+								size='md'
 								placeholder='How much time to resting.'
-								name='resting-time'
-								size='sm'
+								name='restingTime'
 								{...register('resting-time', { required: true })}
 							/>
 						</div>
 						<div>
 							<Input
 								label='Total time :'
+								size='md'
 								placeholder='Total time for preparing.'
-								name='total-time'
-								size='sm'
+								name='totalTime'
 								{...register('total-time', { required: true })}
 							/>
 						</div>
 						<div>
 							<Input
 								label='Baking time :'
+								size='md'
 								placeholder='Total time for preparing.'
-								name='baking-time'
-								size='sm'
+								name='bakingTime'
 								{...register('baking-time', { required: true })}
 							/>
 						</div>
@@ -219,6 +219,7 @@ const PostForm = ({ post }) => {
 					<div className='relative flex gap-2 w-full'>
 						<Input
 							label='Featured Image 2:'
+							size='md'
 							type='file'
 							accept='image/png, image/jpg, image/jpeg, image/gif'
 							{...register('image', { required: !post })}
@@ -271,12 +272,14 @@ const PostForm = ({ post }) => {
 						<div className='flex flex-col w-full gap-2 '>
 							<Input
 								label='Keyword :'
+								size='md'
 								name='keyword'
 								className='w-full'
 								{...register('keyword', { required: true })}
 							/>
 							<Input
 								label='Cuisine :'
+								size='md'
 								name='cuisine'
 								className='w-full'
 								{...register('cuisine', { required: true })}
@@ -285,12 +288,14 @@ const PostForm = ({ post }) => {
 						<div className='flex flex-col w-full  gap-2 '>
 							<Input
 								label='Course :'
+								size='md'
 								name='course'
 								className='w-full'
 								{...register('course', { required: true })}
 							/>
 							<Input
 								label='Calories :'
+								size='md'
 								name='calories'
 								className='w-full'
 								{...register('calories', { required: true })}
@@ -303,14 +308,23 @@ const PostForm = ({ post }) => {
 						Recipe Ingredients:
 					</Typography>
 					<div className='flex flex-col gap-2 w-full'>
-						<TodoApp />
+						<Ingredient
+							name='ingredients'
+							label='Ingredients'
+							control={control}
+							defaultValue={getValues('ingredients')}
+						/>
 					</div>
 					<Typography
 						as='h3'
 						className='font-semibold'>
 						Recipe Steps:
 					</Typography>
-					<CommentBox />
+					<CommentBox
+						name='steps'
+						control={control}
+						defaultValue={getValues('ingredients')}
+					/>
 					<div className='w-full'>
 						<div className='flex gap-2 justify-end'>
 							<Button
