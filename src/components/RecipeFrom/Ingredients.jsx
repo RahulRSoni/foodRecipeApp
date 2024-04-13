@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
 	Input,
 	IconButton,
@@ -9,26 +9,31 @@ import {
 	MenuList,
 	MenuItem,
 } from '@material-tailwind/react';
-import { Controller } from 'react-hook-form';
 
-function Ingredient({ name, control, label }) {
-	const [quantity, setQuantity] = useState(1);
+function Ingredient({ control, register, setValue }) {
+	const [quantity, setQuantity] = useState(0);
 	const [unit, setUnit] = useState('cup');
-	const [vol, setVol] = useState('full');
+	const [vol, setVol] = useState(0);
 	const [todo, setTodo] = useState([]);
 	const [input, setInput] = useState('');
 	const [nextIndex, setNextIndex] = useState(0);
+
+	useEffect(() => {
+		register('ingredient');
+	}, [register]);
 
 	const addTodo = () => {
 		if (input.trim() !== '' && unit && quantity && vol) {
 			const newTodo = {
 				id: nextIndex,
-				quantity: quantity,
-				volume: vol === 'full' ? '' : '½',
+				quantity: quantity ? quantity : 0,
+				volume: vol ? val : 0,
 				unit: unit,
 				ingredient: input.trim(),
 			};
+
 			setTodo([...todo, newTodo]);
+			setValue('ingredient', [...todo, newTodo]); // Update form data
 			setInput('');
 			setNextIndex(nextIndex + 1);
 		} else {
@@ -42,13 +47,8 @@ function Ingredient({ name, control, label }) {
 	};
 
 	const units = ['cup', 'tbsp', 'grams', 'kg', 'ltr', 'ml'];
-	const quantities = [
-		'1/2',
-		'1/3',
-		'2/3',
-		...Array.from({ length: 10 }, (_, i) => String(i + 1)),
-	];
-	const vols = ['full', 'half'];
+	const quantities = [...Array.from({ length: 10 }, (_, i) => String(i + 1))];
+	const vols = ['½', '¼', '¾'];
 
 	return (
 		<div className='flex flex-col gap-3 w-full'>
@@ -117,90 +117,80 @@ function Ingredient({ name, control, label }) {
 					</svg>
 				</Tooltip>
 				<div className='flex justify-center items-center h-full w-full'>
-					<Controller
-						name={name || 'content'}
-						control={control}
-						render={() => (
-							<>
-								<Menu placement='bottom-start'>
-									<MenuHandler>
-										<section
-										
-											variant='text'
-											color='blue-gray'
-											className='flex h-auto py-1 w-5 justify-center items-center rounded border border-blue-gray-300 bg-blue-gray-500/10 px-8'>
-											{quantity}
-										</section>
-									</MenuHandler>
-									<MenuList>
-										{quantities.map((quantity) => (
-											<MenuItem
-												key={quantity}
-												value={quantity}
-												className='flex items-center gap-2'
-												onClick={() => setQuantity(quantity)}>
-												{quantity}
-											</MenuItem>
-										))}
-									</MenuList>
-								</Menu>
-								<Menu placement='bottom-start'>
-									<MenuHandler>
-										<section
-										
-											variant='text'
-											color='blue-gray'
-											className='flex h-auto py-1 w-5 justify-center items-center rounded border border-blue-gray-300 bg-blue-gray-500/10 px-8'>
-											{vol}
-										</section>
-									</MenuHandler>
-									<MenuList className='max-h-[20rem] max-w-[18rem]'>
-										{vols.map((vol) => (
-											<MenuItem
-												key={vol}
-												value={vol}
-												className='flex items-center gap-2'
-												onClick={() => setVol(vol)}>
-												{vol}
-											</MenuItem>
-										))}
-									</MenuList>
-								</Menu>
-								<Menu placement='bottom-start'>
-									<MenuHandler>
-										<section
-											
-											variant='text'
-											color='blue-gray'
-											className='flex h-auto py-1 w-5 justify-center items-center rounded border border-blue-gray-300 bg-blue-gray-500/10 px-8'>
-											{unit}
-										</section>
-									</MenuHandler>
-									<MenuList>
-										{units.map((unit) => (
-											<MenuItem
-												key={unit}
-												value={unit}
-												className='flex items-center gap-2'
-												onClick={() => setUnit(unit)}>
-												{unit}
-											</MenuItem>
-										))}
-									</MenuList>
-								</Menu>
-								<Input
-									type='text'
-									label={label}
-									size='md'
-									value={input}
-									onChange={({ target }) => setInput(target.value)}
-									containerProps={{
-										className: 'min-w-1',
-									}}
-								/>
-							</>
-						)}
+					<Menu placement='bottom-start'>
+						<MenuHandler>
+							<section
+								variant='text'
+								color='blue-gray'
+								className='flex h-auto py-1 w-5 justify-center items-center rounded border border-blue-gray-300 bg-blue-gray-500/10 px-8'>
+								{quantity}
+							</section>
+						</MenuHandler>
+						<MenuList>
+							{quantities.map((quantity) => (
+								<MenuItem
+									key={quantity}
+									value={quantity}
+									className='flex items-center gap-2'
+									onClick={() => setQuantity(quantity)}>
+									{quantity}
+								</MenuItem>
+							))}
+						</MenuList>
+					</Menu>
+					<Menu placement='bottom-start'>
+						<MenuHandler>
+							<section
+								variant='text'
+								color='blue-gray'
+								className='flex h-auto py-1 w-5 justify-center items-center rounded border border-blue-gray-300 bg-blue-gray-500/10 px-8'>
+								{vol}
+							</section>
+						</MenuHandler>
+						<MenuList className='max-h-[20rem] max-w-[18rem]'>
+							{vols.map((vol) => (
+								<MenuItem
+									key={vol}
+									value={vol}
+									className='flex items-center gap-2'
+									onClick={() => setVol(vol)}>
+									{vol}
+								</MenuItem>
+							))}
+						</MenuList>
+					</Menu>
+					<Menu placement='bottom-start'>
+						<MenuHandler>
+							<section
+								variant='text'
+								color='blue-gray'
+								className='flex h-auto py-1 w-5 justify-center items-center rounded border border-blue-gray-300 bg-blue-gray-500/10 px-8'>
+								{unit}
+							</section>
+						</MenuHandler>
+						<MenuList>
+							{units.map((unit) => (
+								<MenuItem
+									key={unit}
+									value={unit}
+									className='flex items-center gap-2'
+									onClick={() => setUnit(unit)}>
+									{unit}
+								</MenuItem>
+							))}
+						</MenuList>
+					</Menu>
+					<Input
+						type='text'
+						size='md'
+						label='ingredient'
+						value={input}
+						onChange={({ target }) => setInput(target.value)}
+						containerProps={{
+							className: 'min-w-1',
+						}}
 					/>
+
 					<Tooltip
 						placement='top'
 						className='border border-blue-gray-50 bg-white shadow-xl shadow-black/10'

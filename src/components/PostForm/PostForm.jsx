@@ -9,7 +9,7 @@ import {
 	Option,
 } from '@material-tailwind/react';
 import React, { useCallback, useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { CommentBox } from '../RecipeFrom/CommentBox';
 import Ingredient from '../RecipeFrom/Ingredients';
@@ -17,7 +17,6 @@ import Ingredient from '../RecipeFrom/Ingredients';
 const PostForm = ({ post }) => {
 	const navigate = useNavigate();
 	// const userData = useSelector((state) => state.userData);
-	const [active, setActive] = useState('active');
 	const { register, handleSubmit, watch, setValue, control, getValues } =
 		useForm({
 			defaultValues: {
@@ -32,10 +31,12 @@ const PostForm = ({ post }) => {
 				calories: post?.calories || '',
 				serving: post?.serving || '',
 				preparingTime: post?.preparingTime || '',
+				ingredients: post?.ingredients || [],
 				cockingTime: post?.cockingTime || '',
 				restingTime: post?.restingTime || '',
 				totalTime: post?.totalTime || '',
 				bakingTime: post?.bakingTime || '',
+				featuredImages2: post?.featuredImages2,
 			},
 		});
 
@@ -142,15 +143,21 @@ const PostForm = ({ post }) => {
 						name='content'
 						{...register('content', { required: true })}
 					/>
-					<Select
-						label='Status'
-						name='status'
-						value={active}
-						onChange={(val) => setActive(val)}
-						{...register('status', { required: true })}>
-						<Option value='active'>Active</Option>
-						<Option value='Inactive'>Inactive </Option>
-					</Select>
+					<Controller
+						name='select'
+						control={control}
+						defaultValue='active'
+						render={({ field }) => (
+							<Select
+								label='Status'
+								value='active'
+								{...field}>
+								<Option value='active'>Active</Option>
+								<Option value='Inactive'>Inactive </Option>
+							</Select>
+						)}
+					/>
+
 					<Typography
 						as='h3'
 						className='font-semibold'>
@@ -173,7 +180,7 @@ const PostForm = ({ post }) => {
 								size='md'
 								placeholder='How much time to prepare.'
 								name='preparingTime'
-								{...register('preparing-time', { required: true })}
+								{...register('preparingTime', { required: true })}
 							/>
 						</div>
 						<div>
@@ -181,7 +188,7 @@ const PostForm = ({ post }) => {
 								label='Coke Time :'
 								size='md'
 								placeholder='How much time to cocking.'
-								name='cocking-time'
+								name='cockingTime'
 								{...register('cockingTime', { required: true })}
 							/>
 						</div>
@@ -193,7 +200,7 @@ const PostForm = ({ post }) => {
 								size='md'
 								placeholder='How much time to resting.'
 								name='restingTime'
-								{...register('resting-time', { required: true })}
+								{...register('restingTime', { required: true })}
 							/>
 						</div>
 						<div>
@@ -202,7 +209,7 @@ const PostForm = ({ post }) => {
 								size='md'
 								placeholder='Total time for preparing.'
 								name='totalTime'
-								{...register('total-time', { required: true })}
+								{...register('totalTime', { required: true })}
 							/>
 						</div>
 						<div>
@@ -211,7 +218,7 @@ const PostForm = ({ post }) => {
 								size='md'
 								placeholder='Total time for preparing.'
 								name='bakingTime'
-								{...register('baking-time', { required: true })}
+								{...register('bakingTime', { required: true })}
 							/>
 						</div>
 					</div>
@@ -222,7 +229,7 @@ const PostForm = ({ post }) => {
 							size='md'
 							type='file'
 							accept='image/png, image/jpg, image/jpeg, image/gif'
-							{...register('image', { required: !post })}
+							{...register('featuredImages2', { required: !post })}
 						/>
 
 						<Tooltip
@@ -309,10 +316,9 @@ const PostForm = ({ post }) => {
 					</Typography>
 					<div className='flex flex-col gap-2 w-full'>
 						<Ingredient
-							name='ingredients'
-							label='Ingredients'
 							control={control}
-							defaultValue={getValues('ingredients')}
+							register={register}
+							setValue={setValue}
 						/>
 					</div>
 					<Typography
@@ -323,7 +329,7 @@ const PostForm = ({ post }) => {
 					<CommentBox
 						name='steps'
 						control={control}
-						defaultValue={getValues('ingredients')}
+						defaultValue={getValues([])}
 					/>
 					<div className='w-full'>
 						<div className='flex gap-2 justify-end'>
