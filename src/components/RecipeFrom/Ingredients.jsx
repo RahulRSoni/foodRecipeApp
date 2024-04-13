@@ -11,9 +11,9 @@ import {
 } from '@material-tailwind/react';
 
 function Ingredient({ control, register, setValue }) {
-	const [quantity, setQuantity] = useState(0);
+	const [quantity, setQuantity] = useState('None');
 	const [unit, setUnit] = useState('cup');
-	const [vol, setVol] = useState(0);
+	const [vol, setVol] = useState('None');
 	const [todo, setTodo] = useState([]);
 	const [input, setInput] = useState('');
 	const [nextIndex, setNextIndex] = useState(0);
@@ -26,9 +26,9 @@ function Ingredient({ control, register, setValue }) {
 		if (input.trim() !== '' && unit && quantity && vol) {
 			const newTodo = {
 				id: nextIndex,
-				quantity: quantity ? quantity : 0,
-				volume: vol ? val : 0,
-				unit: unit,
+				quantity: quantity === 'None' ? null : quantity,
+				volume: vol === 'None' ? null : vol,
+				unit: unit ? unit : 'cup',
 				ingredient: input.trim(),
 			};
 
@@ -47,8 +47,11 @@ function Ingredient({ control, register, setValue }) {
 	};
 
 	const units = ['cup', 'tbsp', 'grams', 'kg', 'ltr', 'ml'];
-	const quantities = [...Array.from({ length: 10 }, (_, i) => String(i + 1))];
-	const vols = ['½', '¼', '¾'];
+	const quantities = [
+		'None',
+		...Array.from({ length: 10 }, (_, i) => String(i + 1)),
+	];
+	const vols = ['None', '½', '¼', '¾'];
 
 	return (
 		<div className='flex flex-col gap-3 w-full'>

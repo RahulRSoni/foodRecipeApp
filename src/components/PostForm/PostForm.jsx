@@ -16,6 +16,12 @@ import Ingredient from '../RecipeFrom/Ingredients';
 
 const PostForm = ({ post }) => {
 	const navigate = useNavigate();
+
+	const handlePostsChange = (updatedPosts) => {
+		// Do something with the updated posts data
+		console.log('Updated posts:', updatedPosts);
+	};
+
 	// const userData = useSelector((state) => state.userData);
 	const { register, handleSubmit, watch, setValue, control, getValues } =
 		useForm({
@@ -31,7 +37,6 @@ const PostForm = ({ post }) => {
 				calories: post?.calories || '',
 				serving: post?.serving || '',
 				preparingTime: post?.preparingTime || '',
-				ingredients: post?.ingredients || [],
 				cockingTime: post?.cockingTime || '',
 				restingTime: post?.restingTime || '',
 				totalTime: post?.totalTime || '',
@@ -43,8 +48,10 @@ const PostForm = ({ post }) => {
 	const submit = async (data) => {
 		try {
 			// Asynchronous operation
-
-			console.log(data);
+			const formData = {
+				...data,
+			};
+			console.log(formData);
 		} catch (error) {
 			console.error('Error occurred:', error);
 		}
@@ -327,9 +334,9 @@ const PostForm = ({ post }) => {
 						Recipe Steps:
 					</Typography>
 					<CommentBox
-						name='steps'
 						control={control}
-						defaultValue={getValues([])}
+						register={register}
+						onPostsChange={handlePostsChange}
 					/>
 					<div className='w-full'>
 						<div className='flex gap-2 justify-end'>
