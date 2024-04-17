@@ -1,3 +1,4 @@
+// CommentBox.js
 import React, { useState, useRef, useEffect } from 'react';
 import {
 	Textarea,
@@ -8,10 +9,7 @@ import {
 } from '@material-tailwind/react';
 
 export function CommentBox({ control, register }) {
-	const [posts, setPosts] = useState([
-		{ text: '', image: null },
-		{ text: '', image: null },
-	]);
+	const [posts, setPosts] = useState([{ text: '', image: null }]);
 	const [stepCount, setStepCount] = useState(1);
 
 	useEffect(() => {
@@ -58,6 +56,7 @@ export function CommentBox({ control, register }) {
 
 	const handleTextChange = (index, e) => {
 		const newText = e.target.value;
+
 		setPosts((prevPosts) => {
 			const newPosts = [...prevPosts];
 			newPosts[index] = { ...newPosts[index], text: newText };
@@ -72,7 +71,6 @@ export function CommentBox({ control, register }) {
 					key={index}
 					className='flex w-full gap-5'>
 					<div className='w-full'>
-						{/* Textarea for entering text content */}
 						<Textarea
 							label={`Step-${stepCount + index}`}
 							rows={3}
@@ -81,7 +79,6 @@ export function CommentBox({ control, register }) {
 						/>
 					</div>
 					<div className='flex flex-col justify-evenly items-center'>
-						{/* Button to add image */}
 						<Tooltip
 							placement='top'
 							className='border border-blue-gray-50 bg-white shadow-xl shadow-black/10'
@@ -98,10 +95,9 @@ export function CommentBox({ control, register }) {
 								size='sm'
 								onClick={() => handleAddImage(index)}
 								disabled={post.image !== null}>
-								{/* Add your SVG icon here */}
+								Add Image
 							</IconButton>
 						</Tooltip>
-						{/* Button to delete post */}
 						<Tooltip
 							placement='top'
 							className='border border-blue-gray-50 bg-white shadow-xl shadow-black/10'
@@ -118,11 +114,10 @@ export function CommentBox({ control, register }) {
 								size='sm'
 								onClick={() => handleDeletePost(index)}
 								disabled={posts.length === 1}>
-								{/* Add your SVG icon here */}
+								Remove
 							</IconButton>
 						</Tooltip>
 					</div>
-					{/* Hidden file input for image upload */}
 					<input
 						type='file'
 						ref={(ref) => (fileInputRefs.current[index] = ref)}
@@ -131,7 +126,6 @@ export function CommentBox({ control, register }) {
 					/>
 				</div>
 			))}
-			{/* Button to add more posts */}
 			<Tooltip
 				placement='top'
 				className='border border-blue-gray-50 bg-white shadow-xl shadow-black/10'

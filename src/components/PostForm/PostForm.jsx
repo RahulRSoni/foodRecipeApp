@@ -1,3 +1,5 @@
+// PostForm.js
+import React from 'react';
 import { Button } from '@material-tailwind/react';
 import { useForm } from 'react-hook-form';
 import { CommentBox } from '../RecipeFrom/CommentBox';
@@ -7,8 +9,9 @@ const PostForm = ({ post }) => {
 
 	const submit = async (data) => {
 		try {
-			// Asynchronous operation
-			console.log(data);
+			// Log the form data to debug
+			console.log('Form Data:', data);
+			// You can proceed with further processing here
 		} catch (error) {
 			console.error('Error occurred:', error);
 		}
