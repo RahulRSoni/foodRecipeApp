@@ -8,16 +8,11 @@ import {
 	Button,
 } from '@material-tailwind/react';
 
+import { FcAddImage } from 'react-icons/fc';
+
 export function CommentBox({ control, register }) {
 	const [posts, setPosts] = useState([{ text: '', image: null }]);
 	const [stepCount, setStepCount] = useState(1);
-
-	useEffect(() => {
-		// Register each textarea individually
-		posts.forEach((_, index) => {
-			register(`commentBox[${index}].text`);
-		});
-	}, [register, posts]);
 
 	const fileInputRefs = useRef([]);
 
@@ -74,8 +69,8 @@ export function CommentBox({ control, register }) {
 						<Textarea
 							label={`Step-${stepCount + index}`}
 							rows={3}
-							value={post.text}
 							onChange={(e) => handleTextChange(index, e)}
+							{...register(`commentBox[${index}].text`)}
 						/>
 					</div>
 					<div className='flex flex-col justify-evenly items-center'>
@@ -95,7 +90,7 @@ export function CommentBox({ control, register }) {
 								size='sm'
 								onClick={() => handleAddImage(index)}
 								disabled={post.image !== null}>
-								Add Image
+								<FcAddImage className='h-6 w-auto' />
 							</IconButton>
 						</Tooltip>
 						<Tooltip
@@ -120,9 +115,10 @@ export function CommentBox({ control, register }) {
 					</div>
 					<input
 						type='file'
-						ref={(ref) => (fileInputRefs.current[index] = ref)}
+						ref={(ref) => (fileInputRefs.current[index] = ref)} // Assign ref properly
 						style={{ display: 'none' }}
 						onChange={(e) => handleFileInputChange(index, e)}
+						{...register(`commentBox[${index}].image`)}
 					/>
 				</div>
 			))}

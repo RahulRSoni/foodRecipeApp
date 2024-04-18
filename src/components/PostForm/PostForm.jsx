@@ -5,7 +5,12 @@ import { useForm } from 'react-hook-form';
 import { CommentBox } from '../RecipeFrom/CommentBox';
 
 const PostForm = ({ post }) => {
-	const { register, handleSubmit, control } = useForm();
+	const {
+		register,
+		handleSubmit,
+		control,
+		formState: { errors },
+	} = useForm();
 
 	const submit = async (data) => {
 		try {
@@ -24,7 +29,9 @@ const PostForm = ({ post }) => {
 					<CommentBox
 						control={control}
 						register={register}
+						errors={errors}
 					/>
+
 					<Button
 						size='sm'
 						type='submit'
