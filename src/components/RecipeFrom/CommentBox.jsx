@@ -6,24 +6,25 @@ import {
 	Typography,
 	Button,
 } from '@material-tailwind/react';
+import { FcAddImage } from 'react-icons/fc';
 
 export function CommentBox({ control, register, onPostsChange }) {
 	const [posts, setPosts] = useState([{ text: '', image: null }]);
 	const [stepCount, setStepCount] = useState(1);
 
-	useEffect(() => {
-		// Register each textarea individually
-		posts.forEach((_, index) => {
-			register(`commentBox[${index}].text`);
-		});
-	}, [register, posts]);
-
 	const fileInputRefs = useRef([]);
+
+	useEffect(() => {
+		fileInputRefs.current = [React.createRef()];
+	}, []);
 
 	const handleAddMorePosts = () => {
 		if (posts.length < 6) {
 			setPosts((prevPosts) => [...prevPosts, { text: '', image: null }]);
-			setStepCount((prevStep) => prevStep + 1); // Increase step count
+			setStepCount((prevStep) => prevStep + 0); // Increment step count
+
+			// Update fileInputRefs to include the new file input element
+			fileInputRefs.current = [...fileInputRefs.current, React.createRef()];
 		}
 	};
 
@@ -38,7 +39,14 @@ export function CommentBox({ control, register, onPostsChange }) {
 	};
 
 	const handleAddImage = (index) => {
-		fileInputRefs.current[index].click(); // Trigger file input click
+		if (fileInputRefs.current[index] || fileInputRefs.current[index].current) {
+			setPosts((prevPosts) => {
+				const newPosts = [...prevPosts];
+				newPosts[index].image = null; // Reset the image to null
+				return newPosts;
+			});
+			fileInputRefs.current[index].current.click(); // Trigger file input click
+		}
 	};
 
 	const handleFileInputChange = (index, e) => {
@@ -72,10 +80,11 @@ export function CommentBox({ control, register, onPostsChange }) {
 					<div className='w-full'>
 						{/* Textarea for entering text content */}
 						<Textarea
-							label={`Step-${stepCount + index}`}
+							label={`Step-${stepCount}`}
+							name={`commentBox[${index}].text`}
 							rows={3}
-							value={post.text}
 							onChange={(e) => handleTextChange(index, e)}
+							{...register(`commentBox[${index}].text`)}
 						/>
 					</div>
 					<div className='flex flex-col justify-evenly items-center'>
@@ -90,26 +99,15 @@ export function CommentBox({ control, register, onPostsChange }) {
 									Add Image
 								</Typography>
 							}>
-							<IconButton
+							<Button
 								variant='text'
 								color='blue-gray'
+								name={`commentBox[${index}].image`}
 								size='sm'
 								onClick={() => handleAddImage(index)}
 								disabled={post.image !== null}>
-								<svg
-									xmlns='http://www.w3.org/2000/svg'
-									fill='none'
-									viewBox='0 0 24 24'
-									strokeWidth={1.5}
-									stroke='currentColor'
-									className='w-6 h-6'>
-									<path
-										strokeLinecap='round'
-										strokeLinejoin='round'
-										d='m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z'
-									/>
-								</svg>
-							</IconButton>
+								<FcAddImage className='h-6 w-auto' />
+							</Button>
 						</Tooltip>
 						{/* Button to delete post */}
 						<Tooltip
@@ -147,9 +145,11 @@ export function CommentBox({ control, register, onPostsChange }) {
 					{/* Hidden file input for image upload */}
 					<input
 						type='file'
-						ref={(ref) => (fileInputRefs.current[index] = ref)}
+						ref={fileInputRefs.current[index]}
 						style={{ display: 'none' }}
+						accept='image/png, image/jpg, image/jpeg, image/gif'
 						onChange={(e) => handleFileInputChange(index, e)}
+						{...register(`commentBox[${index}].image`)}
 					/>
 				</div>
 			))}

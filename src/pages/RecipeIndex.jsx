@@ -89,7 +89,7 @@ export default function RecipeIndex() {
 								<Option>Dessert</Option>
 								<Option>Drinks</Option>
 								<Option>Main Course</Option>
-								<Option>Side Dish</Option>
+								<Option>Staters</Option>
 								<Option>Snack</Option>
 								<Option>Salad</Option>
 							</Select>
@@ -107,6 +107,7 @@ export default function RecipeIndex() {
 								<Option>Quick & Easy</Option>
 								<Option>Sauce</Option>
 								<Option>Smoothie</Option>
+								<Option>Soup</Option>
 								<Option>Spaghetti</Option>
 								<Option>Syrup</Option>
 								<Option>Tea</Option>
