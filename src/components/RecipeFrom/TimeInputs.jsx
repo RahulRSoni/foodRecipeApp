@@ -50,7 +50,7 @@ const TimeInputs = ({ control, register }) => {
 				input.removeEventListener('change', calculateTotalTime);
 			});
 		};
-	}, []);
+	}, [totalTime]);
 
 	return (
 		<div className='flex flex-col gap-2 w-full'>
@@ -62,6 +62,8 @@ const TimeInputs = ({ control, register }) => {
 						size='md'
 						placeholder='How much time to prepare.'
 						name='preparingTime'
+						step={1}
+						pattern='^([01]\d|2[0-3]):([0-5]\d)$'
 						{...register('preparingTime', { required: true })}
 					/>
 				</div>
@@ -72,6 +74,8 @@ const TimeInputs = ({ control, register }) => {
 						size='md'
 						placeholder='How much time to cooking.'
 						name='cockingTime'
+						step={1}
+						pattern='^([01]\d|2[0-3]):([0-5]\d)$'
 						{...register('cockingTime', { required: true })}
 					/>
 				</div>
@@ -82,6 +86,8 @@ const TimeInputs = ({ control, register }) => {
 						type='time'
 						placeholder='How much time to resting.'
 						name='restingTime'
+						step={1}
+						pattern='^([01]\d|2[0-3]):([0-5]\d)$'
 						{...register('restingTime', { required: true })}
 					/>
 				</div>
@@ -92,6 +98,8 @@ const TimeInputs = ({ control, register }) => {
 						type='time'
 						placeholder='Total time for preparing.'
 						name='bakingTime'
+						step={1}
+						pattern='^([01]\d|2[0-3]):([0-5]\d)$'
 						{...register('bakingTime', { required: true })}
 					/>
 				</div>
@@ -105,7 +113,7 @@ const TimeInputs = ({ control, register }) => {
 						placeholder='Total time for preparing.'
 						name='totalTime'
 						value={totalTime}
-						{...register('totalTime', { required: true })}
+						{...register('totalTime')}
 					/>
 				</div>
 				<div>

@@ -1,15 +1,24 @@
 // PostForm.js
-import React from 'react';
-import { Button } from '@material-tailwind/react';
-import { useForm } from 'react-hook-form';
+import React, { useCallback, useEffect } from 'react';
+import {
+	Button,
+	Input,
+	Tooltip,
+	Typography,
+	IconButton,
+	Textarea,
+	Select,
+	Option,
+} from '@material-tailwind/react';
+import { Controller, useForm } from 'react-hook-form';
 import { CommentBox } from '../RecipeFrom/CommentBox';
-<<<<<<< HEAD
 import Ingredient from '../RecipeFrom/Ingredients';
 import TimeInputs from '../RecipeFrom/TimeInputs';
+import { createRecipes } from '../../api/store.services';
+import { useNavigate } from 'react-router-dom';
 
 const PostForm = ({ post }) => {
 	const navigate = useNavigate();
-
 	// const userData = useSelector((state) => state.userData);
 	const { register, handleSubmit, watch, setValue, control, reset } = useForm({
 		defaultValues: {
@@ -35,37 +44,42 @@ const PostForm = ({ post }) => {
 	const submit = async (data) => {
 		try {
 			// Asynchronous operation
-			const formData = {
-				...data,
-			};
-			console.log(formData);
-			reset();
-=======
+			console.log(data);
 
-const PostForm = ({ post }) => {
-	const {
-		register,
-		handleSubmit,
-		control,
-		formState: { errors },
-	} = useForm();
+			const recipe = await createRecipes(data);
 
-	const submit = async (data) => {
-		try {
-			// Log the form data to debug
-			console.log('Form Data:', data);
-			// You can proceed with further processing here
->>>>>>> 807330492f20f1458ca2da03300f3c055ff27a25
+			if (recipe) {
+				reset();
+				navigate('profile');
+			}
 		} catch (error) {
 			console.error('Error occurred:', error);
 		}
 	};
+	const slugTransform = useCallback((value) => {
+		if (value && typeof value === 'string')
+			return value.trim().toLowerCase().replace(/\s/g, '-');
+
+		return '';
+	}, []);
+
+	useEffect(() => {
+		const subscription = watch((value, { name }) => {
+			if (name === 'title') {
+				setValue('slug', slugTransform(value.title), {
+					shouldValidate: true,
+				});
+			}
+		});
+		return () => {
+			subscription.unsubscribe();
+		};
+	}, [watch, slugTransform, setValue]);
 
 	return (
 		<form onSubmit={handleSubmit(submit)}>
 			<div className='flex flex-col justify-center items-center p-10 mt-8 '>
 				<div className=' mb-4 flex flex-col justify-center gap-5 bg-blue-gray-50 backdrop-blur-sm py-8 rounded-lg px-6'>
-<<<<<<< HEAD
 					<Input
 						label='Title :'
 						placeholder='Title'
@@ -221,7 +235,7 @@ const PostForm = ({ post }) => {
 								size='md'
 								name='calories'
 								className='w-full'
-								{...register('calories', { required: true })}
+								{...register('calories')}
 							/>
 							<Controller
 								name='keyword'
@@ -325,12 +339,6 @@ const PostForm = ({ post }) => {
 					<CommentBox
 						control={control}
 						register={register}
-=======
-					<CommentBox
-						control={control}
-						register={register}
-						errors={errors}
->>>>>>> 807330492f20f1458ca2da03300f3c055ff27a25
 					/>
 
 					<Button

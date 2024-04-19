@@ -1,33 +1,27 @@
-// CommentBox.js
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
 	Textarea,
 	Tooltip,
+	Button,
 	IconButton,
 	Typography,
-	Button,
 } from '@material-tailwind/react';
-import { FcAddImage } from 'react-icons/fc';
-
 import { FcAddImage } from 'react-icons/fc';
 
 export function CommentBox({ control, register }) {
 	const [posts, setPosts] = useState([{ text: '', image: null }]);
 	const [stepCount, setStepCount] = useState(1);
-
 	const fileInputRefs = useRef([]);
 
 	useEffect(() => {
-		fileInputRefs.current = [React.createRef()];
-	}, []);
+		fileInputRefs.current = posts.map(() => React.createRef());
+	}, [posts]);
 
 	const handleAddMorePosts = () => {
 		if (posts.length < 6) {
 			setPosts((prevPosts) => [...prevPosts, { text: '', image: null }]);
-			setStepCount((prevStep) => prevStep + 0); // Increment step count
-
-			// Update fileInputRefs to include the new file input element
-			fileInputRefs.current = [...fileInputRefs.current, React.createRef()];
+			setStepCount((prevStep) => prevStep + 1);
+			fileInputRefs.current.push(React.createRef());
 		}
 	};
 
@@ -38,24 +32,13 @@ export function CommentBox({ control, register }) {
 				newPosts.splice(index, 1);
 				return newPosts;
 			});
-		}
-	};
-
-	const handleAddImage = (index) => {
-		if (fileInputRefs.current[index] || fileInputRefs.current[index].current) {
-			setPosts((prevPosts) => {
-				const newPosts = [...prevPosts];
-				newPosts[index].image = null; // Reset the image to null
-				return newPosts;
-			});
-			fileInputRefs.current[index].current.click(); // Trigger file input click
+			fileInputRefs.current.splice(index, 1);
 		}
 	};
 
 	const handleFileInputChange = (index, e) => {
 		const file = e.target.files[0];
 		if (file) {
-			// Handle file upload here
 			setPosts((prevPosts) => {
 				const newPosts = [...prevPosts];
 				newPosts[index].image = file;
@@ -66,7 +49,6 @@ export function CommentBox({ control, register }) {
 
 	const handleTextChange = (index, e) => {
 		const newText = e.target.value;
-
 		setPosts((prevPosts) => {
 			const newPosts = [...prevPosts];
 			newPosts[index] = { ...newPosts[index], text: newText };
@@ -82,7 +64,7 @@ export function CommentBox({ control, register }) {
 					className='flex w-full gap-5'>
 					<div className='w-full'>
 						<Textarea
-							label={`Step-${stepCount}`}
+							label={`Step-${stepCount + index}`}
 							name={`commentBox[${index}].text`}
 							rows={3}
 							onChange={(e) => handleTextChange(index, e)}
@@ -100,20 +82,25 @@ export function CommentBox({ control, register }) {
 									Add Image
 								</Typography>
 							}>
-							<Button
-								variant='text'
-								color='blue-gray'
-								name={`commentBox[${index}].image`}
-								size='sm'
-								onClick={() => handleAddImage(index)}
-								disabled={post.image !== null}>
-								<FcAddImage className='h-6 w-auto' />
-<<<<<<< HEAD
-							</Button>
-=======
-							</IconButton>
->>>>>>> 807330492f20f1458ca2da03300f3c055ff27a25
+							<label htmlFor={`file-input-${index}`}>
+								<IconButton
+									variant='text'
+									color='blue-gray'
+									size='sm'
+									disabled={post.image !== null}>
+									Add image
+								</IconButton>
+							</label>
 						</Tooltip>
+						<input
+							type='file'
+							id={`file-input-${index}`}
+							ref={fileInputRefs.current[index]}
+							accept='image/png, image/jpg, image/jpeg, image/gif'
+							onChange={(e) => handleFileInputChange(index, e)}
+							{...register(`commentBox[${index}].image`)}
+							
+						/>
 						<Tooltip
 							placement='top'
 							className='border border-blue-gray-50 bg-white shadow-xl shadow-black/10'
@@ -134,18 +121,6 @@ export function CommentBox({ control, register }) {
 							</IconButton>
 						</Tooltip>
 					</div>
-					<input
-						type='file'
-<<<<<<< HEAD
-						ref={fileInputRefs.current[index]}
-=======
-						ref={(ref) => (fileInputRefs.current[index] = ref)} // Assign ref properly
->>>>>>> 807330492f20f1458ca2da03300f3c055ff27a25
-						style={{ display: 'none' }}
-						accept='image/png, image/jpg, image/jpeg, image/gif'
-						onChange={(e) => handleFileInputChange(index, e)}
-						{...register(`commentBox[${index}].image`)}
-					/>
 				</div>
 			))}
 			<Tooltip

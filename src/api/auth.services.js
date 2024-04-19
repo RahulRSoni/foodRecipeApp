@@ -118,7 +118,7 @@ const currentUser = () => {
 	const auth = getAuth();
 	const currentUser = auth.currentUser;
 	if (currentUser) {
-		console.log(currentUser);
+		return currentUser;
 	}
 };
 
