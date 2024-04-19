@@ -1,36 +1,49 @@
-// PostForm.js
-import React from 'react';
-import { Button } from '@material-tailwind/react';
-import { useForm } from 'react-hook-form';
+import {
+	Input,
+	Button,
+	Typography,
+	IconButton,
+	Select,
+	Tooltip,
+	Textarea,
+	Option,
+} from '@material-tailwind/react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useForm, Controller } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import { CommentBox } from '../RecipeFrom/CommentBox';
-<<<<<<< HEAD
 import Ingredient from '../RecipeFrom/Ingredients';
-import TimeInputs from '../RecipeFrom/TimeInputs';
 
 const PostForm = ({ post }) => {
 	const navigate = useNavigate();
 
+	const handlePostsChange = (updatedPosts) => {
+		// Do something with the updated posts data
+		console.log('Updated posts:', updatedPosts);
+	};
+
 	// const userData = useSelector((state) => state.userData);
-	const { register, handleSubmit, watch, setValue, control, reset } = useForm({
-		defaultValues: {
-			title: post?.title || '',
-			slug: post?.slug || '',
-			content: post?.content || '',
-			status: post?.status || 'active',
-			featuredImages: post?.featuredImages || [],
-			keyword: post?.keyword || '',
-			cuisine: post?.cuisine || '',
-			course: post?.course || '',
-			calories: post?.calories || '',
-			serving: post?.serving || '',
-			preparingTime: post?.preparingTime || '',
-			cockingTime: post?.cockingTime || '',
-			restingTime: post?.restingTime || '',
-			totalTime: post?.totalTime || '',
-			bakingTime: post?.bakingTime || '',
-			featuredImages2: post?.featuredImages2,
-		},
-	});
+	const { register, handleSubmit, watch, setValue, control, getValues } =
+		useForm({
+			defaultValues: {
+				title: post?.title || '',
+				slug: post?.slug || '',
+				content: post?.content || '',
+				status: post?.status || 'active',
+				featuredImages: post?.featuredImages || [],
+				keyword: post?.keyword || '',
+				cuisine: post?.cuisine || '',
+				course: post?.course || '',
+				calories: post?.calories || '',
+				serving: post?.serving || '',
+				preparingTime: post?.preparingTime || '',
+				cockingTime: post?.cockingTime || '',
+				restingTime: post?.restingTime || '',
+				totalTime: post?.totalTime || '',
+				bakingTime: post?.bakingTime || '',
+				featuredImages2: post?.featuredImages2,
+			},
+		});
 
 	const submit = async (data) => {
 		try {
@@ -39,46 +52,45 @@ const PostForm = ({ post }) => {
 				...data,
 			};
 			console.log(formData);
-			reset();
-=======
-
-const PostForm = ({ post }) => {
-	const {
-		register,
-		handleSubmit,
-		control,
-		formState: { errors },
-	} = useForm();
-
-	const submit = async (data) => {
-		try {
-			// Log the form data to debug
-			console.log('Form Data:', data);
-			// You can proceed with further processing here
->>>>>>> 807330492f20f1458ca2da03300f3c055ff27a25
 		} catch (error) {
 			console.error('Error occurred:', error);
 		}
 	};
+	const slugTransform = useCallback((value) => {
+		if (value && typeof value === 'string')
+			return value.trim().toLowerCase().replace(/\s/g, '-');
+
+		return '';
+	}, []);
+
+	useEffect(() => {
+		const subscription = watch((value, { name }) => {
+			if (name === 'title') {
+				setValue('slug', slugTransform(value.title), { shouldValidate: true });
+			}
+		});
+		return () => {
+			subscription.unsubscribe();
+		};
+	}, [watch, slugTransform, setValue]);
 
 	return (
 		<form onSubmit={handleSubmit(submit)}>
 			<div className='flex flex-col justify-center items-center p-10 mt-8 '>
 				<div className=' mb-4 flex flex-col justify-center gap-5 bg-blue-gray-50 backdrop-blur-sm py-8 rounded-lg px-6'>
-<<<<<<< HEAD
 					<Input
 						label='Title :'
 						placeholder='Title'
 						size='md'
 						name='title'
-						{...register('title', { required: true })}
+						{...register('title')}
 					/>
 					<Input
 						label='Slug :'
 						placeholder='Slug'
 						size='md'
 						name='slug'
-						{...register('slug', { required: true })}
+						{...register('slug')}
 						onInput={(e) => {
 							setValue('slug', slugTransform(e.target.value), {
 								shouldValidate: true,
@@ -92,7 +104,7 @@ const PostForm = ({ post }) => {
 							type='file'
 							name='featuredImages'
 							accept='image/png, image/jpg, image/jpeg, image/gif'
-							{...register('featuredImages', { required: !post })}
+							{...register('featuredImages')}
 						/>
 
 						<Tooltip
@@ -136,38 +148,95 @@ const PostForm = ({ post }) => {
 					<Textarea
 						label='Content'
 						name='content'
-						{...register('content', { required: true })}
+						{...register('content')}
 					/>
 					<Controller
-						name='status'
+						name='select'
 						control={control}
-						rules={{ required: true }}
+						defaultValue='active'
 						render={({ field }) => (
 							<Select
 								label='Status'
 								value='active'
 								{...field}>
 								<Option value='active'>Active</Option>
-								<Option value='inactive'>Inactive </Option>
+								<Option value='Inactive'>Inactive </Option>
 							</Select>
 						)}
 					/>
+
 					<Typography
 						as='h3'
 						className='font-semibold'>
 						Recipe Basic Details
 					</Typography>
-					<TimeInputs
-						control={control}
-						register={register}
-					/>
+
+					<div className='flex flex-wrap gap-2 w-full'>
+						<div>
+							<Input
+								label='Serving :'
+								size='md'
+								placeholder='How many people for serving.'
+								name='Serving'
+								{...register('serving')}
+							/>
+						</div>
+						<div>
+							<Input
+								label='Preparing Time :'
+								size='md'
+								placeholder='How much time to prepare.'
+								name='preparingTime'
+								{...register('preparingTime')}
+							/>
+						</div>
+						<div>
+							<Input
+								label='Coke Time :'
+								size='md'
+								placeholder='How much time to cocking.'
+								name='cockingTime'
+								{...register('cockingTime')}
+							/>
+						</div>
+					</div>
+					<div className='flex flex-wrap gap-2 w-full'>
+						<div>
+							<Input
+								label='Resting Time :'
+								size='md'
+								placeholder='How much time to resting.'
+								name='restingTime'
+								{...register('restingTime')}
+							/>
+						</div>
+						<div>
+							<Input
+								label='Total time :'
+								size='md'
+								placeholder='Total time for preparing.'
+								name='totalTime'
+								{...register('totalTime')}
+							/>
+						</div>
+						<div>
+							<Input
+								label='Baking time :'
+								size='md'
+								placeholder='Total time for preparing.'
+								name='bakingTime'
+								{...register('bakingTime')}
+							/>
+						</div>
+					</div>
+
 					<div className='relative flex gap-2 w-full'>
 						<Input
 							label='Featured Image 2:'
 							size='md'
 							type='file'
 							accept='image/png, image/jpg, image/jpeg, image/gif'
-							{...register('featuredImages2', { required: !post })}
+							{...register('featuredImages2')}
 						/>
 
 						<Tooltip
@@ -216,92 +285,34 @@ const PostForm = ({ post }) => {
 					<div className='flex justify-between w-full gap-2'>
 						<div className='flex flex-col w-full gap-2 '>
 							<Input
-								label='Calories : kcal'
-								type='number'
+								label='Keyword :'
 								size='md'
-								name='calories'
-								className='w-full'
-								{...register('calories', { required: true })}
-							/>
-							<Controller
 								name='keyword'
-								control={control}
-								rules={{ required: true }}
-								render={({ field }) => (
-									<Select
-										label='Keywords'
-										animate={{
-											mount: { y: 0 },
-											unmount: { y: 25 },
-										}}
-										{...field}>
-										<Option value=''>Select a keyword</Option>
-										<Option value='bakery'>Bakery </Option>
-										<Option value='berry'>Berry</Option>
-										<Option value='coffee'>Coffee</Option>
-										<Option value='cookie'>Cookie</Option>
-										<Option value='meat'>Meat</Option>
-										<Option value='quickAndEasy'>Quick & Easy</Option>
-										<Option value='sauce'>Sauce</Option>
-										<Option value='smoothie'>Smoothie</Option>
-										<Option value='soup'>Soup</Option>
-										<Option value='spaghetti'>Spaghetti</Option>
-										<Option value='syrup'>Syrup</Option>
-										<Option value='tea'>Tea</Option>
-										<Option value='toast'>Toast</Option>
-										<Option value='vegetable'>Vegetable</Option>
-									</Select>
-								)}
+								className='w-full'
+								{...register('keyword')}
+							/>
+							<Input
+								label='Cuisine :'
+								size='md'
+								name='cuisine'
+								className='w-full'
+								{...register('cuisine')}
 							/>
 						</div>
 						<div className='flex flex-col w-full  gap-2 '>
-							<Controller
+							<Input
+								label='Course :'
+								size='md'
 								name='course'
-								control={control}
-								rules={{ required: true }}
-								render={({ field }) => (
-									<Select
-										label='Courses'
-										animate={{
-											mount: { y: 0 },
-											unmount: { y: 25 },
-										}}
-										{...field}>
-										<Option value=''>Select a course</Option>
-										<Option value='appetizer'>Appetizer</Option>
-										<Option value='breakfast'>Breakfast</Option>
-										<Option value='dessert'>Dessert</Option>
-										<Option value='drinks'>Drinks</Option>
-										<Option value='mainCourse'>Main Course</Option>
-										<Option value='staters'>Staters</Option>
-										<Option value='snacks'>Snacks</Option>
-										<Option value='salad'>Salad</Option>
-									</Select>
-								)}
+								className='w-full'
+								{...register('course')}
 							/>
-							<Controller
-								name='cuisine'
-								control={control}
-								defaultValue='active'
-								rules={{ required: true }}
-								render={({ field }) => (
-									<Select
-										label='Cuisines'
-										animate={{
-											mount: { y: 0 },
-											unmount: { y: 25 },
-										}}
-										{...field}>
-										<Option value=''>Select a cuisine</Option>
-										<Option value='american'>American</Option>
-										<Option value='turkish'>Turkish</Option>
-										<Option value='chinese'>Chinese</Option>
-										<Option value='french'>French</Option>
-										<Option value='indian'>Indian</Option>
-										<Option value='italian'>Italian</Option>
-										<Option value='mexican'>Mexican</Option>
-									</Select>
-								)}
+							<Input
+								label='Calories :'
+								size='md'
+								name='calories'
+								className='w-full'
+								{...register('calories')}
 							/>
 						</div>
 					</div>
@@ -325,20 +336,17 @@ const PostForm = ({ post }) => {
 					<CommentBox
 						control={control}
 						register={register}
-=======
-					<CommentBox
-						control={control}
-						register={register}
-						errors={errors}
->>>>>>> 807330492f20f1458ca2da03300f3c055ff27a25
 					/>
-
-					<Button
-						size='sm'
-						type='submit'
-						className=' bg-green-500'>
-						{post ? 'Update' : 'Submit'}
-					</Button>
+					<div className='w-full'>
+						<div className='flex gap-2 justify-end'>
+							<Button
+								size='sm'
+								type='submit'
+								className=' bg-green-500'>
+								{post ? 'Update' : 'Submit'}
+							</Button>
+						</div>
+					</div>
 				</div>
 			</div>
 		</form>

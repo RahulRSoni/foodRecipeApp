@@ -1,3 +1,4 @@
+// CommentBox.js
 import React, { useState, useRef, useEffect } from 'react';
 import {
 	Textarea,
@@ -8,7 +9,9 @@ import {
 } from '@material-tailwind/react';
 import { FcAddImage } from 'react-icons/fc';
 
-export function CommentBox({ control, register, onPostsChange }) {
+import { FcAddImage } from 'react-icons/fc';
+
+export function CommentBox({ control, register }) {
 	const [posts, setPosts] = useState([{ text: '', image: null }]);
 	const [stepCount, setStepCount] = useState(1);
 
@@ -63,12 +66,12 @@ export function CommentBox({ control, register, onPostsChange }) {
 
 	const handleTextChange = (index, e) => {
 		const newText = e.target.value;
+
 		setPosts((prevPosts) => {
 			const newPosts = [...prevPosts];
 			newPosts[index] = { ...newPosts[index], text: newText };
 			return newPosts;
 		});
-		onPostsChange(newPosts); // Pass the updated posts array to the parent component
 	};
 
 	return (
@@ -78,7 +81,6 @@ export function CommentBox({ control, register, onPostsChange }) {
 					key={index}
 					className='flex w-full gap-5'>
 					<div className='w-full'>
-						{/* Textarea for entering text content */}
 						<Textarea
 							label={`Step-${stepCount}`}
 							name={`commentBox[${index}].text`}
@@ -88,7 +90,6 @@ export function CommentBox({ control, register, onPostsChange }) {
 						/>
 					</div>
 					<div className='flex flex-col justify-evenly items-center'>
-						{/* Button to add image */}
 						<Tooltip
 							placement='top'
 							className='border border-blue-gray-50 bg-white shadow-xl shadow-black/10'
@@ -107,9 +108,12 @@ export function CommentBox({ control, register, onPostsChange }) {
 								onClick={() => handleAddImage(index)}
 								disabled={post.image !== null}>
 								<FcAddImage className='h-6 w-auto' />
+<<<<<<< HEAD
 							</Button>
+=======
+							</IconButton>
+>>>>>>> 807330492f20f1458ca2da03300f3c055ff27a25
 						</Tooltip>
-						{/* Button to delete post */}
 						<Tooltip
 							placement='top'
 							className='border border-blue-gray-50 bg-white shadow-xl shadow-black/10'
@@ -126,26 +130,17 @@ export function CommentBox({ control, register, onPostsChange }) {
 								size='sm'
 								onClick={() => handleDeletePost(index)}
 								disabled={posts.length === 1}>
-								<svg
-									xmlns='http://www.w3.org/2000/svg'
-									fill='none'
-									viewBox='0 0 24 24'
-									strokeWidth={1.5}
-									stroke='currentColor'
-									className='w-6 h-6'>
-									<path
-										strokeLinecap='round'
-										strokeLinejoin='round'
-										d='m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0'
-									/>
-								</svg>
+								Remove
 							</IconButton>
 						</Tooltip>
 					</div>
-					{/* Hidden file input for image upload */}
 					<input
 						type='file'
+<<<<<<< HEAD
 						ref={fileInputRefs.current[index]}
+=======
+						ref={(ref) => (fileInputRefs.current[index] = ref)} // Assign ref properly
+>>>>>>> 807330492f20f1458ca2da03300f3c055ff27a25
 						style={{ display: 'none' }}
 						accept='image/png, image/jpg, image/jpeg, image/gif'
 						onChange={(e) => handleFileInputChange(index, e)}
@@ -153,7 +148,6 @@ export function CommentBox({ control, register, onPostsChange }) {
 					/>
 				</div>
 			))}
-			{/* Button to add more posts */}
 			<Tooltip
 				placement='top'
 				className='border border-blue-gray-50 bg-white shadow-xl shadow-black/10'
@@ -171,7 +165,6 @@ export function CommentBox({ control, register, onPostsChange }) {
 					color='green'
 					size='sm'
 					className='float-right'>
-					{' '}
 					Add More
 				</Button>
 			</Tooltip>
