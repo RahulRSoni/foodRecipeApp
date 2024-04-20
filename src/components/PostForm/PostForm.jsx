@@ -1,5 +1,5 @@
 // PostForm.js
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
 	Button,
 	Input,
@@ -16,17 +16,50 @@ import Ingredient from '../RecipeFrom/Ingredients';
 import TimeInputs from '../RecipeFrom/TimeInputs';
 import { createRecipes } from '../../api/store.services';
 import { useNavigate } from 'react-router-dom';
+import { FcUpload, FcHighPriority, FcApproval } from 'react-icons/fc';
+import { handleFileUpload } from '../../api/store.services';
 
 const PostForm = ({ post }) => {
 	const navigate = useNavigate();
 	// const userData = useSelector((state) => state.userData);
+	const [file, setFile] = useState([]);
+	const [imageUploadPercentage, setImageUploadPercentage] = useState(0);
+	const [fileUploadError, setFileUploadError] = useState(false);
+	const [uploadImage, setUploadImage] = useState({});
+
+	const handleFileInputChange = (index, e) => {
+		try {
+			const file = e.target.files[0];
+
+			// Define a callback function to receive progress updates
+			const progressCallback = (progress) => {
+				setImageUploadPercentage(progress);
+			};
+
+			const uploadedFileUrl = (url) => {
+				setUploadImage({ ...uploadImage, avatar: url });
+
+				setPosts((prevPosts) => {
+					const newPosts = [...prevPosts];
+					newPosts[index].image = url;
+					return newPosts;
+				});
+			};
+
+			// Call handleFileUpload with the file and the progressCallback
+			handleFileUpload(file, progressCallback, uploadedFileUrl);
+		} catch (error) {
+			setFileUploadError(true);
+		}
+	};
+
 	const { register, handleSubmit, watch, setValue, control, reset } = useForm({
 		defaultValues: {
 			title: post?.title || '',
 			slug: post?.slug || '',
 			content: post?.content || '',
 			status: post?.status || 'active',
-			featuredImages: post?.featuredImages || [],
+			featuredImages: file || [],
 			keyword: post?.keyword || '',
 			cuisine: post?.cuisine || '',
 			course: post?.course || '',
@@ -37,7 +70,6 @@ const PostForm = ({ post }) => {
 			restingTime: post?.restingTime || '',
 			totalTime: post?.totalTime || '',
 			bakingTime: post?.bakingTime || '',
-			featuredImages2: post?.featuredImages2,
 		},
 	});
 
@@ -99,54 +131,7 @@ const PostForm = ({ post }) => {
 							});
 						}}
 					/>
-					<div className='relative flex gap-2 w-full'>
-						<Input
-							label='Featured Image :'
-							size='md'
-							type='file'
-							name='featuredImages'
-							accept='image/png, image/jpg, image/jpeg, image/gif'
-							{...register('featuredImages', { required: !post })}
-						/>
 
-						<Tooltip
-							placement='top'
-							className='border border-blue-gray-50 bg-white shadow-xl shadow-black/10'
-							content={
-								<Typography
-									color='blue-gray'
-									className='font-medium font-serif'>
-									Upload
-								</Typography>
-							}>
-							<IconButton
-								variant='text'
-								className='!absolute right-1 top-1 rounded w-8 h-8'>
-								<svg
-									xmlns='http://www.w3.org/2000/svg'
-									fill='none'
-									viewBox='0 0 24 24'
-									strokeWidth={1.5}
-									stroke='currentColor'
-									className='w-6 h-6'>
-									<path
-										strokeLinecap='round'
-										strokeLinejoin='round'
-										d='M4.5 10.5 12 3m0 0 7.5 7.5M12 3v18'
-									/>
-								</svg>
-							</IconButton>
-						</Tooltip>
-						{post && (
-							<div className='w-full mb-4 flex item-center border-r-2 border-blue-gray-100'>
-								<img
-									src={post.getFilePreview(post.featuredImage)}
-									alt={post.title}
-									className='rounded-lg'
-								/>
-							</div>
-						)}
-					</div>
 					<Textarea
 						label='Content'
 						name='content'
@@ -175,53 +160,6 @@ const PostForm = ({ post }) => {
 						control={control}
 						register={register}
 					/>
-					<div className='relative flex gap-2 w-full'>
-						<Input
-							label='Featured Image 2:'
-							size='md'
-							type='file'
-							accept='image/png, image/jpg, image/jpeg, image/gif'
-							{...register('featuredImages2', { required: !post })}
-						/>
-
-						<Tooltip
-							placement='top'
-							className='border border-blue-gray-50 bg-white shadow-xl shadow-black/10'
-							content={
-								<Typography
-									color='blue-gray'
-									className='font-medium font-serif'>
-									Upload
-								</Typography>
-							}>
-							<IconButton
-								variant='text'
-								className='!absolute right-1 top-1 rounded w-8 h-8'>
-								<svg
-									xmlns='http://www.w3.org/2000/svg'
-									fill='none'
-									viewBox='0 0 24 24'
-									strokeWidth={1.5}
-									stroke='currentColor'
-									className='w-6 h-6'>
-									<path
-										strokeLinecap='round'
-										strokeLinejoin='round'
-										d='M4.5 10.5 12 3m0 0 7.5 7.5M12 3v18'
-									/>
-								</svg>
-							</IconButton>
-						</Tooltip>
-						{post && (
-							<div className='w-full mb-4 flex item-center border-r-2 border-blue-gray-100'>
-								<img
-									src={post.getFilePreview(post.featuredImage)}
-									alt={post.title}
-									className='rounded-lg'
-								/>
-							</div>
-						)}
-					</div>
 					<Typography
 						as='h3'
 						className='font-semibold'>
@@ -340,7 +278,50 @@ const PostForm = ({ post }) => {
 						control={control}
 						register={register}
 					/>
+					<div className='relative flex gap-2 w-full'>
+						<Input
+							label='Featured Image :'
+							size='md'
+							type='file'
+							name='featuredImages'
+							accept='image/png, image/jpg, image/jpeg, image/gif'
+							{...register('featuredImages', { required: !post })}
+						/>
 
+						<Tooltip
+							placement='top'
+							className='border border-blue-gray-50 bg-white shadow-xl shadow-black/10'
+							content={
+								<Typography
+									color='blue-gray'
+									className='font-medium font-serif'>
+									Upload
+								</Typography>
+							}>
+							<IconButton
+								variant='text'
+								className='!absolute right-1 top-1 rounded w-8 h-8'>
+								{fileUploadError ? (
+									<FcHighPriority className='w-6 h-6' />
+								) : imageUploadPercentage > 0 && imageUploadPercentage < 100 ? (
+									<span>{`${imageUploadPercentage} %`}</span>
+								) : imageUploadPercentage === 100 ? (
+									<FcApproval className=' w-6 h-6' />
+								) : (
+									<FcUpload className='w-6 h-6' />
+								)}
+							</IconButton>
+						</Tooltip>
+						{post && (
+							<div className='w-full mb-4 flex item-center border-r-2 border-blue-gray-100'>
+								<img
+									src={post.getFilePreview(post.featuredImage)}
+									alt={post.title}
+									className='rounded-lg'
+								/>
+							</div>
+						)}
+					</div>
 					<Button
 						size='sm'
 						type='submit'
