@@ -3,6 +3,7 @@ import app from './firebase.config';
 import { collection, addDoc } from 'firebase/firestore';
 import { currentUser } from './auth.services.js';
 import {
+	deleteObject,
 	getDownloadURL,
 	getStorage,
 	ref,
@@ -33,7 +34,7 @@ const createRecipes = async (data) => {
 	}
 };
 
-const storeImages = async (file) => {
+const storeImages = async (file, progressCallback) => {
 	return new Promise((resolve, reject) => {
 		const fileName = new Date().getTime() + file.name;
 		const storageRef = ref(storage, fileName);
@@ -41,8 +42,9 @@ const storeImages = async (file) => {
 		uploadTask.on(
 			'state_changed',
 			(snapshot) => {
-				const progress = snapshot.bytesTransferred / snapshot.totalBytes *100;
-				console.log(progress);
+				const progress =
+					(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+				progressCallback(Math.round(progress));
 			},
 			(error) => reject(error),
 			() =>
@@ -53,4 +55,28 @@ const storeImages = async (file) => {
 	});
 };
 
-export { createRecipes, storeImages };
+const deleteImage = async (imagePath) => {
+	console.log(imagePath);
+	try {
+		// Create a reference to the file to delete
+		const imageRef = ref(storage, imagePath);
+
+		// Delete the file
+		await deleteObject(imageRef)
+			.then(() => {
+				// File deleted successfully
+				console.log('Image deleted successfully from Firebase Storage:');
+			})
+			.catch((error) => {
+				// Uh-oh, an error occurred!
+				console.error(
+					'Error deleting image from Firebase deleteObject:',
+					error,
+				);
+			});
+	} catch (error) {
+		console.error('Error deleting image from Firebase Storage:', error);
+	}
+};
+
+export { createRecipes, storeImages, deleteImage };

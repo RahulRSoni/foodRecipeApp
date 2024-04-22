@@ -32,8 +32,12 @@ const PostForm = ({ post }) => {
 		if (files.length > 0 && files.length + formData.imageURLs.length < 9) {
 			const promises = [];
 
+			const progressCallback = (progress) => {
+				setImageUploadPercentage(progress);
+			};
+
 			for (let i = 0; i < files.length; i++) {
-				promises.push(storeImages(files[i]));
+				promises.push(storeImages(files[i], progressCallback));
 			}
 
 			Promise.all(promises)
@@ -52,10 +56,11 @@ const PostForm = ({ post }) => {
 		}
 	};
 
-	const handleDeleteImage = (index) => {
-		const newImages = [...formData];
-		newImages.splice(index, 1);
-		setFormData(newImages);
+	const handleDeleteImage = (imagePath) => {
+		setFormData({
+			...formData,
+			imageURLs: formData.imageURLs.filter((image) => image !== imagePath),
+		});
 	};
 
 	const { register, handleSubmit, watch, setValue, control, reset } = useForm({
@@ -302,11 +307,11 @@ const PostForm = ({ post }) => {
 									Upload
 								</Typography>
 							}>
-							<Button
+							<IconButton
 								variant='text'
 								onClick={handleFileUpload}
-								className='!absolute right-3 -top-1 rounded w-8 h-8'
-								disabled={files.length > 0}>
+								className='!absolute right-1 top-1 rounded w-8 h-8'
+								disabled={files.length > 8}>
 								{imageUploadError ? (
 									<FcHighPriority className='w-6 h-6' />
 								) : imageUploadPercentage > 0 && imageUploadPercentage < 100 ? (
@@ -316,40 +321,28 @@ const PostForm = ({ post }) => {
 								) : (
 									<FcUpload className='w-6 h-6' />
 								)}
-							</Button>
+							</IconButton>
 						</Tooltip>
 					</div>
 					<p className='py-2 text-red-400'>
 						{imageUploadError && imageUploadError}
 					</p>
-					{formData.imageURLs && (
-						<div className='w-full mb-4 flex item-center border-r-2 border-blue-gray-100'>
-							<img
-								src={formData.imageURLs}
-								alt='Uploaded'
-								className='rounded-lg'
-							/>
-							<IconButton className='!absolute right-1 top-1 rounded w-8 h-8 bg-red-500'>
-								<span>X</span>
-							</IconButton>
-						</div>
-					)}
-					{formData.length > 0 && (
-						<div className='mt-4'>
+					{formData.imageURLs.length > 0 && (
+						<div>
 							<Typography variant='h6'>Uploaded Images:</Typography>
-							<ul>
-								{formData.map((url, index) => (
+							<ul className='flex flex-wrap justify-evenly'>
+								{formData.imageURLs.map((url, index) => (
 									<li
 										key={index}
 										className='flex items-center'>
 										<img
 											src={url}
 											alt='Uploaded'
-											className='w-16 h-16 mr-2'
+											className='w-28 h-24 mr-2 mt-4 object-cover'
 										/>
 										<IconButton
 											onClick={() => handleDeleteImage(index)}
-											className='rounded-full bg-red-500 text-white'>
+											className='-mt-20 -ml-7 rounded-full p-0 bg-transparent text-blue-gray-800 text-md font-semibold backdrop-blur-sm'>
 											<span>X</span>
 										</IconButton>
 									</li>
