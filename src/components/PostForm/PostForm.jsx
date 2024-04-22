@@ -14,43 +14,48 @@ import { Controller, useForm } from 'react-hook-form';
 import { CommentBox } from '../RecipeFrom/CommentBox';
 import Ingredient from '../RecipeFrom/Ingredients';
 import TimeInputs from '../RecipeFrom/TimeInputs';
-import { createRecipes } from '../../api/store.services';
+import { createRecipes, storeImages } from '../../api/store.services';
 import { useNavigate } from 'react-router-dom';
 import { FcUpload, FcHighPriority, FcApproval } from 'react-icons/fc';
-import { handleFileUpload } from '../../api/store.services';
 
 const PostForm = ({ post }) => {
 	const navigate = useNavigate();
 	// const userData = useSelector((state) => state.userData);
-	const [file, setFile] = useState([]);
-	const [imageUploadPercentage, setImageUploadPercentage] = useState(0);
-	const [fileUploadError, setFileUploadError] = useState(false);
-	const [uploadImage, setUploadImage] = useState({});
+	const [files, setFiles] = useState([]);
+	const [formData, setFormData] = useState({ imageURLs: [] });
+	const [imageUploadError, setImageUploadError] = useState(false);
+	const [imageUploadPercentage, setImageUploadPercentage] = useState('');
 
-	const handleFileInputChange = (index, e) => {
-		try {
-			const file = e.target.files[0];
+	console.log(formData);
 
-			// Define a callback function to receive progress updates
-			const progressCallback = (progress) => {
-				setImageUploadPercentage(progress);
-			};
+	const handleFileUpload = (e) => {
+		if (files.length > 0 && files.length + formData.imageURLs.length < 9) {
+			const promises = [];
 
-			const uploadedFileUrl = (url) => {
-				setUploadImage({ ...uploadImage, avatar: url });
+			for (let i = 0; i < files.length; i++) {
+				promises.push(storeImages(files[i]));
+			}
 
-				setPosts((prevPosts) => {
-					const newPosts = [...prevPosts];
-					newPosts[index].image = url;
-					return newPosts;
+			Promise.all(promises)
+				.then((url) => {
+					setFormData({
+						...formData,
+						imageURLs: formData.imageURLs.concat(url),
+					});
+					setImageUploadError(false);
+				})
+				.catch((error) => {
+					setImageUploadError('Image upload failed (2 MB max per image)');
 				});
-			};
-
-			// Call handleFileUpload with the file and the progressCallback
-			handleFileUpload(file, progressCallback, uploadedFileUrl);
-		} catch (error) {
-			setFileUploadError(true);
+		} else {
+			setImageUploadError('You can only upload 8 images.');
 		}
+	};
+
+	const handleDeleteImage = (index) => {
+		const newImages = [...formData];
+		newImages.splice(index, 1);
+		setFormData(newImages);
 	};
 
 	const { register, handleSubmit, watch, setValue, control, reset } = useForm({
@@ -59,7 +64,6 @@ const PostForm = ({ post }) => {
 			slug: post?.slug || '',
 			content: post?.content || '',
 			status: post?.status || 'active',
-			featuredImages: file || [],
 			keyword: post?.keyword || '',
 			cuisine: post?.cuisine || '',
 			course: post?.course || '',
@@ -110,8 +114,8 @@ const PostForm = ({ post }) => {
 
 	return (
 		<form onSubmit={handleSubmit(submit)}>
-			<div className='flex flex-col justify-center items-center p-10 mt-8 '>
-				<div className=' mb-4 flex flex-col justify-center gap-5 bg-blue-gray-50 backdrop-blur-sm py-8 rounded-lg px-6'>
+			<div className='flex flex-col justify-center items-center p-10 mt-8 mx-10'>
+				<div className=' mb-4 flex flex-col justify-center gap-5 bg-blue-gray-50 backdrop-blur-sm py-8 rounded-lg px-6 mx-10'>
 					<Input
 						label='Title :'
 						placeholder='Title'
@@ -131,7 +135,6 @@ const PostForm = ({ post }) => {
 							});
 						}}
 					/>
-
 					<Textarea
 						label='Content'
 						name='content'
@@ -280,12 +283,13 @@ const PostForm = ({ post }) => {
 					/>
 					<div className='relative flex gap-2 w-full'>
 						<Input
-							label='Featured Image :'
+							label='Recipes Images :'
 							size='md'
 							type='file'
-							name='featuredImages'
+							name='recipesImages'
+							multiple={8} // Limiting to 6 images
 							accept='image/png, image/jpg, image/jpeg, image/gif'
-							{...register('featuredImages', { required: !post })}
+							onChange={(e) => setFiles(e.target.files)}
 						/>
 
 						<Tooltip
@@ -298,10 +302,12 @@ const PostForm = ({ post }) => {
 									Upload
 								</Typography>
 							}>
-							<IconButton
+							<Button
 								variant='text'
-								className='!absolute right-1 top-1 rounded w-8 h-8'>
-								{fileUploadError ? (
+								onClick={handleFileUpload}
+								className='!absolute right-3 -top-1 rounded w-8 h-8'
+								disabled={files.length > 0}>
+								{imageUploadError ? (
 									<FcHighPriority className='w-6 h-6' />
 								) : imageUploadPercentage > 0 && imageUploadPercentage < 100 ? (
 									<span>{`${imageUploadPercentage} %`}</span>
@@ -310,18 +316,48 @@ const PostForm = ({ post }) => {
 								) : (
 									<FcUpload className='w-6 h-6' />
 								)}
-							</IconButton>
+							</Button>
 						</Tooltip>
-						{post && (
-							<div className='w-full mb-4 flex item-center border-r-2 border-blue-gray-100'>
-								<img
-									src={post.getFilePreview(post.featuredImage)}
-									alt={post.title}
-									className='rounded-lg'
-								/>
-							</div>
-						)}
 					</div>
+					<p className='py-2 text-red-400'>
+						{imageUploadError && imageUploadError}
+					</p>
+					{formData.imageURLs && (
+						<div className='w-full mb-4 flex item-center border-r-2 border-blue-gray-100'>
+							<img
+								src={formData.imageURLs}
+								alt='Uploaded'
+								className='rounded-lg'
+							/>
+							<IconButton className='!absolute right-1 top-1 rounded w-8 h-8 bg-red-500'>
+								<span>X</span>
+							</IconButton>
+						</div>
+					)}
+					{formData.length > 0 && (
+						<div className='mt-4'>
+							<Typography variant='h6'>Uploaded Images:</Typography>
+							<ul>
+								{formData.map((url, index) => (
+									<li
+										key={index}
+										className='flex items-center'>
+										<img
+											src={url}
+											alt='Uploaded'
+											className='w-16 h-16 mr-2'
+										/>
+										<IconButton
+											onClick={() => handleDeleteImage(index)}
+											className='rounded-full bg-red-500 text-white'>
+											<span>X</span>
+										</IconButton>
+									</li>
+								))}
+							</ul>
+						</div>
+					)}
+
 					<Button
 						size='sm'
 						type='submit'

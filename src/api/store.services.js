@@ -1,4 +1,4 @@
-import { getFirestore } from 'firebase/firestore';
+import { getFirestore, snapshotEqual } from 'firebase/firestore';
 import app from './firebase.config';
 import { collection, addDoc } from 'firebase/firestore';
 import { currentUser } from './auth.services.js';
@@ -33,45 +33,24 @@ const createRecipes = async (data) => {
 	}
 };
 
-const handleFileUpload = (file, progressCallback, urlCallback) => {
-	try {
+const storeImages = async (file) => {
+	return new Promise((resolve, reject) => {
 		const fileName = new Date().getTime() + file.name;
 		const storageRef = ref(storage, fileName);
 		const uploadTask = uploadBytesResumable(storageRef, file);
-
 		uploadTask.on(
 			'state_changed',
 			(snapshot) => {
-				const progress =
-					(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-
-				// Call the progress callback with the progress value
-				progressCallback(Math.round(progress));
+				const progress = snapshot.bytesTransferred / snapshot.totalBytes *100;
+				console.log(progress);
 			},
-			(error) => {
-				console.error('Error uploading file: ', error);
-				// Call the progress callback with an error indicator
-				progressCallback(-1);
-			},
-			() => {
-				// Once upload is complete, get the download URL
-				getDownloadURL(uploadTask.snapshot.ref)
-					.then((downloadURL) => {
-						// Call the URL callback with the URL value
-						urlCallback(downloadURL);
-					})
-					.catch((error) => {
-						console.error('Error getting download URL: ', error);
-						// Call the URL callback with an error indicator
-						urlCallback(null);
-					});
-			},
+			(error) => reject(error),
+			() =>
+				getDownloadURL(uploadTask.snapshot.ref).then((downLoadURL) =>
+					resolve(downLoadURL),
+				),
 		);
-	} catch (error) {
-		console.error('Error adding document: ', error);
-		// Call the progress callback with an error indicator if needed
-		progressCallback(-1);
-	}
+	});
 };
 
-export { createRecipes, handleFileUpload };
+export { createRecipes, storeImages };
