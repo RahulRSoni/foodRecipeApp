@@ -64,7 +64,7 @@ const TimeInputs = ({ control, register }) => {
 						name='preparingTime'
 						step={1}
 						pattern='^([01]\d|2[0-3]):([0-5]\d)$'
-						{...register('preparingTime', { required: true })}
+						{...register('preparingTime')}
 					/>
 				</div>
 				<div>
@@ -76,7 +76,7 @@ const TimeInputs = ({ control, register }) => {
 						name='cockingTime'
 						step={1}
 						pattern='^([01]\d|2[0-3]):([0-5]\d)$'
-						{...register('cockingTime', { required: true })}
+						{...register('cockingTime')}
 					/>
 				</div>
 				<div>
@@ -88,7 +88,7 @@ const TimeInputs = ({ control, register }) => {
 						name='restingTime'
 						step={1}
 						pattern='^([01]\d|2[0-3]):([0-5]\d)$'
-						{...register('restingTime', { required: true })}
+						{...register('restingTime')}
 					/>
 				</div>
 				<div>
@@ -96,11 +96,11 @@ const TimeInputs = ({ control, register }) => {
 						label='Baking time :'
 						size='md'
 						type='time'
-						placeholder='Total time for preparing.'
+						placeholder='Total time for recipe preparing.'
 						name='bakingTime'
 						step={1}
 						pattern='^([01]\d|2[0-3]):([0-5]\d)$'
-						{...register('bakingTime', { required: true })}
+						{...register('bakingTime')}
 					/>
 				</div>
 			</div>

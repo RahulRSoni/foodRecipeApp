@@ -115,7 +115,7 @@ const logout = () => {
 };
 
 const currentUser = () => {
-	const auth = getAuth();
+
 	const currentUser = auth.currentUser;
 	if (currentUser) {
 		return currentUser;
