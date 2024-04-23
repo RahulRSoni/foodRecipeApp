@@ -15,8 +15,10 @@ import {
 	LifebuoyIcon,
 	PowerIcon,
 } from '@heroicons/react/24/solid';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { logout } from '../../api/auth.services.js';
+import { sigOutSuccess } from '../../Redux/users/userSlice.js';
+import { useDispatch, useSelector } from 'react-redux';
 
 // profile menu component
 const profileMenuItems = [
@@ -38,9 +40,15 @@ const profileMenuItems = [
 ];
 
 export default function ProfileMenu() {
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
 	const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-
-	const handleLogOut = () => logout();
+	const { currentUser } = useSelector((state) => state.user);
+	const handleLogOut = () => {
+		logout();
+		dispatch(sigOutSuccess());
+		navigate('/auth');
+	};
 
 	const closeMenu = () => setIsMenuOpen(false);
 
@@ -57,9 +65,9 @@ export default function ProfileMenu() {
 					<Avatar
 						variant='circular'
 						size='sm'
-						alt='tania andrew'
+						alt={currentUser.displayName}
 						className='border border-gray-900 p-0.5'
-						src='https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80'
+						src={currentUser.photoURL}
 					/>
 					<ChevronDownIcon
 						strokeWidth={2.5}

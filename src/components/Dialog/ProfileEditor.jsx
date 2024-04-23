@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import {
 	Button,
 	Dialog,
@@ -8,10 +8,69 @@ import {
 	Input,
 	Typography,
 	Tooltip,
+	Textarea,
+	IconButton,
 } from '@material-tailwind/react';
+import { useSelector } from 'react-redux';
+import { FcUpload, FcHighPriority, FcApproval } from 'react-icons/fc';
 
 export function ProfileEditor() {
 	const [open, setOpen] = React.useState(false);
+	const [image, setImage] = React.useState([]);
+	const [imageUploadError, setImageUploadError] = React.useState(false);
+	const [imageUploadPercentage, setImageUploadPercentage] = React.useState('');
+	const { currentUser } = useSelector((state) => state.user);
+
+	const fileInputRef = useRef(null);
+
+	function capitalizeFirstLetterOfEachWord(str) {
+		// Split the string into words
+		const words = str.split(' ');
+
+		// Capitalize the first letter of each word
+		const capitalizedWords = words.map((word) => {
+			return word.charAt(0).toUpperCase() + word.slice(1);
+		});
+
+		// Join the capitalized words back into a string
+		return capitalizedWords;
+	}
+
+	console.log(image);
+
+	React.useEffect(() => {
+		if (image) {
+			handleFileUpload(image);
+		}
+	}, [image]);
+
+	const handleFileUpload = (image) => {
+		if (image.length > 0) {
+			const promises = [];
+
+			const progressCallback = (progress) => {
+				setImageUploadPercentage(progress);
+			};
+
+			for (let i = 0; i < files.length; i++) {
+				promises.push(storeImages(files[i], progressCallback));
+			}
+
+			Promise.all(promises)
+				.then((url) => {
+					setFormData({
+						...formData,
+						imageURLs: formData.imageURLs.concat(url),
+					});
+					setImageUploadError(false);
+				})
+				.catch((error) => {
+					setImageUploadError('Image upload failed (2 MB max per image)');
+				});
+		} else {
+			setImageUploadError('You can only upload 1 images.');
+		}
+	};
 
 	const handleOpen = () => setOpen(!open);
 
@@ -48,28 +107,63 @@ export function ProfileEditor() {
 					unmount: { scale: 0.9, y: -100 },
 				}}>
 				<DialogHeader>Update your self.</DialogHeader>
-				<DialogBody>
+				<DialogBody className='scroll-smooth'>
 					<div className='text-gray-700'>
 						<div className='grid md:grid-cols-2 text-sm'>
+							<div className='overflow-hidden '>
+								<img
+									className='h-48 p-1 border-dotted border-2 border-gray-500 rounded-md w-auto mx-auto relative'
+									src={currentUser.photoURL}
+									onClick={() => fileInputRef.current.click()}
+									alt=''
+								/>
+								<IconButton
+									variant='text'
+									onClick={handleFileUpload}
+									className='!absolute right-1 top-1 rounded w-8 h-8'
+									disabled={image.length > 8}>
+									{imageUploadError ? (
+										<FcHighPriority className='w-6 h-6' />
+									) : imageUploadPercentage > 0 &&
+									  imageUploadPercentage < 100 ? (
+										<span>{`${imageUploadPercentage} %`}</span>
+									) : imageUploadPercentage === 100 ? (
+										<FcApproval className=' w-6 h-6' />
+									) : (
+										<FcUpload className='w-6 h-6' />
+									)}
+								</IconButton>
+
+								<input
+									type='file'
+									ref={fileInputRef}
+									onChange={(e) => setImage(e.target.files[0])}
+									className='hidden'
+								/>
+							</div>
 							<div className='grid grid-cols-1 p-5'>
 								<Input
 									variant='static'
 									label='First Name'
-									placeholder='Jhone'
+									value={
+										capitalizeFirstLetterOfEachWord(currentUser.displayName)[0]
+									}
 								/>
 							</div>
 							<div className='grid grid-cols-1 p-5'>
 								<Input
 									variant='static'
 									label='Last Name'
-									placeholder='Doe'
+									value={
+										capitalizeFirstLetterOfEachWord(currentUser.displayName)[1]
+									}
 								/>
 							</div>
 							<div className='grid grid-cols-1 p-5'>
 								<Input
 									variant='static'
 									label='Contact No.'
-									placeholder='+91 9806331218'
+									value={currentUser.phoneNumber ? currentUser.phoneNumber : ''}
 								/>
 							</div>
 
@@ -77,8 +171,14 @@ export function ProfileEditor() {
 								<Input
 									variant='static'
 									label='Email'
-									placeholder='abc@gamil.com'
+									value={currentUser.email ? currentUser.email : ''}
 									disabled
+								/>
+							</div>
+							<div className='grid grid-cols-1 p-5'>
+								<Textarea
+									variant='standard'
+									label='About Myself'
 								/>
 							</div>
 						</div>

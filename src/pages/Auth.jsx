@@ -4,16 +4,36 @@ import { Button, Input, Typography } from '@material-tailwind/react';
 import { Navbar2 } from '../components/Header/Header2.jsx';
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+
 import {
 	registerWithEmailAndPassword,
 	signInWithGoogle,
 	logInWithEmailAndPassword,
 } from '../api/auth.services.js';
 import { useForm } from 'react-hook-form';
+import {
+	registerUser,
+	registerUserFailure,
+	registerUserSuccess,
+} from '../Redux/users/userSlice.js';
+import {
+	signInFailure,
+	signInStart,
+	signInSuccess,
+} from '../Redux/users/userSlice.js';
+import { useDispatch, useSelector } from 'react-redux';
 
 function AuthPage() {
+	const { loading, error } = useSelector((state) => state.user);
+
+	//States
 	const [isSignUpActive, setIsSignUpActive] = useState(false);
+	const [errorMessage, setErrorMessage] = useState(''); // State to store the error message
+
+	//variable Declaration
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
+
 	const { register, handleSubmit } = useForm({
 		mode: 'onBlur',
 	});
@@ -34,26 +54,60 @@ function AuthPage() {
 	//form handle for user registration
 	const createUser = async (data) => {
 		try {
+			dispatch(registerUser());
 			const user = await registerWithEmailAndPassword(data);
 
 			if (user) {
+				dispatch(registerUserSuccess());
 				handleSignInClick();
 			}
 		} catch (error) {
 			console.log(error.message);
+			dispatch(registerUserFailure(error.message));
 		}
 	};
 
 	//form handle for user authentication
 	const logInUser = async (data) => {
 		try {
+			dispatch(signInStart());
 			const user = await logInWithEmailAndPassword(data);
+
 			if (user) {
+				dispatch(signInSuccess(user));
 				navigate('/');
 			}
 		} catch (error) {
 			console.log(error.message);
+			dispatch(signInFailure(error.message));
+			const errorMessage = extractErrorMessage(error.message); // Extract error message
+			setErrorMessage(errorMessage);
 		}
+	};
+
+	const handleGoogleAuth = async () => {
+		try {
+			dispatch(signInStart());
+			const user = await signInWithGoogle();
+
+			if (user) {
+				dispatch(signInSuccess(user));
+				navigate('/');
+			}
+		} catch (error) {
+			console.log(error.message);
+			dispatch(signInFailure(error.message));
+			const errorMessage = extractErrorMessage(error.message); // Extract error message
+			setErrorMessage(errorMessage);
+		}
+	};
+
+	// Function to extract error message starting with "Error" until <br> tag from HTML response
+	const extractErrorMessage = (htmlResponse) => {
+		const parser = new DOMParser();
+		const doc = parser.parseFromString(htmlResponse, 'text/html');
+		const errorMessage = doc.body.innerHTML.match(/Error.*?(?=<br>)/i); // Find text starting with "Error" until <br> tag
+		return errorMessage ? errorMessage[0].trim() : ''; // Return extracted error message or empty string if not found
 	};
 
 	return (
@@ -79,7 +133,6 @@ function AuthPage() {
 								onSubmit={handleSubmit(createUser)}
 								className='bg-white flex items-center justify-center flex-col px-12 h-full text-center w-full'>
 								<Typography variant='h4'>Create Account</Typography>
-
 								{/*for direct auth with other services */}
 								<div className='flex justify-center items-center gap-4 py-2'>
 									<Link
@@ -92,7 +145,7 @@ function AuthPage() {
 										className='rounded-full border-solid border-2 border-s-blue-gray-100 p-2'>
 										<FaGoogle
 											className='h-4 w-auto '
-											onClick={signInWithGoogle}
+											onClick={handleGoogleAuth}
 										/>
 									</Link>
 									<Link
@@ -106,7 +159,6 @@ function AuthPage() {
 									className='mt-1 font-thin text-xs'>
 									Nice to meet you! Enter your details to register.
 								</Typography>
-
 								{/*for manual registration method*/}
 								<div className='w-full flex flex-col gap-4 py-4'>
 									<Input
@@ -168,7 +220,6 @@ function AuthPage() {
 										maxLength={20}
 									/>
 								</div>
-
 								<Button
 									type='submit'
 									className='bg-red-500 transition-all duration-800 ease-in rounded-full'>
@@ -185,6 +236,20 @@ function AuthPage() {
 										Sign In
 									</Button>
 								</Typography>
+								{error && (
+									<Typography
+										variant='lead'
+										className='text-red-400 mt-1 font-semibold'>
+										{error}
+									</Typography>
+								)}
+								{errorMessage && (
+									<Typography
+										variant='lead'
+										className='text-red-400 mt-1 font-semibold'>
+										{errorMessage}
+									</Typography>
+								)}
 							</form>
 						</div>
 						<div className='form-container sign-in-container sm:w-[50%] w-full'>
@@ -205,7 +270,7 @@ function AuthPage() {
 										className='rounded-full border-solid border-2 border-s-blue-gray-100 p-2'>
 										<FaGoogle
 											className='h-4 w-auto '
-											onClick={signInWithGoogle}
+											onClick={handleGoogleAuth}
 										/>
 									</Link>
 									<Link
@@ -265,6 +330,20 @@ function AuthPage() {
 										Sign Up
 									</Button>
 								</Typography>
+								{error && (
+									<Typography
+										variant='lead'
+										className='text-red-400 mt-1 font-semibold'>
+										{error}
+									</Typography>
+								)}
+								{errorMessage && (
+									<Typography
+										variant='lead'
+										className='text-red-400 mt-1 font-semibold'>
+										{errorMessage}
+									</Typography>
+								)}
 							</form>
 						</div>
 						<div className='overlay-container hidden sm:block'>

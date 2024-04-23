@@ -6,6 +6,7 @@ import {
 	createUserWithEmailAndPassword,
 	sendPasswordResetEmail,
 	signOut,
+	updateProfile,
 } from 'firebase/auth';
 import {
 	getFirestore,
@@ -23,6 +24,7 @@ const db = getFirestore(app);
 
 const registerWithEmailAndPassword = async (data) => {
 	const { displayName, email, password, phoneNumber } = data;
+
 	try {
 		const userCredential = await createUserWithEmailAndPassword(
 			auth,
@@ -59,26 +61,15 @@ const signInWithGoogle = async () => {
 	try {
 		const userCredential = await signInWithPopup(auth, googleProvider);
 		const user = userCredential.user;
-		const q = query(collection(db, 'users'), where('uid', '==', user.uid));
-		const docs = await getDocs(q);
-		if (docs.docs.length === 0) {
-			const userInfo = await addDoc(collection(db, 'users'), {
-				uid: user.uid,
-				name: user.displayName,
-				phone: user.phoneNumber,
-				authProvider: 'google',
-				avatar: user.photoURL,
-				email: user.email,
-			});
-			return userInfo;
-		}
+
 		console.log(`User created successfully!!`);
-		return userInfo.path;
+		return user;
 	} catch (err) {
 		console.error(err);
 		alert(err.message);
 	}
 };
+
 const logInWithEmailAndPassword = async (data) => {
 	const { email, password } = data;
 	try {
@@ -120,6 +111,24 @@ const currentUser = () => {
 	if (currentUser) {
 		return currentUser;
 	}
+};
+
+const updateUser = async (user) => {
+	const { displayName, photoURL, email, phoneNumber } = user;
+
+	userData = {
+		displayName: 'Jane Q. User',
+		photoURL: 'https://example.com/jane-q-user/profile.jpg',
+	};
+	updateProfile(auth.currentUser)
+		.then(() => {
+			// Profile updated!
+			// ...
+		})
+		.catch((error) => {
+			// An error occurred
+			// ...
+		});
 };
 
 export {

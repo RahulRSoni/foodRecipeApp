@@ -9,7 +9,7 @@ import {
 	Profile,
 	RecipePage,
 	AddPost,
-} from './Pages/Page.jsx';
+} from './pages/Page.jsx';
 import { createBrowserRouter } from 'react-router-dom';
 import App from './App.jsx';
 

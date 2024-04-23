@@ -10,12 +10,13 @@ import { useNavigate } from 'react-router-dom';
 import Courses from './CoursesButton';
 
 import ProfileMenu from './ProfileMenu';
+import { useSelector } from 'react-redux';
 
 export function Header() {
 	const [openNav, setOpenNav] = React.useState(false);
 	const navigate = useNavigate();
 
-	const success = true;
+	const { currentUser, success } = useSelector((state) => state.user);
 
 	React.useEffect(() => {
 		window.addEventListener(
@@ -40,8 +41,7 @@ export function Header() {
 			<Typography
 				as='li'
 				variant='small'
-				color='blue-gray'
-				>
+				color='blue-gray'>
 				<Courses />
 			</Typography>
 			<Typography
@@ -118,7 +118,7 @@ export function Header() {
 					<div className='mr-4 hidden lg:block'>{navList2}</div>
 					<div className='flex items-center gap-x-1 '>
 						{success ? (
-							<ProfileMenu />
+							<ProfileMenu user={currentUser} />
 						) : (
 							<Button
 								variant='gradient'
