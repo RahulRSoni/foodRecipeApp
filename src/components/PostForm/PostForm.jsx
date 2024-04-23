@@ -26,8 +26,6 @@ const PostForm = ({ post }) => {
 	const [imageUploadError, setImageUploadError] = useState(false);
 	const [imageUploadPercentage, setImageUploadPercentage] = useState('');
 
-	console.log(formData);
-
 	const handleFileUpload = (e) => {
 		if (files.length > 0 && files.length + formData.imageURLs.length < 9) {
 			const promises = [];
@@ -83,15 +81,20 @@ const PostForm = ({ post }) => {
 	});
 
 	const submit = async (data) => {
+		// Asynchronous operation, like submitting the form data to a server
+
 		try {
-			// Asynchronous operation
-			console.log(data);
+			const formDataWithImages = {
+				...data,
+				recipesImages: formData.imageURLs,
+			};
+
+			console.log(formDataWithImages);
 
 			const recipe = await createRecipes(data);
-
 			if (recipe) {
 				reset();
-				navigate('profile');
+				navigate('/profile');
 			}
 		} catch (error) {
 			console.error('Error occurred:', error);
@@ -176,7 +179,7 @@ const PostForm = ({ post }) => {
 					<div className='flex justify-between w-full gap-2'>
 						<div className='flex flex-col w-full gap-2 '>
 							<Input
-								label='Calories : kcal'
+								label='Calories : kcal/100 grams or ml'
 								type='number'
 								size='md'
 								name='calories'

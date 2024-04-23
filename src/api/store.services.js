@@ -16,19 +16,29 @@ const storage = getStorage(app);
 const createRecipes = async (data) => {
 	try {
 		const user = currentUser();
-		const orderCollection = collection(db, 'recipes');
+		console.log(user);
+		if (user) {
+			const orderCollection = collection(db, 'recipes');
 
-		const recipe = await addDoc(orderCollection, {
-			recipe: data,
-			userinfo: user,
-		});
+			const userInfo = {
+				uid: user.uid,
+				name: user.displayName,
+				email: user.email,
+				phoneNumber: user.phoneNumber,
+				avatar: user.photoURL,
+			};
 
-		console.log(
-			'User created successfully!!, Document written with ID: ',
-			recipe.id,
-		);
+			const recipe = await addDoc(orderCollection, {
+				recipe: data,
+				user: userInfo,
+			});
 
-		return recipe.id;
+			console.log('Recipe posted successfully!!');
+
+			return recipe.id;
+		} else {
+			console.log('Error: user not found or login');
+		}
 	} catch (error) {
 		console.error('Error adding document: ', error);
 	}
@@ -56,7 +66,6 @@ const storeImages = async (file, progressCallback) => {
 };
 
 const deleteImage = async (imagePath) => {
-	console.log(imagePath);
 	try {
 		// Create a reference to the file to delete
 		const imageRef = ref(storage, imagePath);
