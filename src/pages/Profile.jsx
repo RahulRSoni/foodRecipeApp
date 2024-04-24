@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 
 export default function Profile() {
 	const { currentUser } = useSelector((state) => state.user);
+	console.log('currentUser', currentUser);
 
 	// Function to format the createdAt timestamp
 	const formatMemberSince = (timestamp) => {

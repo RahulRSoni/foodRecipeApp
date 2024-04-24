@@ -20,12 +20,12 @@ import { useForm } from 'react-hook-form';
 export function ProfileEditor({ user }) {
 	const { displayName, phoneNumber, email, photoURL, about } = user[0];
 	const [open, setOpen] = React.useState(false);
-	const [image, setImage] = React.useState([]);
+	const [image, setImage] = React.useState({});
 	const [imageUploadError, setImageUploadError] = React.useState(false);
 	const [file, setFile] = React.useState({});
 	const [imageUploadPercentage, setImageUploadPercentage] = React.useState('');
 
-	console.log(imageUploadError, file, imageUploadPercentage);
+	console.log(file, imageUploadPercentage);
 
 	const { register, handleSubmit, watch, setValue, control, reset } = useForm({
 		defaultValues: {
@@ -46,21 +46,18 @@ export function ProfileEditor({ user }) {
 	}, [image]);
 
 	const handleFileUpload = (image) => {
-		const promises = [];
-		console.log(promises);
 		const progressCallback = (progress) => {
 			setImageUploadPercentage(progress);
 		};
 
-		promises.push(storeImages(image[0], progressCallback));
-
-		Promise.all(promises)
+		// Assuming storeImages is a function to upload the image
+		storeImages(image, progressCallback)
 			.then((url) => {
-				setFile({ ...file, avatar: url });
-				setImageUploadError(false);
+				setFile({ imageURL: url }); // Update the file state with the uploaded image URL
+				setImageUploadError(false); // Clear any previous upload errors
 			})
 			.catch((error) => {
-				setImageUploadError('Image upload failed (2 MB max per image)', error);
+				setImageUploadError(true, error); // Set upload error message
 			});
 	};
 
@@ -99,33 +96,26 @@ export function ProfileEditor({ user }) {
 					unmount: { scale: 0.9, y: -100 },
 				}}>
 				<DialogHeader>Update your self.</DialogHeader>
-				<DialogBody>
+				<div>
 					<div className='text-gray-700'>
-						<div className='grid md:grid-cols-2 text-sm'>
-							<div>
+						<div className='flex flex-col gap-6 text-sm'>
+							<div className='flex flex-col justify-center items-center gap-3'>
 								<img
-									className='h-48 p-1 border-dotted border-2 border-gray-500 rounded-md w-auto mx-auto relative'
-									src={photoURL}
+									className='h-36 p-1 border-dotted border-2 border-gray-500 rounded-md w-36 relative object-cover'
+									src={file.imageURL || photoURL} // Use file state to display the uploaded image
 									onClick={() => fileInputRef.current.click()}
 									alt=''
 								/>
-								<IconButton
-									variant='text'
-									onClick={handleFileUpload}
-									className='fixed right-44 top-64 rounded w-16 h-16'
-									disabled={image.length === 0}>
-									{imageUploadError ? (
-										<FcHighPriority className='w-14 h-14' />
-									) : imageUploadPercentage > 0 &&
-									  imageUploadPercentage < 100 ? (
-										<span>{`${imageUploadPercentage} %`}</span>
-									) : imageUploadPercentage === 100 ? (
-										<FcApproval className=' w-14 h-14' />
-									) : (
-										<FcUpload className='w-14 h-14' />
-									)}
-								</IconButton>
-
+								{/* Progress bar overlay */}
+								{imageUploadPercentage > 0 && (
+									<div className='w-full h-full flex items-center justify-center'>
+										<div className='w-36 bg-gray-300 h-2'>
+											<div
+												className='bg-blue-500 h-full'
+												style={{ width: `${imageUploadPercentage}%` }}></div>
+										</div>
+									</div>
+								)}
 								<input
 									type='file'
 									ref={fileInputRef}
@@ -134,34 +124,36 @@ export function ProfileEditor({ user }) {
 									className='hidden'
 								/>
 							</div>
-							<div className='grid grid-cols-1 p-5'>
-								<Input
-									variant='static'
-									label='Full Name'
-									name='displayName'
-									{...register('displayName', { required: true })}
-								/>
+							<div className='grid grid-cols-2 gap-2 '>
+								<div className='grid grid-cols-1 px-5'>
+									<Input
+										variant='standard'
+										label='Full Name'
+										name='displayName'
+										{...register('displayName', { required: true })}
+									/>
+								</div>
+
+								<div className='grid grid-cols-1 px-5'>
+									<Input
+										variant='standard'
+										label='Contact No.'
+										name='phoneNumber'
+										{...register('phoneNumber', { required: true })}
+									/>
+								</div>
 							</div>
 
-							<div className='grid grid-cols-1 p-5'>
+							<div className='grid grid-cols-1 px-5'>
 								<Input
-									variant='static'
-									label='Contact No.'
-									name='phoneNumber'
-									{...register('phoneNumber', { required: true })}
-								/>
-							</div>
-
-							<div className='grid grid-cols-1 p-5'>
-								<Input
-									variant='static'
+									variant='standard'
 									label='Email'
-									name='eamil'
+									name='email'
 									{...register('email', { required: true })}
 									disabled
 								/>
 							</div>
-							<div className='grid grid-cols-1 p-5'>
+							<div className='grid grid-cols-1 px-5'>
 								<Textarea
 									variant='standard'
 									label='About Myself'
@@ -171,7 +163,7 @@ export function ProfileEditor({ user }) {
 							</div>
 						</div>
 					</div>
-				</DialogBody>
+				</div>
 				<DialogFooter>
 					<Button
 						variant='text'

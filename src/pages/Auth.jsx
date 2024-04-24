@@ -22,6 +22,7 @@ import {
 	signInSuccess,
 } from '../Redux/users/userSlice.js';
 import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 function AuthPage() {
 	const { loading, error } = useSelector((state) => state.user);
@@ -62,7 +63,7 @@ function AuthPage() {
 				handleSignInClick();
 			}
 		} catch (error) {
-			console.log(error.message);
+			toast.error('error.message');
 			dispatch(registerUserFailure(error.message));
 		}
 	};

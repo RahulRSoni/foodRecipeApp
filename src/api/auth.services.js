@@ -10,49 +10,59 @@ import {
 } from 'firebase/auth';
 import {
 	getFirestore,
-	query,
-	getDocs,
 	collection,
-	where,
 	addDoc,
+	serverTimestamp,
+	setDoc,
+	doc,
 } from 'firebase/firestore';
 import app from './firebase.config.js';
+import { toast } from 'react-toastify';
 
 const auth = getAuth(app);
-
 const db = getFirestore(app);
 
+//Register User With Email and Password
 const registerWithEmailAndPassword = async (data) => {
 	const { displayName, email, password, phoneNumber } = data;
-
 	try {
+		// Create user with email and password
 		const userCredential = await createUserWithEmailAndPassword(
 			auth,
 			email,
 			password,
 		);
 
-		const user = userCredential.user;
-
-		const orderCollection = collection(db, 'users');
-
-		const userInfo = await addDoc(orderCollection, {
-			uid: user.uid,
-			name: displayName,
-			phone: phoneNumber,
-			authProvider: 'local',
-			avatar: '',
-			email: email,
+		// Update full name in in user profile
+		updateProfile(auth.currentUser, {
+			displayName: displayName,
 		});
 
-		console.log(`User created successfully!!`);
+		// get user information from firebase
+		const user = userCredential.user;
 
-		return userInfo.path;
+		//get user timestamp from firebase Server
+		const timestamp = serverTimestamp();
+
+		// set user information in user data base
+		await setDoc(doc(db, 'users', user.uid), {
+			displayName: displayName,
+			photoURL: '',
+			providerId: 'local',
+			email: email,
+			phoneNumber: phoneNumber,
+			timestamp: timestamp,
+			about: '',
+		});
+
+		return user;
 	} catch (error) {
 		const errorCode = error.code;
-		const errorMessage = error.message;
+		// const errorMessage = error.message;
+
 		// Handle error
-		console.error(errorCode, errorMessage);
+		toast.error(errorCode);
+		// console.log('errorCode:', errorCode, 'errorMessage:', errorMessage);
 	}
 };
 
@@ -60,10 +70,12 @@ const googleProvider = new GoogleAuthProvider();
 const signInWithGoogle = async () => {
 	try {
 		const userCredential = await signInWithPopup(auth, googleProvider);
+
+		// Extract user data
 		const user = userCredential.user;
 
 		console.log(`User created successfully!!`);
-		return user;
+		return userDocRef.path;
 	} catch (err) {
 		console.error(err);
 		alert(err.message);
@@ -106,7 +118,6 @@ const logout = () => {
 };
 
 const currentUser = () => {
-
 	const currentUser = auth.currentUser;
 	if (currentUser) {
 		return currentUser;
@@ -114,21 +125,21 @@ const currentUser = () => {
 };
 
 const updateUser = async (user) => {
+	console.log(user);
 	const { displayName, photoURL, email, phoneNumber } = user;
-
-	userData = {
-		displayName: 'Jane Q. User',
-		photoURL: 'https://example.com/jane-q-user/profile.jpg',
-	};
-	updateProfile(auth.currentUser)
-		.then(() => {
-			// Profile updated!
-			// ...
-		})
-		.catch((error) => {
-			// An error occurred
-			// ...
+	try {
+		updateProfile(auth.currentUser, {
+			displayName: displayName,
+			photoURL: photoURL,
+			email: email,
+			phoneNumber: phoneNumber,
 		});
+	} catch (error) {
+		const errorCode = error.code;
+		const errorMessage = error.message;
+		// Handle error
+		console.log('errorCode:', errorCode, 'errorMessage:', errorMessage);
+	}
 };
 
 export {
