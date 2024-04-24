@@ -65,9 +65,9 @@ export default function ProfileMenu() {
 					<Avatar
 						variant='circular'
 						size='sm'
-						alt={currentUser.displayName}
+						alt={currentUser ? currentUser.displayName : ''}
 						className='border border-gray-900 p-0.5'
-						src={currentUser.photoURL}
+						src={currentUser ? currentUser.photoURL : ''}
 					/>
 					<ChevronDownIcon
 						strokeWidth={2.5}

@@ -32,8 +32,6 @@ export default function Profile() {
 		return capitalizedWords;
 	}
 
-
-
 	return (
 		<>
 			<div
@@ -50,13 +48,13 @@ export default function Profile() {
 								<div className='overflow-hidden'>
 									<img
 										className='h-auto w-full mx-auto'
-										src={currentUser.photoURL}
+										src={currentUser ? currentUser.photoURL : ''}
 										alt=''
 									/>
 								</div>
 								<h1 className='text-gray-900 font-bold text-xl leading-8 my-1'>
 									{capitalizeFirstLetterOfEachWord(
-										currentUser.displayName,
+										currentUser ? currentUser.displayName : 'Rahul Soni',
 									).join(' ')}
 								</h1>
 
@@ -95,7 +93,9 @@ export default function Profile() {
 									<li className='flex items-center py-3'>
 										<span>Member since</span>
 										<span className='ml-auto'>
-											{formatMemberSince(currentUser.createdAt)}
+											{currentUser
+												? formatMemberSince(currentUser.createdAt)
+												: ''}
 										</span>
 									</li>
 								</ul>
@@ -106,7 +106,7 @@ export default function Profile() {
 							<div className='bg-white p-3 shadow-sm rounded-sm w-full'>
 								<div className='flex items-center gap-5 font-semibold text-gray-900 leading-8 '>
 									<span className='tracking-wide text-xl'>About Me</span>
-									<ProfileEditor />
+									<ProfileEditor user={currentUser.providerData} />
 									<UpdatePassword />
 								</div>
 								<div className='text-gray-700 py-5 w-full'>
@@ -116,7 +116,9 @@ export default function Profile() {
 											<div className='py-2'>
 												{
 													capitalizeFirstLetterOfEachWord(
-														currentUser.displayName,
+														currentUser
+															? currentUser.displayName
+															: 'Rahul Soni',
 													)[0]
 												}
 											</div>
@@ -126,14 +128,19 @@ export default function Profile() {
 											<div className='py-2'>
 												{
 													capitalizeFirstLetterOfEachWord(
-														currentUser.displayName,
+														currentUser
+															? currentUser.displayName
+															: 'Rahul Soni',
 													)[1]
 												}
 											</div>
 										</div>
 										<div className='grid grid-cols-3'>
 											<div className='px-4 py-2 font-semibold'>Contact No.</div>
-											<div className='py-2 '> {currentUser.phoneNumber}</div>
+											<div className='py-2 '>
+												{' '}
+												{currentUser ? currentUser.phoneNumber : ''}
+											</div>
 										</div>
 
 										<div className='grid grid-cols-3 w-56'>
@@ -141,8 +148,8 @@ export default function Profile() {
 											<div className='py-2 w-1'>
 												<a
 													className='text-blue-800 '
-													href={currentUser.email}>
-													{currentUser.email}
+													href={currentUser ? currentUser.email : ''}>
+													{currentUser ? currentUser.email : ''}
 												</a>
 											</div>
 										</div>

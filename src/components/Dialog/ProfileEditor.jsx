@@ -10,33 +10,34 @@ import {
 	Tooltip,
 	Textarea,
 	IconButton,
+	avatar,
 } from '@material-tailwind/react';
-import { useSelector } from 'react-redux';
-import { FcUpload, FcHighPriority, FcApproval } from 'react-icons/fc';
 
-export function ProfileEditor() {
+import { FcUpload, FcHighPriority, FcApproval } from 'react-icons/fc';
+import { storeImages } from '../../api/store.services';
+import { useForm } from 'react-hook-form';
+
+export function ProfileEditor({ user }) {
+	const { displayName, phoneNumber, email, photoURL, about } = user[0];
 	const [open, setOpen] = React.useState(false);
 	const [image, setImage] = React.useState([]);
 	const [imageUploadError, setImageUploadError] = React.useState(false);
+	const [file, setFile] = React.useState({});
 	const [imageUploadPercentage, setImageUploadPercentage] = React.useState('');
-	const { currentUser } = useSelector((state) => state.user);
+
+	console.log(imageUploadError, file, imageUploadPercentage);
+
+	const { register, handleSubmit, watch, setValue, control, reset } = useForm({
+		defaultValues: {
+			photoURL: photoURL || '',
+			displayName: displayName || '',
+			phoneNumber: phoneNumber || '',
+			email: email || '',
+			about: about || '',
+		},
+	});
 
 	const fileInputRef = useRef(null);
-
-	function capitalizeFirstLetterOfEachWord(str) {
-		// Split the string into words
-		const words = str.split(' ');
-
-		// Capitalize the first letter of each word
-		const capitalizedWords = words.map((word) => {
-			return word.charAt(0).toUpperCase() + word.slice(1);
-		});
-
-		// Join the capitalized words back into a string
-		return capitalizedWords;
-	}
-
-	console.log(image);
 
 	React.useEffect(() => {
 		if (image) {
@@ -45,31 +46,22 @@ export function ProfileEditor() {
 	}, [image]);
 
 	const handleFileUpload = (image) => {
-		if (image.length > 0) {
-			const promises = [];
+		const promises = [];
+		console.log(promises);
+		const progressCallback = (progress) => {
+			setImageUploadPercentage(progress);
+		};
 
-			const progressCallback = (progress) => {
-				setImageUploadPercentage(progress);
-			};
+		promises.push(storeImages(image[0], progressCallback));
 
-			for (let i = 0; i < files.length; i++) {
-				promises.push(storeImages(files[i], progressCallback));
-			}
-
-			Promise.all(promises)
-				.then((url) => {
-					setFormData({
-						...formData,
-						imageURLs: formData.imageURLs.concat(url),
-					});
-					setImageUploadError(false);
-				})
-				.catch((error) => {
-					setImageUploadError('Image upload failed (2 MB max per image)');
-				});
-		} else {
-			setImageUploadError('You can only upload 1 images.');
-		}
+		Promise.all(promises)
+			.then((url) => {
+				setFile({ ...file, avatar: url });
+				setImageUploadError(false);
+			})
+			.catch((error) => {
+				setImageUploadError('Image upload failed (2 MB max per image)', error);
+			});
 	};
 
 	const handleOpen = () => setOpen(!open);
@@ -107,36 +99,37 @@ export function ProfileEditor() {
 					unmount: { scale: 0.9, y: -100 },
 				}}>
 				<DialogHeader>Update your self.</DialogHeader>
-				<DialogBody className='scroll-smooth'>
+				<DialogBody>
 					<div className='text-gray-700'>
 						<div className='grid md:grid-cols-2 text-sm'>
-							<div className='overflow-hidden '>
+							<div>
 								<img
 									className='h-48 p-1 border-dotted border-2 border-gray-500 rounded-md w-auto mx-auto relative'
-									src={currentUser.photoURL}
+									src={photoURL}
 									onClick={() => fileInputRef.current.click()}
 									alt=''
 								/>
 								<IconButton
 									variant='text'
 									onClick={handleFileUpload}
-									className='!absolute right-1 top-1 rounded w-8 h-8'
-									disabled={image.length > 8}>
+									className='fixed right-44 top-64 rounded w-16 h-16'
+									disabled={image.length === 0}>
 									{imageUploadError ? (
-										<FcHighPriority className='w-6 h-6' />
+										<FcHighPriority className='w-14 h-14' />
 									) : imageUploadPercentage > 0 &&
 									  imageUploadPercentage < 100 ? (
 										<span>{`${imageUploadPercentage} %`}</span>
 									) : imageUploadPercentage === 100 ? (
-										<FcApproval className=' w-6 h-6' />
+										<FcApproval className=' w-14 h-14' />
 									) : (
-										<FcUpload className='w-6 h-6' />
+										<FcUpload className='w-14 h-14' />
 									)}
 								</IconButton>
 
 								<input
 									type='file'
 									ref={fileInputRef}
+									accept='image/png, image/jpg, image/jpeg, image/gif'
 									onChange={(e) => setImage(e.target.files[0])}
 									className='hidden'
 								/>
@@ -144,26 +137,18 @@ export function ProfileEditor() {
 							<div className='grid grid-cols-1 p-5'>
 								<Input
 									variant='static'
-									label='First Name'
-									value={
-										capitalizeFirstLetterOfEachWord(currentUser.displayName)[0]
-									}
+									label='Full Name'
+									name='displayName'
+									{...register('displayName', { required: true })}
 								/>
 							</div>
-							<div className='grid grid-cols-1 p-5'>
-								<Input
-									variant='static'
-									label='Last Name'
-									value={
-										capitalizeFirstLetterOfEachWord(currentUser.displayName)[1]
-									}
-								/>
-							</div>
+
 							<div className='grid grid-cols-1 p-5'>
 								<Input
 									variant='static'
 									label='Contact No.'
-									value={currentUser.phoneNumber ? currentUser.phoneNumber : ''}
+									name='phoneNumber'
+									{...register('phoneNumber', { required: true })}
 								/>
 							</div>
 
@@ -171,7 +156,8 @@ export function ProfileEditor() {
 								<Input
 									variant='static'
 									label='Email'
-									value={currentUser.email ? currentUser.email : ''}
+									name='eamil'
+									{...register('email', { required: true })}
 									disabled
 								/>
 							</div>
@@ -179,6 +165,8 @@ export function ProfileEditor() {
 								<Textarea
 									variant='standard'
 									label='About Myself'
+									name='about'
+									{...register('about', { required: true })}
 								/>
 							</div>
 						</div>
