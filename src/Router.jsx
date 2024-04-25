@@ -12,6 +12,7 @@ import {
 } from './pages/Page.jsx';
 import { createBrowserRouter } from 'react-router-dom';
 import App from './App.jsx';
+import PrivateRoute from './components/Dialog/PrivateRoute.jsx';
 
 const router = createBrowserRouter([
 	{
@@ -19,7 +20,6 @@ const router = createBrowserRouter([
 		element: <AuthPage />,
 		errorElement: <Error />,
 	},
-
 	{
 		path: '/',
 		element: <App />,
@@ -33,13 +33,25 @@ const router = createBrowserRouter([
 			},
 			{
 				path: '/recipe:bake',
-				element: <RecipePage />,
+				element: <PrivateRoute />,
 				errorElement: <Error />,
+				children: [
+					{
+						path: '/recipe:bake',
+						element: <RecipePage />,
+					},
+				],
 			},
 			{
 				path: '/addPost',
-				element: <AddPost />,
+				element: <PrivateRoute />,
 				errorElement: <Error />,
+				children: [
+					{
+						path: '/addPost',
+						element: <AddPost />,
+					},
+				],
 			},
 			{
 				path: '/about',
@@ -51,7 +63,6 @@ const router = createBrowserRouter([
 				element: <Contact />,
 				errorElement: <Error />,
 			},
-
 			{
 				path: '/faq',
 				element: <Faq />,
@@ -64,8 +75,14 @@ const router = createBrowserRouter([
 			},
 			{
 				path: '/profile',
-				element: <Profile />,
+				element: <PrivateRoute />,
 				errorElement: <Error />,
+				children: [
+					{
+						path: '/profile',
+						element: <Profile />,
+					},
+				],
 			},
 		],
 	},

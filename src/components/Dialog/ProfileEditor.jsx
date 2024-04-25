@@ -16,6 +16,7 @@ import {
 import { FcUpload, FcHighPriority, FcApproval } from 'react-icons/fc';
 import { storeImages } from '../../api/store.services';
 import { useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 
 export function ProfileEditor({ user }) {
 	const { displayName, phoneNumber, email, photoURL, about } = user[0];
@@ -55,6 +56,7 @@ export function ProfileEditor({ user }) {
 			.then((url) => {
 				setFile({ imageURL: url }); // Update the file state with the uploaded image URL
 				setImageUploadError(false); // Clear any previous upload errors
+				alert('Image upload successfully!!!');
 			})
 			.catch((error) => {
 				setImageUploadError(true, error); // Set upload error message

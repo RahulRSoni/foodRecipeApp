@@ -15,6 +15,8 @@ import {
 	serverTimestamp,
 	setDoc,
 	doc,
+	getDoc,
+	updateDoc,
 } from 'firebase/firestore';
 import app from './firebase.config.js';
 import { toast } from 'react-toastify';
@@ -54,7 +56,6 @@ const registerWithEmailAndPassword = async (data) => {
 			timestamp: timestamp,
 			about: '',
 		});
-
 		return user;
 	} catch (error) {
 		const errorCode = error.code;
@@ -66,6 +67,7 @@ const registerWithEmailAndPassword = async (data) => {
 	}
 };
 
+//Register or Login User With Google
 const googleProvider = new GoogleAuthProvider();
 const signInWithGoogle = async () => {
 	try {
@@ -74,14 +76,33 @@ const signInWithGoogle = async () => {
 		// Extract user data
 		const user = userCredential.user;
 
-		console.log(`User created successfully!!`);
-		return userDocRef.path;
-	} catch (err) {
-		console.error(err);
-		alert(err.message);
+		//check user in data base
+		const docRef = doc(db, 'users', user.uid);
+		const docSnap = await getDoc(docRef);
+
+		//get user timestamp from firebase Server
+		const timestamp = serverTimestamp();
+
+		if (!docSnap.exists()) {
+			await setDoc(docRef, {
+				displayName: user.displayName,
+				photoURL: user.photoURL,
+				providerId: user.providerId,
+				email: user.email,
+				phoneNumber: user.phoneNumber,
+				timestamp: timestamp,
+				about: '',
+			});
+		}
+
+		return user;
+	} catch (error) {
+		const errorCode = error.code;
+		toast.error(errorCode);
 	}
 };
 
+//Login User With Email and Password
 const logInWithEmailAndPassword = async (data) => {
 	const { email, password } = data;
 	try {
@@ -91,54 +112,58 @@ const logInWithEmailAndPassword = async (data) => {
 			password,
 		);
 
-		const userInfo = userCredential.user;
+		const user = userCredential.user;
 
-		console.log(`User login successfully!!`);
-
-		return userInfo;
-	} catch (err) {
-		console.error(err);
-		alert(err.message);
+		return user;
+	} catch (error) {
+		const errorCode = error.code;
+		toast.error(errorCode);
 	}
 };
 
-const sendPasswordReset = async (email) => {
+const sendPasswordReset = async (data) => {
+	const { email } = data;
 	try {
-		await sendPasswordResetEmail(auth, email);
-		alert('Password reset link sent!');
-	} catch (err) {
-		console.error(err);
-		alert(err.message);
+		const resetPassword = await sendPasswordResetEmail(auth, email);
+
+		return resetPassword;
+	} catch (error) {
+		const errorCode = error.code;
+		toast.error(errorCode);
 	}
 };
 
 const logout = () => {
 	signOut(auth);
-	console.log(`User logout successfully!!`);
+	toast.success('Your logged out successfully!!');
 };
 
 const currentUser = () => {
 	const currentUser = auth.currentUser;
-	if (currentUser) {
-		return currentUser;
-	}
+	return currentUser;
 };
 
-const updateUser = async (user) => {
-	console.log(user);
-	const { displayName, photoURL, email, phoneNumber } = user;
+const updateUser = async (data) => {
+	const { displayName, photoURL, email, phoneNumber } = data;
 	try {
 		updateProfile(auth.currentUser, {
+			displayName: displayName,
+			photoURL: photoURL,
+		});
+
+		const docRef = doc(db, 'users', auth.currentUser.uid);
+
+		const updatedDoc = await updateDoc(docRef, {
 			displayName: displayName,
 			photoURL: photoURL,
 			email: email,
 			phoneNumber: phoneNumber,
 		});
+
+		return updatedDoc;
 	} catch (error) {
 		const errorCode = error.code;
-		const errorMessage = error.message;
-		// Handle error
-		console.log('errorCode:', errorCode, 'errorMessage:', errorMessage);
+		toast.error(errorCode);
 	}
 };
 

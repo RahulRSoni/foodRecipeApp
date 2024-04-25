@@ -9,6 +9,7 @@ import {
 	registerWithEmailAndPassword,
 	signInWithGoogle,
 	logInWithEmailAndPassword,
+	sendPasswordReset,
 } from '../api/auth.services.js';
 import { useForm } from 'react-hook-form';
 import {
@@ -61,6 +62,7 @@ function AuthPage() {
 			if (user) {
 				dispatch(registerUserSuccess());
 				handleSignInClick();
+				toast.success('Your account has been created successfully!!');
 			}
 		} catch (error) {
 			toast.error('error.message');
@@ -79,10 +81,9 @@ function AuthPage() {
 				navigate('/');
 			}
 		} catch (error) {
-			console.log(error.message);
+			toast.error('error.message');
 			dispatch(signInFailure(error.message));
-			const errorMessage = extractErrorMessage(error.message); // Extract error message
-			setErrorMessage(errorMessage);
+			setErrorMessage(error.message);
 		}
 	};
 
@@ -96,19 +97,25 @@ function AuthPage() {
 				navigate('/');
 			}
 		} catch (error) {
-			console.log(error.message);
+			toast.error('error.message');
 			dispatch(signInFailure(error.message));
-			const errorMessage = extractErrorMessage(error.message); // Extract error message
-			setErrorMessage(errorMessage);
+			setErrorMessage(error.message);
 		}
 	};
 
-	// Function to extract error message starting with "Error" until <br> tag from HTML response
-	const extractErrorMessage = (htmlResponse) => {
-		const parser = new DOMParser();
-		const doc = parser.parseFromString(htmlResponse, 'text/html');
-		const errorMessage = doc.body.innerHTML.match(/Error.*?(?=<br>)/i); // Find text starting with "Error" until <br> tag
-		return errorMessage ? errorMessage[0].trim() : ''; // Return extracted error message or empty string if not found
+	const handlePasswordReset = async (data) => {
+		try {
+			const user = await sendPasswordReset(data);
+
+			if (user) {
+				navigate('/');
+				toast.info('Send reset password link on your email id');
+			}
+		} catch (error) {
+			toast.error('error.message');
+			dispatch(signInFailure(error.message));
+			setErrorMessage(error.message);
+		}
 	};
 
 	return (

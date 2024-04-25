@@ -56,7 +56,14 @@ const storeImages = async (file, progressCallback) => {
 					(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
 				progressCallback(Math.round(progress));
 			},
-			(error) => reject(error),
+
+			(error) =>
+				reject(
+					alert(
+						'File size must be less then 2MB or upload correct file formate ',
+						error,
+					),
+				),
 			() =>
 				getDownloadURL(uploadTask.snapshot.ref).then((downLoadURL) =>
 					resolve(downLoadURL),
