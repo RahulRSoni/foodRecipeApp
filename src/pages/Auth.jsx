@@ -4,7 +4,6 @@ import { Button, Input, Typography } from '@material-tailwind/react';
 import { Navbar2 } from '../components/Header/Header2.jsx';
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-
 import {
 	registerWithEmailAndPassword,
 	signInWithGoogle,
@@ -65,7 +64,7 @@ function AuthPage() {
 				toast.success('Your account has been created successfully!!');
 			}
 		} catch (error) {
-			toast.error('error.message');
+			toast.error('error');
 			dispatch(registerUserFailure(error.message));
 		}
 	};
@@ -143,22 +142,16 @@ function AuthPage() {
 								<Typography variant='h4'>Create Account</Typography>
 								{/*for direct auth with other services */}
 								<div className='flex justify-center items-center gap-4 py-2'>
-									<Link
-										href='#'
-										className='rounded-full border-solid border-2 border-s-blue-gray-100 p-2'>
+									<Link className='rounded-full border-solid border-2 border-s-blue-gray-100 p-2'>
 										<FaFacebook className='h-4 w-auto ' />
 									</Link>
-									<Link
-										href='#'
-										className='rounded-full border-solid border-2 border-s-blue-gray-100 p-2'>
+									<Link className='rounded-full border-solid border-2 border-s-blue-gray-100 p-2'>
 										<FaGoogle
 											className='h-4 w-auto '
 											onClick={handleGoogleAuth}
 										/>
 									</Link>
-									<Link
-										href='#'
-										className='rounded-full border-solid border-2 border-s-blue-gray-100 p-2'>
+									<Link className='rounded-full border-solid border-2 border-s-blue-gray-100 p-2'>
 										<FaLinkedin className='h-4 w-auto ' />
 									</Link>
 								</div>
@@ -180,20 +173,6 @@ function AuthPage() {
 										minLength={4}
 										maxLength={40}
 										placeholder='Full Name'
-										size='lg'
-										required
-									/>
-									<Input
-										label='Mobile'
-										{...register('phoneNumber', {
-											required: true,
-											minLength: 10,
-											maxLength: 10,
-										})}
-										minLength={10}
-										maxLength={10}
-										placeholder='Mobile'
-										type='tel'
 										size='lg'
 										required
 									/>
@@ -244,20 +223,6 @@ function AuthPage() {
 										Sign In
 									</Button>
 								</Typography>
-								{error && (
-									<Typography
-										variant='lead'
-										className='text-red-400 mt-1 font-semibold'>
-										{error}
-									</Typography>
-								)}
-								{errorMessage && (
-									<Typography
-										variant='lead'
-										className='text-red-400 mt-1 font-semibold'>
-										{errorMessage}
-									</Typography>
-								)}
 							</form>
 						</div>
 						<div className='form-container sign-in-container sm:w-[50%] w-full'>
@@ -338,20 +303,6 @@ function AuthPage() {
 										Sign Up
 									</Button>
 								</Typography>
-								{error && (
-									<Typography
-										variant='lead'
-										className='text-red-400 mt-1 font-semibold'>
-										{error}
-									</Typography>
-								)}
-								{errorMessage && (
-									<Typography
-										variant='lead'
-										className='text-red-400 mt-1 font-semibold'>
-										{errorMessage}
-									</Typography>
-								)}
 							</form>
 						</div>
 						<div className='overlay-container hidden sm:block'>

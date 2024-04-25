@@ -10,8 +10,6 @@ import {
 } from 'firebase/auth';
 import {
 	getFirestore,
-	collection,
-	addDoc,
 	serverTimestamp,
 	setDoc,
 	doc,
@@ -26,7 +24,7 @@ const db = getFirestore(app);
 
 //Register User With Email and Password
 const registerWithEmailAndPassword = async (data) => {
-	const { displayName, email, password, phoneNumber } = data;
+	const { displayName, email, password } = data;
 	try {
 		// Create user with email and password
 		const userCredential = await createUserWithEmailAndPassword(
@@ -52,11 +50,19 @@ const registerWithEmailAndPassword = async (data) => {
 			photoURL: '',
 			providerId: 'local',
 			email: email,
-			phoneNumber: phoneNumber,
+			phoneNumber: '',
 			timestamp: timestamp,
 			about: '',
 		});
-		return user;
+
+		const docRef = doc(db, 'users', user.uid);
+		const docSnap = await getDoc(docRef);
+		if (docSnap.exists()) {
+			return docSnap.data();
+		} else {
+			// docSnap.data() will be undefined in this case
+			toast.error('No such document!');
+		}
 	} catch (error) {
 		const errorCode = error.code;
 		// const errorMessage = error.message;
@@ -95,7 +101,12 @@ const signInWithGoogle = async () => {
 			});
 		}
 
-		return user;
+		if (docSnap.exists()) {
+			return docSnap.data();
+		} else {
+			// docSnap.data() will be undefined in this case
+			toast.error('No such document!');
+		}
 	} catch (error) {
 		const errorCode = error.code;
 		toast.error(errorCode);
@@ -144,23 +155,30 @@ const currentUser = () => {
 };
 
 const updateUser = async (data) => {
-	const { displayName, photoURL, email, phoneNumber } = data;
+	const { displayName, photoURL, about, phoneNumber } = data;
 	try {
-		updateProfile(auth.currentUser, {
+		await updateProfile(auth.currentUser, {
 			displayName: displayName,
 			photoURL: photoURL,
 		});
 
 		const docRef = doc(db, 'users', auth.currentUser.uid);
 
-		const updatedDoc = await updateDoc(docRef, {
+		await updateDoc(docRef, {
 			displayName: displayName,
 			photoURL: photoURL,
-			email: email,
+			about: about,
 			phoneNumber: phoneNumber,
 		});
 
-		return updatedDoc;
+		const docSnap = await getDoc(docRef);
+
+		if (docSnap.exists()) {
+			return docSnap.data();
+		} else {
+			// docSnap.data() will be undefined in this case
+			alert('No such document!');
+		}
 	} catch (error) {
 		const errorCode = error.code;
 		toast.error(errorCode);
@@ -176,4 +194,5 @@ export {
 	sendPasswordReset,
 	logout,
 	currentUser,
+	updateUser,
 };

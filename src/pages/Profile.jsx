@@ -5,12 +5,11 @@ import { useSelector } from 'react-redux';
 
 export default function Profile() {
 	const { currentUser } = useSelector((state) => state.user);
-	console.log('currentUser', currentUser);
 
 	// Function to format the createdAt timestamp
 	const formatMemberSince = (timestamp) => {
 		// Assuming timestamp is in milliseconds
-		const date = new Date(Number(timestamp));
+		const date = new Date(Number(timestamp) * 1000);
 		const options = {
 			year: 'numeric',
 			month: 'long',
@@ -49,7 +48,7 @@ export default function Profile() {
 								<div className='overflow-hidden'>
 									<img
 										className='h-auto w-full mx-auto'
-										src={currentUser ? currentUser.photoURL : ''}
+										src={currentUser.photoURL || ''}
 										alt=''
 									/>
 								</div>
@@ -95,7 +94,7 @@ export default function Profile() {
 										<span>Member since</span>
 										<span className='ml-auto'>
 											{currentUser
-												? formatMemberSince(currentUser.createdAt)
+												? formatMemberSince(currentUser.timestamp.seconds)
 												: ''}
 										</span>
 									</li>
@@ -107,7 +106,7 @@ export default function Profile() {
 							<div className='bg-white p-3 shadow-sm rounded-sm w-full'>
 								<div className='flex items-center gap-5 font-semibold text-gray-900 leading-8 '>
 									<span className='tracking-wide text-xl'>About Me</span>
-									<ProfileEditor user={currentUser.providerData} />
+									<ProfileEditor user={currentUser} />
 									<UpdatePassword />
 								</div>
 								<div className='text-gray-700 py-5 w-full'>

@@ -44,6 +44,7 @@ export default function ProfileMenu() {
 	const navigate = useNavigate();
 	const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 	const { currentUser } = useSelector((state) => state.user);
+
 	const handleLogOut = () => {
 		logout();
 		dispatch(sigOutSuccess());
@@ -65,9 +66,9 @@ export default function ProfileMenu() {
 					<Avatar
 						variant='circular'
 						size='sm'
-						alt={currentUser ? currentUser.displayName : ''}
+						alt={currentUser.displayName || ''}
 						className='border border-gray-900 p-0.5'
-						src={currentUser ? currentUser.photoURL : ''}
+						src={currentUser.photoURL || ''}
 					/>
 					<ChevronDownIcon
 						strokeWidth={2.5}

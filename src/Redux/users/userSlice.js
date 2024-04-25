@@ -47,7 +47,7 @@ const userSlice = createSlice({
 			state.loading = false;
 			state.error = null;
 		},
-		updateUser: (state) => {
+		updateUsers: (state) => {
 			state.loading = true;
 		},
 		updateUserFailure: (state, action) => {
@@ -72,7 +72,7 @@ export const {
 	registerUser,
 	registerUserFailure,
 	registerUserSuccess,
-	updateUser,
+	updateUsers,
 	updateUserFailure,
 	updateUserSuccess,
 } = userSlice.actions;

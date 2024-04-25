@@ -12,7 +12,7 @@ import {
 } from './pages/Page.jsx';
 import { createBrowserRouter } from 'react-router-dom';
 import App from './App.jsx';
-import PrivateRoute from './components/Dialog/PrivateRoute.jsx';
+import PrivateRoute from './components/PrivateRoute.jsx';
 
 const router = createBrowserRouter([
 	{
