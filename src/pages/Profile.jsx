@@ -49,7 +49,7 @@ export default function Profile() {
 							<div className=' p-3 border-t-4 border-green-400 bg-blue-gray-50 backdrop-blur-sm py-8 rounded-lg'>
 								<div className='overflow-hidden'>
 									<img
-										className='h-[21.8rem] w-full mx-auto'
+										className='h-[20.4rem] w-full mx-auto'
 										src={currentUser.photoURL || ''}
 										alt=''
 									/>
@@ -163,13 +163,13 @@ export default function Profile() {
 									<span className='tracking-wide'>My Recipes</span>
 								</div>
 								<div className=' flex flex-wrap gap-6 justify-center items-center'>
-									<div className='w-72'>
+									<div className='w-64'>
 										<BlogCard2 />
 									</div>
-									<div className='w-72'>
+									<div className='w-64'>
 										<BlogCard2 />
 									</div>
-									<div className='w-72'>
+									<div className='w-64'>
 										<BlogCard2 />
 									</div>
 								</div>

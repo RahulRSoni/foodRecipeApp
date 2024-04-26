@@ -6,7 +6,7 @@ import {
 	Button,
 	IconButton,
 } from '@material-tailwind/react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Courses from './CoursesButton';
 
 import ProfileMenu from './ProfileMenu';
@@ -15,6 +15,7 @@ import { useSelector } from 'react-redux';
 export function Header() {
 	const [openNav, setOpenNav] = React.useState(false);
 	const navigate = useNavigate();
+	const location = useLocation();
 
 	const { currentUser, success } = useSelector((state) => state.user);
 
@@ -25,13 +26,21 @@ export function Header() {
 		);
 	}, []);
 
+	const pathMatchRoute = (route) => {
+		if (route === location.pathname) {
+			return true;
+		}
+	};
+
 	const navList1 = (
 		<ul className='mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6 '>
 			<Typography
 				as='li'
 				variant='small'
 				color='blue-gray'
-				className='p-1 font-semibold text-blue-gray-400'>
+				className={`p-1 font-semibold text-blue-gray-400 ${
+					pathMatchRoute('/') && 'text-black border-b-2 border-red-400'
+				}`}>
 				<a
 					href='/'
 					className='flex items-center'>
@@ -41,14 +50,18 @@ export function Header() {
 			<Typography
 				as='li'
 				variant='small'
-				color='blue-gray'>
+				className={`p-1 font-semibold text-blue-gray-400 ${
+					pathMatchRoute('/courses') && 'text-black border-b-2 border-red-400'
+				}`}>
 				<Courses />
 			</Typography>
 			<Typography
 				as='li'
 				variant='small'
 				color='blue-gray'
-				className='p-1 font-semibold text-blue-gray-400'>
+				className={`p-1 font-semibold text-blue-gray-400 ${
+					pathMatchRoute('/recipe') && 'text-black border-b-2 border-red-400'
+				}`}>
 				<a
 					href='/recipe'
 					className='flex items-center'>
@@ -64,7 +77,9 @@ export function Header() {
 				as='li'
 				variant='small'
 				color='blue-gray'
-				className='p-1 font-semibold text-blue-gray-400'>
+				className={`p-1 font-semibold text-blue-gray-400 ${
+					pathMatchRoute('/about') && 'text-black border-b-2 border-red-400'
+				}`}>
 				<a
 					href='/about'
 					className='flex items-center'>
@@ -75,7 +90,9 @@ export function Header() {
 				as='li'
 				variant='small'
 				color='blue-gray'
-				className='p-1 font-semibold text-blue-gray-400'>
+				className={`p-1 font-semibold text-blue-gray-400 ${
+					pathMatchRoute('/contact') && 'text-black border-b-2 border-red-400'
+				}`}>
 				<a
 					href='/contact'
 					className='flex items-center'>
@@ -86,7 +103,9 @@ export function Header() {
 				as='li'
 				variant='small'
 				color='blue-gray'
-				className='p-1 font-semibold text-blue-gray-400'>
+				className={`p-1 font-semibold text-blue-gray-400 ${
+					pathMatchRoute('/faq') && 'text-black border-b-2 border-red-400'
+				}`}>
 				<a
 					href='/faq'
 					className='flex items-center'>
@@ -104,7 +123,7 @@ export function Header() {
 		<div className=' w-[calc(100%)] max-h-[768px] fixed z-[100] '>
 			<Navbar className='sticky top-0 z-10 h-max max-w-full rounded-none px-4 py-2 lg:px-8 lg:py-4  drop-shadow-lg border-none'>
 				<div className='flex items-center justify-between'>
-					<div className='mr-10 hidden lg:block'>{navList1}</div>
+					<div className=' hidden lg:block'>{navList1}</div>
 					<Typography
 						as='a'
 						href='/'
@@ -115,7 +134,7 @@ export function Header() {
 							src='/logo.svg'
 						/>
 					</Typography>
-					<div className='mr-4 hidden lg:block'>{navList2}</div>
+					<div className=' hidden lg:block'>{navList2}</div>
 					<div className='flex items-center gap-x-1 '>
 						{success ? (
 							<ProfileMenu user={currentUser} />
@@ -171,7 +190,7 @@ export function Header() {
 					</div>
 					<div className='flex items-center gap-x-1'>
 						{success ? (
-							<ProfileMenu />
+							' '
 						) : (
 							<Button
 								fullWidth

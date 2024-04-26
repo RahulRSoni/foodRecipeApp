@@ -69,7 +69,7 @@ export default function Courses() {
 					/>
 				</Button>
 			</MenuHandler>
-			<MenuList className='hidden w-[65rem] grid-cols-12 gap-3 overflow-visible lg:grid bg-transparent backdrop-blur-lg rounded-lg border-0 hover:border-0'>
+			<MenuList className=' lg:w-[65rem] w-full grid-cols-12 gap-3 overflow-visible lg:grid bg-transparent backdrop-blur-lg rounded-lg border-0 hover:border-0'>
 				<Card
 					color='gray'
 					shadow={false}
@@ -84,7 +84,7 @@ export default function Courses() {
 						Courses
 					</Typography>
 				</Card>
-				<ul className='col-span-4 flex flex-wrap w-[50rem] gap-1  '>
+				<ul className='lg:col-span-4 flex flex-wrap lg:w-[50rem] w-full gap-1 '>
 					{menuItems.map(({ title, img }) => (
 						<Link
 							href='#'
@@ -93,13 +93,13 @@ export default function Courses() {
 							<MenuItem>
 								<Typography
 									variant='h6'
-									className='mb-1'>
+									className='mb-1 text-sm'>
 									{title}
 								</Typography>
 								<div>
 									<img
 										src={img}
-										className='h-40 w-40 object-cover rounded-xl '
+										className='lg:h-40 lg:w-40 w-20 h-20 object-cover rounded-xl '
 									/>
 								</div>
 							</MenuItem>
