@@ -8,7 +8,6 @@ import {
 	registerWithEmailAndPassword,
 	signInWithGoogle,
 	logInWithEmailAndPassword,
-	sendPasswordReset,
 } from '../api/auth.services.js';
 import { useForm } from 'react-hook-form';
 import {
@@ -21,15 +20,12 @@ import {
 	signInStart,
 	signInSuccess,
 } from '../Redux/users/userSlice.js';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 
 function AuthPage() {
-	const { loading, error } = useSelector((state) => state.user);
-
 	//States
 	const [isSignUpActive, setIsSignUpActive] = useState(false);
-	const [errorMessage, setErrorMessage] = useState(''); // State to store the error message
 
 	//variable Declaration
 	const navigate = useNavigate();
@@ -82,7 +78,6 @@ function AuthPage() {
 		} catch (error) {
 			toast.error('error.message');
 			dispatch(signInFailure(error.message));
-			setErrorMessage(error.message);
 		}
 	};
 
@@ -98,22 +93,6 @@ function AuthPage() {
 		} catch (error) {
 			toast.error('error.message');
 			dispatch(signInFailure(error.message));
-			setErrorMessage(error.message);
-		}
-	};
-
-	const handlePasswordReset = async (data) => {
-		try {
-			const user = await sendPasswordReset(data);
-
-			if (user) {
-				navigate('/');
-				toast.info('Send reset password link on your email id');
-			}
-		} catch (error) {
-			toast.error('error.message');
-			dispatch(signInFailure(error.message));
-			setErrorMessage(error.message);
 		}
 	};
 
@@ -207,22 +186,24 @@ function AuthPage() {
 										maxLength={20}
 									/>
 								</div>
+								<div className='flex justify-start w-full'>
+									<Typography
+										color='gray'
+										className=' text-center font-normal flex gap-2 items-center justify-center sm:hidden'>
+										Already have an account?{' '}
+										<Button
+											variant='text'
+											onClick={handleSignInClick}
+											className='p-0'>
+											Sign In
+										</Button>
+									</Typography>
+								</div>
 								<Button
 									type='submit'
-									className='bg-red-500 transition-all duration-800 ease-in rounded-full'>
+									className='bg-red-500 transition-all duration-800 ease-in rounded-full my-4'>
 									Sign Up
 								</Button>
-								<Typography
-									color='gray'
-									className='mt-4 text-center font-normal flex gap-2 items-center justify-center sm:hidden'>
-									Already have an account?{' '}
-									<Button
-										variant='text'
-										onClick={handleSignInClick}
-										className='p-0'>
-										Sign In
-									</Button>
-								</Typography>
 							</form>
 						</div>
 						<div className='form-container sign-in-container sm:w-[50%] w-full'>
@@ -287,22 +268,30 @@ function AuthPage() {
 										type='password'
 									/>
 								</div>
-								<Button
-									type='submit'
-									className='bg-red-500 transition-all duration-800 ease-in rounded-full'>
-									Log In
-								</Button>
-								<Typography
-									color='gray'
-									className='sm:hidden mt-4 text-center font-normal flex gap-2 items-center justify-center'>
-									If don't have an account?
+								<div className='flex sm:justify-end justify-between  w-full'>
+									<Typography
+										color='gray'
+										className='sm:hidden text-center font-normal flex gap-2 items-center justify-center'>
+										If don't have an account?
+										<Button
+											variant='text'
+											onClick={handleSignUpClick}
+											className='p-0 text-blue-gray-500'>
+											Sign Up
+										</Button>
+									</Typography>
 									<Button
 										variant='text'
-										onClick={handleSignUpClick}
-										className='p-0'>
-										Sign Up
+										onClick={() => navigate('/passwordReset')}
+										className='p-0 text-blue-600'>
+										Forget Password
 									</Button>
-								</Typography>
+								</div>
+								<Button
+									type='submit'
+									className='bg-red-500 transition-all duration-800 ease-in rounded-full my-4'>
+									Log In
+								</Button>
 							</form>
 						</div>
 						<div className='overlay-container hidden sm:block'>

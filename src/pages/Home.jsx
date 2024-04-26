@@ -7,6 +7,7 @@ import { Gallery } from '../components/gallery/gallery.jsx';
 import AboutCard from '../components/Card/AboutCard.jsx';
 import { BlogCard } from '../components/Card/ItemCard.jsx';
 import CardPlaceholderSkeleton from '../components/Loaders/Skeleton.jsx';
+import { Pagination } from '../components/Pagination/Pagination.jsx';
 
 function Home() {
 	return (
@@ -22,14 +23,17 @@ function Home() {
 				<Gallery />
 				<Menu />
 				<div className='grid lg:grid-cols-6  justify-items-center gap-8'>
-					<div className='grid lg:col-span-4 justify-items-center'>
-						<div className='flex flex-wrap gap-4 justify-center bg-blue-gray-50 backdrop-blur-sm py-8 rounded-lg'>
+					<div className='grid lg:col-span-4 justify-items-center bg-blue-gray-50 backdrop-blur-sm py-8'>
+						<div className='flex flex-wrap gap-4 justify-center  rounded-lg'>
 							<BlogCard />
 							<BlogCard />
 							<BlogCard />
 							<BlogCard />
 							<BlogCard />
 							<CardPlaceholderSkeleton />
+						</div>
+						<div className='flex justify-center items-center mt-10'>
+							<Pagination />
 						</div>
 					</div>
 					<div className='lg:grid lg:col-span-2 px-2 bg-blue-gray-50 backdrop-blur-sm py-8 rounded-lg'>

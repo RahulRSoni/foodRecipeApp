@@ -134,10 +134,9 @@ const logInWithEmailAndPassword = async (data) => {
 
 const sendPasswordReset = async (data) => {
 	const { email } = data;
-	try {
-		const resetPassword = await sendPasswordResetEmail(auth, email);
 
-		return resetPassword;
+	try {
+		await sendPasswordResetEmail(auth, email);
 	} catch (error) {
 		const errorCode = error.code;
 		toast.error(errorCode);

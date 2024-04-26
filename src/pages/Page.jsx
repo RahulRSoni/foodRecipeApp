@@ -8,6 +8,7 @@ import AuthPage from './Auth.jsx';
 import Profile from './Profile.jsx';
 import AddPost from './AddPost.jsx';
 import RecipePage from './Recipes.jsx';
+import PasswordReset from './PasswordReset.jsx';
 
 export {
 	About,
@@ -15,6 +16,7 @@ export {
 	Error,
 	Faq,
 	RecipeIndex,
+	PasswordReset,
 	Home,
 	AuthPage,
 	AddPost,

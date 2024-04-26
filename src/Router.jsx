@@ -8,6 +8,7 @@ import {
 	AuthPage,
 	Profile,
 	RecipePage,
+	PasswordReset,
 	AddPost,
 } from './pages/Page.jsx';
 import { createBrowserRouter } from 'react-router-dom';
@@ -18,6 +19,11 @@ const router = createBrowserRouter([
 	{
 		path: '/auth',
 		element: <AuthPage />,
+		errorElement: <Error />,
+	},
+	{
+		path: '/passwordReset',
+		element: <PasswordReset />,
 		errorElement: <Error />,
 	},
 	{
@@ -53,6 +59,7 @@ const router = createBrowserRouter([
 					},
 				],
 			},
+
 			{
 				path: '/about',
 				element: <About />,
