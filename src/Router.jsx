@@ -38,23 +38,23 @@ const router = createBrowserRouter([
 				index: true,
 			},
 			{
-				path: '/recipe:bake',
+				path: '/recipe/:id',
 				element: <PrivateRoute />,
 				errorElement: <Error />,
 				children: [
 					{
-						path: '/recipe:bake',
+						path: '/recipe/:id',
 						element: <RecipePage />,
 					},
 				],
 			},
 			{
-				path: '/addPost',
+				path: '/recipe/addPost',
 				element: <PrivateRoute />,
 				errorElement: <Error />,
 				children: [
 					{
-						path: '/addPost',
+						path: '/recipe/addPost',
 						element: <AddPost />,
 					},
 				],

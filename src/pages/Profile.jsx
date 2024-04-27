@@ -1,12 +1,17 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ProfileEditor } from '../components/Dialog/ProfileEditor';
 import UpdatePassword from '../components/Dialog/UpdatePassword';
 import { useSelector } from 'react-redux';
 import { BlogCard2 } from '../components/Card/ItemCard2';
 import { Pagination } from '../components/Pagination/Pagination';
+import { useNavigate } from 'react-router-dom';
+import { getRecipe } from '../api/store.services';
 
 export default function Profile() {
 	const { currentUser } = useSelector((state) => state.user);
+	const [data, setData] = useState(null);
+	const [loading, setLoading] = useState(true);
+	const navigate = useNavigate();
 
 	// Function to format the createdAt timestamp
 	const formatMemberSince = (timestamp) => {
@@ -33,6 +38,15 @@ export default function Profile() {
 		// Join the capitalized words back into a string
 		return capitalizedWords;
 	}
+
+	useEffect(() => {
+		const fetchUserRecipe = () => {
+			const recipeData = getRecipe();
+			setData(recipeData);
+			setLoading(false);
+		};
+		fetchUserRecipe();
+	}, [currentUser]);
 
 	return (
 		<>
@@ -144,33 +158,53 @@ export default function Profile() {
 							<div className='my-4'></div>
 
 							<div className='bg-white p-3 shadow-sm rounded-sm'>
-								<div className='flex items-center space-x-2 font-semibold text-gray-900 leading-8 mb-3'>
-									<span clas='text-green-500'>
-										<svg
-											className='h-5'
-											xmlns='http://www.w3.org/2000/svg'
-											fill='none'
-											viewBox='0 0 24 24'
-											stroke='currentColor'>
-											<path
-												strokeLinecap='round'
-												strokeLinejoin='round'
-												strokeWidth='2'
-												d='M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z'
-											/>
-										</svg>
-									</span>
-									<span className='tracking-wide'>My Recipes</span>
+								<div className='flex justify-between px-4'>
+									<div className='flex items-center space-x-2 font-semibold text-gray-900 leading-8 mb-3'>
+										<span className='text-green-500'>
+											<svg
+												className='h-5'
+												xmlns='http://www.w3.org/2000/svg'
+												fill='none'
+												viewBox='0 0 24 24'
+												stroke='currentColor'>
+												<path
+													strokeLinecap='round'
+													strokeLinejoin='round'
+													strokeWidth='2'
+													d='M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z'
+												/>
+											</svg>
+										</span>
+										<span className='tracking-wide'>My Recipes</span>
+									</div>
+									<div
+										className='flex items-center space-x-2 font-semibold text-gray-900 leading-8 mb-3 cursor-pointer'
+										onClick={() => navigate('/recipe/addPost')}>
+										<span className='text-green-500'>
+											<svg
+												xmlns='http://www.w3.org/2000/svg'
+												fill='none'
+												viewBox='0 0 24 24'
+												strokeWidth={1.5}
+												stroke='currentColor'
+												className='w-6 h-6'>
+												<path
+													strokeLinecap='round'
+													strokeLinejoin='round'
+													d='M12 4.5v15m7.5-7.5h-15'
+												/>
+											</svg>
+										</span>
+										<span className='tracking-wide'>Add More</span>
+									</div>
 								</div>
 								<div className=' flex flex-wrap gap-6 justify-center items-center'>
 									<div className='w-64'>
-										<BlogCard2 />
-									</div>
-									<div className='w-64'>
-										<BlogCard2 />
-									</div>
-									<div className='w-64'>
-										<BlogCard2 />
+										{!loading && data.length > 0 ? (
+											<Spinner />
+										) : (
+											<BlogCard2 recipes={data} />
+										)}
 									</div>
 								</div>
 								<div className='flex justify-center items-center mt-10'>

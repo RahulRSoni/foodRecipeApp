@@ -8,7 +8,8 @@ import {
 	Tooltip,
 } from '@material-tailwind/react';
 
-export function BlogCard2() {
+export function BlogCard2(data) {
+	console.log(data);
 	return (
 		<Card className='max-w-[24rem] overflow-hidden shadow-xl  '>
 			<div className='rounded-lg'>

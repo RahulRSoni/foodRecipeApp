@@ -17,6 +17,7 @@ import TimeInputs from '../RecipeFrom/TimeInputs';
 import { createRecipes, storeImages } from '../../api/store.services';
 import { useNavigate } from 'react-router-dom';
 import { FcUpload, FcHighPriority, FcApproval } from 'react-icons/fc';
+import { toast } from 'react-toastify';
 
 const PostForm = ({ post }) => {
 	const navigate = useNavigate();
@@ -89,15 +90,14 @@ const PostForm = ({ post }) => {
 				recipesImages: formData.imageURLs,
 			};
 
-			console.log(formDataWithImages);
-
-			const recipe = await createRecipes(data);
-			if (recipe) {
+			const docRef = await createRecipes(formDataWithImages);
+			if (docRef) {
 				reset();
-				navigate('/profile');
+				navigate(`/recipe/${docRef.id}`);
+				toast.success('Recipe posted successfully');
 			}
 		} catch (error) {
-			console.error('Error occurred:', error);
+			toast.error('Error occurred:', error);
 		}
 	};
 	const slugTransform = useCallback((value) => {
@@ -124,44 +124,48 @@ const PostForm = ({ post }) => {
 		<form onSubmit={handleSubmit(submit)}>
 			<div className='flex flex-col justify-center items-center p-10 mt-8 mx-10'>
 				<div className=' mb-4 flex flex-col justify-center gap-5 bg-blue-gray-50 backdrop-blur-sm py-8 rounded-lg px-6 mx-10'>
-					<Input
-						label='Title :'
-						placeholder='Title'
-						size='md'
-						name='title'
-						{...register('title', { required: true })}
-					/>
-					<Input
-						label='Slug :'
-						placeholder='Slug'
-						size='md'
-						name='slug'
-						{...register('slug', { required: true })}
-						onInput={(e) => {
-							setValue('slug', slugTransform(e.target.value), {
-								shouldValidate: true,
-							});
-						}}
-					/>
-					<Textarea
-						label='Content'
-						name='content'
-						{...register('content', { required: true })}
-					/>
-					<Controller
-						name='status'
-						control={control}
-						rules={{ required: true }}
-						render={({ field }) => (
-							<Select
-								label='Status'
-								value='active'
-								{...field}>
-								<Option value='active'>Active</Option>
-								<Option value='inactive'>Inactive </Option>
-							</Select>
-						)}
-					/>
+					<div className='flex md:flex-row flex-col gap-6'>
+						<Input
+							label='Title :'
+							placeholder='Title'
+							size='md'
+							name='title'
+							{...register('title', { required: true })}
+						/>
+						<Input
+							label='Slug :'
+							placeholder='Slug'
+							size='md'
+							name='slug'
+							{...register('slug', { required: true })}
+							onInput={(e) => {
+								setValue('slug', slugTransform(e.target.value), {
+									shouldValidate: true,
+								});
+							}}
+						/>
+					</div>
+					<div className='flex md:flex-row flex-col gap-6'>
+						<Textarea
+							label='Content'
+							name='content'
+							{...register('content', { required: true })}
+						/>
+						<Controller
+							name='status'
+							control={control}
+							rules={{ required: true }}
+							render={({ field }) => (
+								<Select
+									label='Status'
+									value='active'
+									{...field}>
+									<Option value='active'>Active</Option>
+									<Option value='inactive'>Inactive </Option>
+								</Select>
+							)}
+						/>
+					</div>
 					<Typography
 						as='h3'
 						className='font-semibold'>
@@ -289,7 +293,59 @@ const PostForm = ({ post }) => {
 						control={control}
 						register={register}
 					/>
-					<div className='relative flex gap-2 w-full'>
+					<div className='relative flex gap-2 w-full items-center'>
+						<Tooltip
+							placement='bottom'
+							className='border border-blue-gray-50 bg-white px-4 py-3 shadow-xl shadow-black/10'
+							content={
+								<div className='w-full'>
+									<Typography
+										color='blue-gray'
+										className='font-medium font-serif '>
+										Recipe Images (Any 8)
+									</Typography>
+									<ol>
+										<li>
+											<Typography
+												variant='lead'
+												color='blue-gray'
+												className='text-sm opacity-80'>
+												1 x Recipe
+											</Typography>
+										</li>
+										<li>
+											<Typography
+												variant='lead'
+												color='blue-gray'
+												className='text-sm opacity-80'>
+												1 x Ingredient
+											</Typography>
+										</li>
+										<li>
+											<Typography
+												variant='lead'
+												color='blue-gray'
+												className='text-sm opacity-80'>
+												6 x Steps-wise Images
+											</Typography>
+										</li>
+									</ol>
+								</div>
+							}>
+							<svg
+								xmlns='http://www.w3.org/2000/svg'
+								fill='none'
+								viewBox='0 0 24 24'
+								strokeWidth={1.5}
+								stroke='currentColor'
+								className='w-6 h-6'>
+								<path
+									strokeLinecap='round'
+									strokeLinejoin='round'
+									d='m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z'
+								/>
+							</svg>
+						</Tooltip>
 						<Input
 							label='Recipes Images :'
 							size='md'

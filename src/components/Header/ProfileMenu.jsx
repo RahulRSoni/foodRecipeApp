@@ -30,7 +30,7 @@ const profileMenuItems = [
 	{
 		label: 'My Recipes',
 		icon: InboxArrowDownIcon,
-		path: '/recipes',
+		path: '/recipe',
 	},
 	{
 		label: 'Help',
@@ -90,7 +90,7 @@ export default function ProfileMenu() {
 								strokeWidth: 2,
 							})}
 							<Typography
-								as='span'
+								as='button'
 								variant='small'
 								className='font-normal'
 								color='inherit'>
@@ -107,7 +107,7 @@ export default function ProfileMenu() {
 						strokeWidth: 2,
 					})}
 					<Typography
-						as='span'
+						as='button'
 						variant='small'
 						className='font-normal'
 						onClick={handleLogOut}

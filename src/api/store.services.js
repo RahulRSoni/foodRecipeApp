@@ -1,14 +1,23 @@
-import { getFirestore, snapshotEqual } from 'firebase/firestore';
+import {
+	doc,
+	getDoc,
+	getDocs,
+	getFirestore,
+	orderBy,
+	query,
+	serverTimestamp,
+	where,
+} from 'firebase/firestore';
 import app from './firebase.config';
 import { collection, addDoc } from 'firebase/firestore';
-import { currentUser } from './auth.services.js';
+import { auth, currentUser } from './auth.services.js';
 import {
-	deleteObject,
 	getDownloadURL,
 	getStorage,
 	ref,
 	uploadBytesResumable,
 } from 'firebase/storage';
+import { toast } from 'react-toastify';
 
 const db = getFirestore(app);
 const storage = getStorage(app);
@@ -16,31 +25,34 @@ const storage = getStorage(app);
 const createRecipes = async (data) => {
 	try {
 		const user = currentUser();
-		console.log(user);
-		if (user) {
+
+		const docRef = doc(db, 'users', user.uid);
+		const docSnap = await getDoc(docRef);
+
+		const timestamp = serverTimestamp();
+
+		if (docSnap.exists()) {
+			const userInfo = docSnap.data();
 			const orderCollection = collection(db, 'recipes');
 
-			const userInfo = {
-				uid: user.uid,
-				name: user.displayName,
-				email: user.email,
-				phoneNumber: user.phoneNumber,
-				avatar: user.photoURL,
-			};
-
-			const recipe = await addDoc(orderCollection, {
+			const documentRef = await addDoc(orderCollection, {
 				recipe: data,
 				user: userInfo,
+				timestamp,
 			});
 
-			console.log('Recipe posted successfully!!');
-
-			return recipe.id;
+			return documentRef;
 		} else {
 			console.log('Error: user not found or login');
 		}
 	} catch (error) {
-		console.error('Error adding document: ', error);
+		// const errorCode = error.code;
+		// const errorMessage = error.message;
+
+		// Handle error
+		toast.error(errorCode);
+
+		// console.log('errorCode:', errorCode, 'errorMessage:', errorMessage);
 	}
 };
 
@@ -67,27 +79,24 @@ const storeImages = async (file, progressCallback) => {
 	}
 };
 
-const deleteImage = async (imagePath) => {
-	try {
-		// Create a reference to the file to delete
-		const imageRef = ref(storage, imagePath);
+const getRecipe = async () => {
+	const user = auth.currentUser.user;
 
-		// Delete the file
-		await deleteObject(imageRef)
-			.then(() => {
-				// File deleted successfully
-				console.log('Image deleted successfully from Firebase Storage:');
-			})
-			.catch((error) => {
-				// Uh-oh, an error occurred!
-				console.error(
-					'Error deleting image from Firebase deleteObject:',
-					error,
-				);
-			});
-	} catch (error) {
-		console.error('Error deleting image from Firebase Storage:', error);
-	}
+	const recipeRef = collection(db, 'recipes');
+	const q = query(
+		recipeRef,
+		where('userRef', '==', user.uid),
+		orderBy('timestamp', 'desc'),
+	);
+	const querySnap = await getDocs(q);
+	const recipe = [];
+	querySnap.array.forEach((doc) => {
+		return recipe.push({
+			id: doc.id,
+			data: doc.data,
+		});
+	});
+	return recipe;
 };
 
-export { createRecipes, storeImages, deleteImage };
+export { createRecipes, storeImages, getRecipe };
