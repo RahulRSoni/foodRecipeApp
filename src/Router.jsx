@@ -4,6 +4,7 @@ import {
 	Error,
 	Faq,
 	RecipeIndex,
+	EditPost,
 	Home,
 	AuthPage,
 	Profile,
@@ -60,6 +61,17 @@ const router = createBrowserRouter([
 				],
 			},
 
+			{
+				path: '/recipe/editPost',
+				element: <PrivateRoute />,
+				errorElement: <Error />,
+				children: [
+					{
+						path: '/recipe/editPost',
+						element: <EditPost />,
+					},
+				],
+			},
 			{
 				path: '/about',
 				element: <About />,

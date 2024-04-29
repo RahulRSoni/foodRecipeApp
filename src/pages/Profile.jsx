@@ -7,6 +7,7 @@ import { Pagination } from '../components/Pagination/Pagination';
 import { useNavigate } from 'react-router-dom';
 import { getRecipe } from '../api/store.services';
 import Spinner from '../components/Spinner/Spinner.jsx';
+import { toast } from 'react-toastify';
 
 export default function Profile() {
 	const { currentUser } = useSelector((state) => state.user);
@@ -49,15 +50,22 @@ export default function Profile() {
 					setLoading(false);
 				})
 				.catch((error) => {
-					console.error('Error fetching recipes:', error);
+					toast.error('Error fetching recipes:', error);
 					setLoading(false);
 				});
 		} catch (error) {
-			console.error('Error fetching recipes:', error);
+			toast.error('Error fetching recipes:', error);
 			setLoading(false);
 		}
 	}, []);
-	console.log(data);
+
+	const onDelete = (dataId) => {
+		if (window.confirm('Are you sure, you want to delete.')) {
+		}
+	};
+	const onEdit = (dataId) => {
+		navigate(`/recipe/editPost/${dataId}`);
+	};
 	return (
 		<>
 			<div
@@ -209,10 +217,21 @@ export default function Profile() {
 									</div>
 								</div>
 								<div className=' flex flex-wrap gap-6 justify-center items-center'>
-									{data.map((data) => console.log(data))}
-									<div className='w-64'>
-										<BlogCard2 />
-									</div>
+									{loading ? (
+										<Spinner />
+									) : (
+										data?.map((data, index) => (
+											<div
+												className='w-64'
+												key={index}>
+												<BlogCard2
+													recipes={data}
+													onDelete={() => onDelete(data.id)}
+													onEdit={() => onEdit(data.id)}
+												/>
+											</div>
+										))
+									)}
 								</div>
 								<div className='flex justify-center items-center mt-10'>
 									<Pagination />

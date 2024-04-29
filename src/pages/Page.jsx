@@ -9,12 +9,13 @@ import Profile from './Profile.jsx';
 import AddPost from './AddPost.jsx';
 import RecipePage from './Recipes.jsx';
 import PasswordReset from './PasswordReset.jsx';
-
+import EditPost from './EditPost.jsx';
 export {
 	About,
 	Contact,
 	Error,
 	Faq,
+	EditPost,
 	RecipeIndex,
 	PasswordReset,
 	Home,

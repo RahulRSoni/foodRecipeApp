@@ -1,4 +1,5 @@
 import {
+	FieldPath,
 	doc,
 	getDoc,
 	getDocs,
@@ -26,7 +27,7 @@ const storage = getStorage(app);
 
 const createRecipes = async (data) => {
 	try {
-		const user = currentUser();
+		const user = auth.currentUser;
 
 		const docRef = doc(db, 'users', user.uid);
 		const docSnap = await getDoc(docRef);
@@ -48,13 +49,13 @@ const createRecipes = async (data) => {
 			console.log('Error: user not found or login');
 		}
 	} catch (error) {
-		// const errorCode = error.code;
-		// const errorMessage = error.message;
+		const errorCode = error.code;
+		const errorMessage = error.message;
 
 		// Handle error
 		toast.error(errorCode);
 
-		// console.log('errorCode:', errorCode, 'errorMessage:', errorMessage);
+		console.log('errorCode:', errorCode, 'errorMessage:', errorMessage);
 	}
 };
 
@@ -90,13 +91,25 @@ const getRecipe = async (userEmail) => {
 
 	try {
 		const querySnapshot = await getDocs(q);
+		const combinedRecipes = [];
 		const recipes = [];
+		const recipeId = [];
 		querySnapshot.forEach((doc) => {
-			recipes.push(doc.data());
+			const recipeData = doc.data();
+			const recipeId = doc.id;
+
+			// Combine recipe data with ID
+			const combinedRecipe = {
+				id: recipeId,
+				...recipeData,
+			};
+
+			combinedRecipes.push(combinedRecipe);
 		});
-		return recipes;
+
+		return combinedRecipes;
 	} catch (error) {
-		console.error('Error getting recipes:', error);
+		toast.error('Error getting recipes:', error);
 		throw error;
 	}
 };
