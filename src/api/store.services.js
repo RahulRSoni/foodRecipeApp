@@ -1,5 +1,6 @@
 import {
 	FieldPath,
+	deleteDoc,
 	doc,
 	getDoc,
 	getDocs,
@@ -114,4 +115,16 @@ const getRecipe = async (userEmail) => {
 	}
 };
 
-export { createRecipes, storeImages, getRecipe };
+const deleteRecipe = async (recipeId, data) => {
+	try {
+		deleteDoc(doc(db, 'recipes', recipeId));
+		const updatedRecipe = data.filter((recipe) => recipe.id === recipeId);
+
+		return updatedRecipe;
+	} catch (error) {
+		toast.error('Error getting recipes:', error);
+		throw error;
+	}
+};
+
+export { createRecipes, storeImages, getRecipe, deleteRecipe };

@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { BlogCard2 } from '../components/Card/ItemCard2';
 import { Pagination } from '../components/Pagination/Pagination';
 import { useNavigate } from 'react-router-dom';
-import { getRecipe } from '../api/store.services';
+import { deleteRecipe, getRecipe } from '../api/store.services';
 import Spinner from '../components/Spinner/Spinner.jsx';
 import { toast } from 'react-toastify';
 
@@ -59,9 +59,12 @@ export default function Profile() {
 		}
 	}, []);
 
-	const onDelete = (dataId) => {
+	const onDelete = async (dataId) => {
 		if (window.confirm('Are you sure, you want to delete.')) {
+			const updatedRecipe = await deleteRecipe(dataId, data);
+			setData(updatedRecipe);
 		}
+		toast.success('Recipe has been delete successfully');
 	};
 	const onEdit = (dataId) => {
 		navigate(`/recipe/editPost/${dataId}`);
@@ -226,8 +229,8 @@ export default function Profile() {
 												key={index}>
 												<BlogCard2
 													recipes={data}
-													onDelete={() => onDelete(data.id)}
-													onEdit={() => onEdit(data.id)}
+													onDelete={() => onDelete(data)}
+													onEdit={() => onEdit(data)}
 												/>
 											</div>
 										))
