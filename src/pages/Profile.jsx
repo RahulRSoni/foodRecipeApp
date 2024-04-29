@@ -6,6 +6,7 @@ import { BlogCard2 } from '../components/Card/ItemCard2';
 import { Pagination } from '../components/Pagination/Pagination';
 import { useNavigate } from 'react-router-dom';
 import { getRecipe } from '../api/store.services';
+import Spinner from '../components/Spinner/Spinner.jsx';
 
 export default function Profile() {
 	const { currentUser } = useSelector((state) => state.user);
@@ -40,14 +41,23 @@ export default function Profile() {
 	}
 
 	useEffect(() => {
-		const fetchUserRecipe = () => {
-			const recipeData = getRecipe();
-			setData(recipeData);
+		const userEmail = currentUser.email;
+		try {
+			getRecipe(userEmail)
+				.then((recipeData) => {
+					setData(recipeData);
+					setLoading(false);
+				})
+				.catch((error) => {
+					console.error('Error fetching recipes:', error);
+					setLoading(false);
+				});
+		} catch (error) {
+			console.error('Error fetching recipes:', error);
 			setLoading(false);
-		};
-		fetchUserRecipe();
-	}, [currentUser]);
-
+		}
+	}, []);
+	console.log(data);
 	return (
 		<>
 			<div
@@ -199,12 +209,9 @@ export default function Profile() {
 									</div>
 								</div>
 								<div className=' flex flex-wrap gap-6 justify-center items-center'>
+									{data.map((data) => console.log(data))}
 									<div className='w-64'>
-										{!loading && data.length > 0 ? (
-											<Spinner />
-										) : (
-											<BlogCard2 recipes={data} />
-										)}
+										<BlogCard2 />
 									</div>
 								</div>
 								<div className='flex justify-center items-center mt-10'>

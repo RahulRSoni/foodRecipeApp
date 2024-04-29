@@ -2,6 +2,7 @@ import {
 	doc,
 	getDoc,
 	getDocs,
+	getDocsFromServer,
 	getFirestore,
 	orderBy,
 	query,
@@ -10,7 +11,6 @@ import {
 } from 'firebase/firestore';
 import app from './firebase.config';
 import { collection, addDoc } from 'firebase/firestore';
-import { auth, currentUser } from './auth.services.js';
 import {
 	getDownloadURL,
 	getStorage,
@@ -18,7 +18,9 @@ import {
 	uploadBytesResumable,
 } from 'firebase/storage';
 import { toast } from 'react-toastify';
+import { getAuth } from 'firebase/auth';
 
+const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app);
 
@@ -79,24 +81,24 @@ const storeImages = async (file, progressCallback) => {
 	}
 };
 
-const getRecipe = async () => {
-	const user = auth.currentUser.user;
-
-	const recipeRef = collection(db, 'recipes');
+const getRecipe = async (userEmail) => {
 	const q = query(
-		recipeRef,
-		where('userRef', '==', user.uid),
+		collection(db, 'recipes'),
+		where('user.email', '==', userEmail),
 		orderBy('timestamp', 'desc'),
 	);
-	const querySnap = await getDocs(q);
-	const recipe = [];
-	querySnap.array.forEach((doc) => {
-		return recipe.push({
-			id: doc.id,
-			data: doc.data,
+
+	try {
+		const querySnapshot = await getDocs(q);
+		const recipes = [];
+		querySnapshot.forEach((doc) => {
+			recipes.push(doc.data());
 		});
-	});
-	return recipe;
+		return recipes;
+	} catch (error) {
+		console.error('Error getting recipes:', error);
+		throw error;
+	}
 };
 
 export { createRecipes, storeImages, getRecipe };

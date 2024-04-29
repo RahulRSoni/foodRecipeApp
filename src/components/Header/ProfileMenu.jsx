@@ -90,7 +90,6 @@ export default function ProfileMenu() {
 								strokeWidth: 2,
 							})}
 							<Typography
-								as='button'
 								variant='small'
 								className='font-normal'
 								color='inherit'>
@@ -107,7 +106,6 @@ export default function ProfileMenu() {
 						strokeWidth: 2,
 					})}
 					<Typography
-						as='button'
 						variant='small'
 						className='font-normal'
 						onClick={handleLogOut}
