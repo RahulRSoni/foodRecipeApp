@@ -34,7 +34,7 @@ function Home() {
 								<Pagination />
 							</div>
 						</div>
-						<div className='lg:grid lg:col-span-2 px-2 bg-blue-gray-50 backdrop-blur-sm py-8 rounded-lg'>
+						<div className='lg:grid lg:col-span-2 px-2 bg-blue-gray-50 backdrop-blur-sm py-8 rounded-lg hidden'>
 							<AboutCard />
 						</div>
 					</div>

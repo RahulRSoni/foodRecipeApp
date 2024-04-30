@@ -69,7 +69,7 @@ const TimeInputs = ({ control, register }) => {
 				</div>
 				<div>
 					<Input
-						label='Coke Time :' // Assuming this is a typo for "Cooking Time"
+						label='Cook Time :' // Assuming this is a typo for "Cooking Time"
 						type='time'
 						size='md'
 						placeholder='How much time to cooking.'

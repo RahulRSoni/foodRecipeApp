@@ -24,7 +24,7 @@ export function BlogCard2({ recipes, onDelete, onEdit }) {
 
 	return (
 		<>
-			<Card className='max-w-[24rem] overflow-hidden shadow-xl '>
+			<Card className='max-w-[24rem] overflow-hidden shadow-2xl '>
 				<div className='rounded-lg'>
 					<CardHeader
 						floated={false}
@@ -34,6 +34,7 @@ export function BlogCard2({ recipes, onDelete, onEdit }) {
 						<img
 							src={recipe.recipesImages[0]}
 							alt='recipe images'
+							className='h-64 w-full object-cover'
 						/>
 					</CardHeader>
 				</div>

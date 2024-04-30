@@ -28,7 +28,7 @@ function Ingredient({ control, register, setValue }) {
 				id: nextIndex,
 				quantity: quantity === 'None' ? null : quantity,
 				volume: vol === 'None' ? null : vol,
-				unit: unit ? unit : 'cup',
+				unit: unit == 'None' ? null : unit,
 				ingredient: input.trim(),
 			};
 
@@ -46,10 +46,29 @@ function Ingredient({ control, register, setValue }) {
 		setTodo(newTodo);
 	};
 
-	const units = ['cup', 'tbsp', 'grams', 'kg', 'ltr', 'ml'];
+	const units = ['None', 'cup', 'tbsp', 'grams', 'kg', 'ltr', 'ml'];
 	const quantities = [
 		'None',
-		...Array.from({ length: 10 }, (_, i) => String(i + 1)),
+		1,
+		2,
+		3,
+		4,
+		5,
+		6,
+		7,
+		8,
+		9,
+		10,
+		20,
+		30,
+		40,
+		50,
+		100,
+		200,
+		250,
+		500,
+		750,
+		1000,
 	];
 	const vols = ['None', '½', '¼', '¾'];
 
@@ -123,18 +142,18 @@ function Ingredient({ control, register, setValue }) {
 					<Menu placement='bottom-start'>
 						<MenuHandler>
 							<section
-								variant='text'
+								variant='number'
 								color='blue-gray'
 								className='flex h-auto py-1 w-5 justify-center items-center rounded border border-blue-gray-300 bg-blue-gray-500/10 px-8'>
 								{quantity}
 							</section>
 						</MenuHandler>
-						<MenuList>
+						<MenuList className='overflow-y-scroll h-60'>
 							{quantities.map((quantity) => (
 								<MenuItem
 									key={quantity}
 									value={quantity}
-									className='flex items-center gap-2'
+									className='flex items-center gap-2 '
 									onClick={() => setQuantity(quantity)}>
 									{quantity}
 								</MenuItem>

@@ -62,7 +62,15 @@ const PostForm = ({ post }) => {
 		});
 	};
 
-	const { register, handleSubmit, watch, setValue, control, reset } = useForm({
+	const {
+		register,
+		handleSubmit,
+		watch,
+		setValue,
+		control,
+		reset,
+		formState: { isDirty, isValid },
+	} = useForm({
 		defaultValues: {
 			title: post?.title || '',
 			slug: post?.slug || '',
@@ -413,6 +421,7 @@ const PostForm = ({ post }) => {
 					<Button
 						size='sm'
 						type='submit'
+						
 						className=' bg-green-500'>
 						{post ? 'Update' : 'Submit'}
 					</Button>
