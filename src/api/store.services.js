@@ -1,10 +1,8 @@
 import {
-	FieldPath,
 	deleteDoc,
 	doc,
 	getDoc,
 	getDocs,
-	getDocsFromServer,
 	getFirestore,
 	orderBy,
 	query,
@@ -51,12 +49,12 @@ const createRecipes = async (data) => {
 		}
 	} catch (error) {
 		const errorCode = error.code;
-		const errorMessage = error.message;
+		// const errorMessage = error.message;
 
 		// Handle error
 		toast.error(errorCode);
 
-		console.log('errorCode:', errorCode, 'errorMessage:', errorMessage);
+		// console.log('errorCode:', errorCode, 'errorMessage:', errorMessage);
 	}
 };
 
@@ -78,8 +76,13 @@ const storeImages = async (file, progressCallback) => {
 		const downloadURL = getDownloadURL(uploadTask.snapshot.ref);
 		return downloadURL;
 	} catch (error) {
-		// If any error occurs during the process, catch it and throw it
-		throw error;
+		const errorCode = error.code;
+		// const errorMessage = error.message;
+
+		// Handle error
+		toast.error(errorCode);
+
+		// console.log('errorCode:', errorCode, 'errorMessage:', errorMessage);
 	}
 };
 
@@ -110,21 +113,48 @@ const getRecipe = async (userEmail) => {
 
 		return combinedRecipes;
 	} catch (error) {
-		toast.error('Error getting recipes:', error);
-		throw error;
+		const errorCode = error.code;
+		// const errorMessage = error.message;
+
+		// Handle error
+		toast.error(errorCode);
+
+		// console.log('errorCode:', errorCode, 'errorMessage:', errorMessage);
 	}
 };
 
-const deleteRecipe = async (recipeId, data) => {
+const deleteRecipe = async (recipe) => {
 	try {
-		deleteDoc(doc(db, 'recipes', recipeId));
-		const updatedRecipe = data.filter((recipe) => recipe.id === recipeId);
-
-		return updatedRecipe;
+		await deleteDoc(doc(db, 'recipes', recipe.id));
+		return recipe.id; // Return the ID of the deleted recipe
 	} catch (error) {
-		toast.error('Error getting recipes:', error);
-		throw error;
+		const errorCode = error.code;
+		// const errorMessage = error.message;
+
+		// Handle error
+		toast.error(errorCode);
+
+		// console.log('errorCode:', errorCode, 'errorMessage:', errorMessage);
 	}
 };
 
-export { createRecipes, storeImages, getRecipe, deleteRecipe };
+const editRecipe = async (paramsId) => {
+	try {
+		const docRef = doc(db, 'recipes', paramsId);
+		const docSnap = await getDoc(docRef);
+		if (docSnap.exists()) {
+			const recipe = docSnap.data();
+			return recipe;
+		}
+	} catch (error) {
+		const errorCode = error.code;
+		// const errorMessage = error.message;
+
+		// Handle error
+		toast.error(errorCode);
+
+		// console.log('errorCode:', errorCode, 'errorMessage:', errorMessage);
+	}
+};
+
+export { createRecipes, storeImages, getRecipe, deleteRecipe, editRecipe };

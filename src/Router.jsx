@@ -39,12 +39,12 @@ const router = createBrowserRouter([
 				index: true,
 			},
 			{
-				path: '/recipe/:id',
+				path: '/recipe',
 				element: <PrivateRoute />,
 				errorElement: <Error />,
 				children: [
 					{
-						path: '/recipe/:id',
+						path: '/recipe/:recipeId',
 						element: <RecipePage />,
 					},
 				],
@@ -62,12 +62,12 @@ const router = createBrowserRouter([
 			},
 
 			{
-				path: '/recipe/editPost',
+				path: '/recipe/',
 				element: <PrivateRoute />,
 				errorElement: <Error />,
 				children: [
 					{
-						path: '/recipe/editPost',
+						path: '/recipe/editPost/:recipeId',
 						element: <EditPost />,
 					},
 				],

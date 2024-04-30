@@ -59,15 +59,32 @@ export default function Profile() {
 		}
 	}, []);
 
-	const onDelete = async (dataId) => {
-		if (window.confirm('Are you sure, you want to delete.')) {
-			const updatedRecipe = await deleteRecipe(dataId, data);
-			setData(updatedRecipe);
+	const onDelete = async (recipe) => {
+		if (window.confirm('Are you sure you want to delete?')) {
+			try {
+				const recipeId = await deleteRecipe(recipe);
+
+				// Ensure that data is an array before attempting to filter it
+				if (Array.isArray(data)) {
+					// Filter out the deleted recipe from the data array using its ID
+					const updatedRecipes = data.filter(
+						(recipe) => recipe.id !== recipeId,
+					);
+					setData(updatedRecipes);
+					toast.success('Recipe has been deleted successfully');
+				} else {
+					console.error('Data is not an array:', data);
+					toast.error('Failed to delete recipe. Please try again.');
+				}
+			} catch (error) {
+				console.error('Error deleting recipe:', error);
+				toast.error('Failed to delete recipe. Please try again.');
+			}
 		}
-		toast.success('Recipe has been delete successfully');
 	};
-	const onEdit = (dataId) => {
-		navigate(`/recipe/editPost/${dataId}`);
+
+	const onEdit = (data) => {
+		navigate(`/recipe/editPost/${data.id}`);
 	};
 	return (
 		<>
@@ -223,14 +240,14 @@ export default function Profile() {
 									{loading ? (
 										<Spinner />
 									) : (
-										data?.map((data, index) => (
+										data?.map((recipe, index) => (
 											<div
 												className='w-64'
 												key={index}>
 												<BlogCard2
-													recipes={data}
-													onDelete={() => onDelete(data)}
-													onEdit={() => onEdit(data)}
+													recipes={recipe}
+													onDelete={() => onDelete(recipe)}
+													onEdit={() => onEdit(recipe)}
 												/>
 											</div>
 										))
