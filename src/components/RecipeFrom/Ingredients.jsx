@@ -9,12 +9,20 @@ import {
 	MenuList,
 	MenuItem,
 } from '@material-tailwind/react';
+import { useController } from 'react-hook-form';
 
 function Ingredient({ control, register, setValue }) {
+	const {
+		field: { value },
+	} = useController({
+		name: 'ingredient',
+		control,
+	});
+
 	const [quantity, setQuantity] = useState('None');
 	const [unit, setUnit] = useState('cup');
 	const [vol, setVol] = useState('None');
-	const [todo, setTodo] = useState([]);
+	const [todo, setTodo] = useState(value || []);
 	const [input, setInput] = useState('');
 	const [nextIndex, setNextIndex] = useState(0);
 
@@ -205,6 +213,7 @@ function Ingredient({ control, register, setValue }) {
 					<Input
 						type='text'
 						size='md'
+						required
 						label='ingredient'
 						value={input}
 						onChange={({ target }) => setInput(target.value)}
@@ -247,28 +256,51 @@ function Ingredient({ control, register, setValue }) {
 			</div>
 
 			<ul className='flex flex-wrap gap-1'>
-				{todo.map((todo) => (
-					<li
-						key={todo.id}
-						className='mb-2 flex border-r-2 border-blue-gray-100'>
-						{todo.quantity} {todo.volume && todo.volume} {todo.unit}{' '}
-						{todo.ingredient}
-						<svg
-							xmlns='http://www.w3.org/2000/svg'
-							fill='none'
-							viewBox='0 0 24 24'
-							strokeWidth={1.5}
-							stroke='red'
-							className='w-6 h-6 mr-2'
-							onClick={() => handleDelete(todo.id)}>
-							<path
-								strokeLinecap='round'
-								strokeLinejoin='round'
-								d='M6 18 18 6M6 6l12 12'
-							/>
-						</svg>
-					</li>
-				))}
+				{Array.isArray(todo)
+					? todo.map((todo) => (
+							<li
+								key={todo.id}
+								className='mb-2 flex border-r-2 border-blue-gray-100'>
+								{todo.quantity} {todo.volume && todo.volume} {todo.unit}{' '}
+								{todo.ingredient}
+								<svg
+									xmlns='http://www.w3.org/2000/svg'
+									fill='none'
+									viewBox='0 0 24 24'
+									strokeWidth={1.5}
+									stroke='red'
+									className='w-6 h-6 mr-2'
+									onClick={() => handleDelete(todo.id)}>
+									<path
+										strokeLinecap='round'
+										strokeLinejoin='round'
+										d='M6 18 18 6M6 6l12 12'
+									/>
+								</svg>
+							</li>
+					  ))
+					: todo && (
+							<li
+								key={todo.id}
+								className='mb-2 flex border-r-2 border-blue-gray-100'>
+								{todo.quantity} {todo.volume && todo.volume} {todo.unit}{' '}
+								{todo.ingredient}
+								<svg
+									xmlns='http://www.w3.org/2000/svg'
+									fill='none'
+									viewBox='0 0 24 24'
+									strokeWidth={1.5}
+									stroke='red'
+									className='w-6 h-6 mr-2'
+									onClick={() => handleDelete(todo.id)}>
+									<path
+										strokeLinecap='round'
+										strokeLinejoin='round'
+										d='M6 18 18 6M6 6l12 12'
+									/>
+								</svg>
+							</li>
+					  )}
 			</ul>
 		</div>
 	);

@@ -62,32 +62,28 @@ const PostForm = ({ post }) => {
 		});
 	};
 
-	const {
-		register,
-		handleSubmit,
-		watch,
-		setValue,
-		control,
-		reset,
-		formState: { isDirty, isValid },
-	} = useForm({
-		defaultValues: {
-			title: post?.title || '',
-			slug: post?.slug || '',
-			content: post?.content || '',
-			status: post?.status || 'active',
-			keyword: post?.keyword || '',
-			cuisine: post?.cuisine || '',
-			course: post?.course || '',
-			calories: post?.calories || '',
-			serving: post?.serving || '',
-			preparingTime: post?.preparingTime || '',
-			cockingTime: post?.cockingTime || '',
-			restingTime: post?.restingTime || '',
-			totalTime: post?.totalTime || '',
-			bakingTime: post?.bakingTime || '',
-		},
-	});
+	const { register, handleSubmit, watch, setValue, control, reset, formState } =
+		useForm({
+			defaultValues: {
+				title: post?.title || '',
+				slug: post?.slug || '',
+				content: post?.content || '',
+				status: post?.status || 'active',
+				keyword: post?.keyword || '',
+				cuisine: post?.cuisine || '',
+				course: post?.course || '',
+				calories: post?.calories || '',
+				serving: post?.serving || '',
+				preparingTime: post?.preparingTime || '',
+				ingredient: post?.ingredient || '',
+				recipesImages: post?.recipesImages || [],
+				commentBox: post?.commentBox || '',
+				cockingTime: post?.cockingTime || '',
+				restingTime: post?.restingTime || '',
+				totalTime: post?.totalTime || '',
+				bakingTime: post?.bakingTime || '',
+			},
+		});
 
 	const submit = async (data) => {
 		// Asynchronous operation, like submitting the form data to a server
@@ -138,6 +134,7 @@ const PostForm = ({ post }) => {
 							placeholder='Title'
 							size='md'
 							name='title'
+							required
 							{...register('title', { required: true })}
 						/>
 						<Input
@@ -157,6 +154,7 @@ const PostForm = ({ post }) => {
 						<Textarea
 							label='Content'
 							name='content'
+							required
 							{...register('content', { required: true })}
 						/>
 						<Controller
@@ -167,6 +165,7 @@ const PostForm = ({ post }) => {
 								<Select
 									label='Status'
 									value='active'
+									required
 									{...field}>
 									<Option value='active'>Active</Option>
 									<Option value='inactive'>Inactive </Option>
@@ -204,6 +203,7 @@ const PostForm = ({ post }) => {
 								rules={{ required: true }}
 								render={({ field }) => (
 									<Select
+										required
 										label='Keywords'
 										animate={{
 											mount: { y: 0 },
@@ -236,6 +236,7 @@ const PostForm = ({ post }) => {
 								rules={{ required: true }}
 								render={({ field }) => (
 									<Select
+										required
 										label='Courses'
 										animate={{
 											mount: { y: 0 },
@@ -261,6 +262,7 @@ const PostForm = ({ post }) => {
 								rules={{ required: true }}
 								render={({ field }) => (
 									<Select
+										required
 										label='Cuisines'
 										animate={{
 											mount: { y: 0 },
@@ -358,6 +360,7 @@ const PostForm = ({ post }) => {
 							label='Recipes Images :'
 							size='md'
 							type='file'
+							required
 							name='recipesImages'
 							multiple={8} // Limiting to 6 images
 							accept='image/png, image/jpg, image/jpeg, image/gif'
@@ -401,15 +404,15 @@ const PostForm = ({ post }) => {
 								{formData.imageURLs.map((url, index) => (
 									<li
 										key={index}
-										className='flex items-center'>
+										className='flex items-center relative'>
 										<img
 											src={url}
 											alt='Uploaded'
 											className='w-28 h-24 mr-2 mt-4 object-cover'
 										/>
 										<IconButton
-											onClick={() => handleDeleteImage(index)}
-											className='-mt-20 -ml-7 rounded-full p-0 bg-transparent text-blue-gray-800 text-md font-semibold backdrop-blur-sm'>
+											onClick={() => handleDeleteImage(url)}
+											className='absolute -top-2 -right-2 rounded-full p-0 bg-red-500 text-white text-xs font-semibold'>
 											<span>X</span>
 										</IconButton>
 									</li>
@@ -421,7 +424,7 @@ const PostForm = ({ post }) => {
 					<Button
 						size='sm'
 						type='submit'
-						
+						disabled={!formState.isValid}
 						className=' bg-green-500'>
 						{post ? 'Update' : 'Submit'}
 					</Button>
