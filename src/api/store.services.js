@@ -7,6 +7,7 @@ import {
 	orderBy,
 	query,
 	serverTimestamp,
+	updateDoc,
 	where,
 } from 'firebase/firestore';
 import app from './firebase.config';
@@ -157,4 +158,38 @@ const editRecipe = async (paramsId) => {
 	}
 };
 
-export { createRecipes, storeImages, getRecipe, deleteRecipe, editRecipe };
+const updateRecipe = async (paramsId, data) => {
+	try {
+		const docRef = doc(db, 'recipes', paramsId);
+		const docSnap = await getDoc(docRef);
+
+		if (docSnap.exists()) {
+			await updateDoc(docRef, { recipe: data });
+			const updatedDocSnap = await getDoc(docRef);
+			const updatedRecipe = updatedDocSnap.data();
+			return updatedRecipe;
+		} else {
+			toast.error('Document does not exist');
+			// Handle the case where the document doesn't exist
+			return null;
+		}
+	} catch (error) {
+		// const errorCode = error.code;
+		const errorMessage = error.message;
+
+		// Handle error
+		toast.error(errorMessage);
+
+		// console.log('errorCode:', errorCode, 'errorMessage:', errorMessage);
+		// return null;
+	}
+};
+
+export {
+	createRecipes,
+	storeImages,
+	getRecipe,
+	deleteRecipe,
+	editRecipe,
+	updateRecipe,
+};

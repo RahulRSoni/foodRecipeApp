@@ -14,18 +14,23 @@ import { Controller, useForm } from 'react-hook-form';
 import { CommentBox } from '../RecipeFrom/CommentBox';
 import Ingredient from '../RecipeFrom/Ingredients';
 import TimeInputs from '../RecipeFrom/TimeInputs';
-import { createRecipes, storeImages } from '../../api/store.services';
+import {
+	createRecipes,
+	storeImages,
+	updateRecipe,
+} from '../../api/store.services';
 import { useNavigate } from 'react-router-dom';
 import { FcUpload, FcHighPriority, FcApproval } from 'react-icons/fc';
 import { toast } from 'react-toastify';
 
-const PostForm = ({ post }) => {
+const PostForm = ({ posts, paramsId }) => {
 	const navigate = useNavigate();
 	// const userData = useSelector((state) => state.userData);
 	const [files, setFiles] = useState([]);
 	const [formData, setFormData] = useState({ imageURLs: [] });
 	const [imageUploadError, setImageUploadError] = useState(false);
 	const [imageUploadPercentage, setImageUploadPercentage] = useState('');
+	const [post, setPost] = useState(posts || {});
 
 	const handleFileUpload = (e) => {
 		if (files.length > 0 && files.length + formData.imageURLs.length < 9) {
@@ -53,13 +58,6 @@ const PostForm = ({ post }) => {
 		} else {
 			setImageUploadError('You can only upload 8 images.');
 		}
-	};
-
-	const handleDeleteImage = (imagePath) => {
-		setFormData({
-			...formData,
-			imageURLs: formData.imageURLs.filter((image) => image !== imagePath),
-		});
 	};
 
 	const { register, handleSubmit, watch, setValue, control, reset, formState } =
@@ -91,17 +89,25 @@ const PostForm = ({ post }) => {
 		try {
 			const formDataWithImages = {
 				...data,
-				recipesImages: formData.imageURLs,
+				recipesImages: [...(post.recipesImages || [])],
 			};
 
-			const docRef = await createRecipes(formDataWithImages);
-			if (docRef) {
-				reset();
-				navigate(`/recipe/${docRef.id}`);
-				toast.success('Recipe posted successfully');
+			if (paramsId) {
+				const docRef = await updateRecipe(paramsId, formDataWithImages);
+				if (docRef) {
+					navigate(`/profile`);
+					toast.success('Recipe post updated successfully');
+				}
+			} else {
+				const docRef = await createRecipes(formDataWithImages);
+				if (docRef) {
+					reset();
+					navigate(`/recipe/${docRef.id}`);
+					toast.success('Recipe post created successfully');
+				}
 			}
 		} catch (error) {
-			toast.error('Error occurred:', error);
+			toast.error('Something want wrong while creating post');
 		}
 	};
 	const slugTransform = useCallback((value) => {
@@ -110,6 +116,25 @@ const PostForm = ({ post }) => {
 
 		return '';
 	}, []);
+
+	const handleDeleteExistingImage = (index) => {
+		setPost((prevPost) => {
+			const updatedPost = {
+				...prevPost,
+				recipesImages: prevPost.recipesImages.filter((_, i) => i !== index),
+			};
+			return updatedPost;
+		});
+	};
+
+	const handleDeleteImage = (index) => {
+		if (Array.isArray(formData.imageURLs)) {
+			setFormData({
+				...formData,
+				imageURLs: formData.imageURLs.filter((_, i) => i !== index),
+			});
+		}
+	};
 
 	useEffect(() => {
 		const subscription = watch((value, { name }) => {
@@ -360,7 +385,6 @@ const PostForm = ({ post }) => {
 							label='Recipes Images :'
 							size='md'
 							type='file'
-							required
 							name='recipesImages'
 							multiple={8} // Limiting to 6 images
 							accept='image/png, image/jpg, image/jpeg, image/gif'
@@ -411,7 +435,30 @@ const PostForm = ({ post }) => {
 											className='w-28 h-24 mr-2 mt-4 object-cover'
 										/>
 										<IconButton
-											onClick={() => handleDeleteImage(url)}
+											onClick={() => handleDeleteImage(index)}
+											className='absolute -top-2 -right-2 rounded-full p-0 bg-red-500 text-white text-xs font-semibold'>
+											<span>X</span>
+										</IconButton>
+									</li>
+								))}
+							</ul>
+						</div>
+					)}
+					{post && post.recipesImages && post.recipesImages.length > 0 && (
+						<div>
+							<Typography variant='h6'>Existing Images:</Typography>
+							<ul className='flex flex-wrap justify-evenly'>
+								{post.recipesImages.map((url, index) => (
+									<li
+										key={`existing-${index}`}
+										className='flex items-center relative'>
+										<img
+											src={url}
+											alt='Uploaded'
+											className='w-28 h-24 mr-2 mt-4 object-cover'
+										/>
+										<IconButton
+											onClick={() => handleDeleteExistingImage(index)}
 											className='absolute -top-2 -right-2 rounded-full p-0 bg-red-500 text-white text-xs font-semibold'>
 											<span>X</span>
 										</IconButton>

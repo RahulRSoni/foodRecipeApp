@@ -213,7 +213,6 @@ function Ingredient({ control, register, setValue }) {
 					<Input
 						type='text'
 						size='md'
-						required
 						label='ingredient'
 						value={input}
 						onChange={({ target }) => setInput(target.value)}
