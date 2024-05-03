@@ -3,9 +3,9 @@ import { ProfileEditor } from '../components/Dialog/ProfileEditor';
 import UpdatePassword from '../components/Dialog/UpdatePassword';
 import { useSelector } from 'react-redux';
 import { BlogCard2 } from '../components/Card/ItemCard2';
-import { Pagination } from '../components/Pagination/Pagination';
+
 import { useNavigate } from 'react-router-dom';
-import { deleteRecipe, getRecipe } from '../api/store.services';
+import { deleteRecipe, getUserRecipe } from '../api/store.services';
 import Spinner from '../components/Spinner/Spinner.jsx';
 import { toast } from 'react-toastify';
 import { Button } from '@material-tailwind/react';
@@ -45,7 +45,7 @@ export default function Profile() {
 	useEffect(() => {
 		const userEmail = currentUser.email;
 		try {
-			getRecipe(userEmail)
+			getUserRecipe(userEmail)
 				.then((recipeData) => {
 					setData(recipeData);
 					setLoading(false);

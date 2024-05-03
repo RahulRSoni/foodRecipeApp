@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PostForm from '../components/PostForm/PostForm';
 import Spinner from '../components/Spinner/Spinner';
 import { useParams } from 'react-router-dom';
-import { editRecipe } from '../api/store.services';
+import { getIdWiseRecipeData } from '../api/store.services';
 import { toast } from 'react-toastify';
 
 function EditPost() {
@@ -16,7 +16,7 @@ function EditPost() {
 			if (paramsId) {
 				setLoading(true);
 
-				editRecipe(paramsId)
+				getIdWiseRecipeData(paramsId)
 					.then((recipeData) => {
 						setRecipes(recipeData);
 						setLoading(false);

@@ -87,7 +87,7 @@ const storeImages = async (file, progressCallback) => {
 	}
 };
 
-const getRecipe = async (userEmail) => {
+const getUserRecipe = async (userEmail) => {
 	const q = query(
 		collection(db, 'recipes'),
 		where('user.email', '==', userEmail),
@@ -139,7 +139,7 @@ const deleteRecipe = async (recipe) => {
 	}
 };
 
-const editRecipe = async (paramsId) => {
+const getIdWiseRecipeData = async (paramsId) => {
 	try {
 		const docRef = doc(db, 'recipes', paramsId);
 		const docSnap = await getDoc(docRef);
@@ -188,8 +188,8 @@ const updateRecipe = async (paramsId, data) => {
 export {
 	createRecipes,
 	storeImages,
-	getRecipe,
+	getUserRecipe,
 	deleteRecipe,
-	editRecipe,
+	getIdWiseRecipeData,
 	updateRecipe,
 };
