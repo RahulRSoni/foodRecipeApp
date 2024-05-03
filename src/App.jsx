@@ -1,20 +1,29 @@
-import { Outlet } from 'react-router-dom';
 import { Header } from './components/Header/Header.jsx';
 import { Footer } from './components/Footer/Footer.jsx';
 import 'react-toastify/dist/ReactToastify.css';
 import { useSelector } from 'react-redux';
-
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, memo } from 'react';
 import Spinner from './components/Spinner/Spinner.jsx';
+
+const LazyContent = React.lazy(() => import('./LazyContent'));
+
 function App() {
 	const { loading } = useSelector((state) => state.user);
-	const [showContent, setShowContent] = useState(false); // State to control content visibility
+	const [showContent, setShowContent] = useState(false);
 
 	useEffect(() => {
-		setShowContent(true); // After 5 seconds, set showContent to true to render the content
+		const handleLoad = () => {
+			setShowContent(true);
+		};
 
-		return;	
-	}, [Spinner]);
+		if (document.readyState === 'complete') {
+			handleLoad();
+		} else {
+			window.addEventListener('load', handleLoad);
+			return () => window.removeEventListener('load', handleLoad);
+		}
+	}, []);
+
 	return (
 		<>
 			{showContent ? (
@@ -24,15 +33,17 @@ function App() {
 							<Spinner />
 						</div>
 					) : (
-						<div>
-							<Header />
-							<Outlet />
-							<Footer />
-						</div>
+						<React.Suspense fallback={<Spinner />}>
+							<div>
+								<Header />
+								<LazyContent />
+								<Footer />
+							</div>
+						</React.Suspense>
 					)}
 				</>
 			) : (
-				<div className='h- full flex items-center justify-center h-full'>
+				<div className='h-full flex items-center justify-center '>
 					<Spinner />
 				</div>
 			)}
@@ -40,4 +51,4 @@ function App() {
 	);
 }
 
-export default App;
+export default memo(App);
