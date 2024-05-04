@@ -6,9 +6,11 @@ import {
 	Typography,
 	Tooltip,
 } from '@material-tailwind/react';
+import { Link } from 'react-router-dom';
 
 export function BlogCard2({ recipes, onDelete, onEdit }) {
 	const { recipe, user, timestamp } = recipes;
+	console.log(recipe);
 
 	const formatMemberSince = (timestamp) => {
 		// Assuming timestamp is in milliseconds
@@ -31,11 +33,15 @@ export function BlogCard2({ recipes, onDelete, onEdit }) {
 						shadow={false}
 						color='transparent'
 						className='m-0 hover:scale-110 transition-all hover:duration-1000 cursor-pointer'>
-						<img
-							src={recipe.recipesImages[0]}
-							alt='recipe images'
-							className='h-64 w-full object-cover'
-						/>
+						<Link
+							className='content'
+							to={`/recipe/${recipe.course}/${recipes.id}`}>
+							<img
+								src={recipe.recipesImages[0]}
+								alt='recipe images'
+								className='h-64 w-full object-cover'
+							/>
+						</Link>
 					</CardHeader>
 				</div>
 				<CardBody className='h-[4.5rem]'>
