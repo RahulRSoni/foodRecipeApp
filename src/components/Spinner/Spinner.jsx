@@ -2,11 +2,11 @@ import React from 'react';
 
 function Spinner() {
 	return (
-		<div className='flex justify-center items-center bg-transparent bg-opacity-10 min-h-screen'>
+		<div className='h-full flex justify-center items-center bg-transparent bg-opacity-10 '>
 			<img
-				src='/public/Spinner.gif'
+				src='/public/Spinner.svg'
 				alt='Loading'
-				className='h-40 w-auto object-cover'
+				className='h-full w-auto object-cover'
 			/>
 		</div>
 	);

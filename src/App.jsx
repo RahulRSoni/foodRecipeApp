@@ -26,27 +26,28 @@ function App() {
 
 	return (
 		<>
+			{' '}
+			<Header />
 			{showContent ? (
 				<>
 					{loading ? (
-						<div className='h-full flex items-center justify-center '>
+						<div className='min-h-screen flex items-center justify-center '>
 							<Spinner />
 						</div>
 					) : (
 						<React.Suspense fallback={<Spinner />}>
 							<div>
-								<Header />
 								<LazyContent />
-								<Footer />
 							</div>
 						</React.Suspense>
 					)}
 				</>
 			) : (
-				<div className='h-full flex items-center justify-center '>
+				<div className='min-h-screen flex items-center justify-center '>
 					<Spinner />
 				</div>
 			)}
+			<Footer />
 		</>
 	);
 }
