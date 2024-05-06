@@ -155,10 +155,12 @@ const PostForm = ({ posts, paramsId }) => {
 				<div className=' mb-4 flex flex-col justify-center gap-5 bg-blue-gray-50 backdrop-blur-sm py-8 rounded-lg px-6 mx-10'>
 					<div className='flex md:flex-row flex-col gap-6'>
 						<Input
-							label='Title :'
+							label='Title : (Please fill title in 10-20 word)'
 							placeholder='Title'
 							size='md'
 							name='title'
+							maxLength={20}
+							minLength={10}
 							required
 							{...register('title', { required: true })}
 						/>
@@ -177,8 +179,10 @@ const PostForm = ({ posts, paramsId }) => {
 					</div>
 					<div className='flex md:flex-row flex-col gap-6'>
 						<Textarea
-							label='Content'
+							label='Content : (Please fill title in 100-200 word)'
 							name='content'
+							maxLength={200}
+							minLength={100}
 							required
 							{...register('content', { required: true })}
 						/>
@@ -471,7 +475,7 @@ const PostForm = ({ posts, paramsId }) => {
 					<Button
 						size='sm'
 						type='submit'
-						disabled={!formState.isValid}
+						disabled={formState.isValid}
 						className=' bg-green-500'>
 						{post ? 'Update' : 'Submit'}
 					</Button>

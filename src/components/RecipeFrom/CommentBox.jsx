@@ -42,7 +42,7 @@ export function CommentBox({ control, register }) {
 	return (
 		<>
 			{Array.isArray(posts) &&
-				posts.map((_, index) => (
+				posts.map((post, index) => (
 					<div
 						key={index}
 						className='flex w-full gap-5'>
@@ -124,10 +124,14 @@ export function CommentBox({ control, register }) {
 						</Tooltip>
 						<div className='w-full'>
 							<Textarea
-								label={`Step-${stepCount + index}`}
+								label={`Step-${
+									stepCount + index
+								} (Please fill title in 100-300 word)`}
 								name={`commentBox[${index}].text`}
 								required
-								onChange={(e) => handleTextChange(index, e)}
+								maxLength={300}
+								minLength={100}
+								defaultValue={post.text.split('.')[0]} // Set initial value
 								{...register(`commentBox[${index}].text`)}
 							/>
 						</div>
@@ -161,7 +165,7 @@ export function CommentBox({ control, register }) {
 				color='green'
 				size='sm'
 				className='float-right'>
-				Add More
+				{posts.length === 0 ? 'Add Recipe Steps' : 'Add More Steps'}
 			</Button>
 		</>
 	);
