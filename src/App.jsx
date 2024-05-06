@@ -3,7 +3,7 @@ import { Footer } from './components/Footer/Footer.jsx';
 import 'react-toastify/dist/ReactToastify.css';
 import { useSelector } from 'react-redux';
 import React, { useEffect, useState, memo } from 'react';
-import Spinner from './components/Spinner/Spinner.jsx';
+import Spinner from './components/Loaders/Spinner.jsx';
 
 const LazyContent = React.lazy(() => import('./LazyContent'));
 

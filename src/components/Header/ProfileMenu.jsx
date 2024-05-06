@@ -28,9 +28,9 @@ const profileMenuItems = [
 		path: '/profile',
 	},
 	{
-		label: 'My Recipes',
+		label: 'Add Recipes',
 		icon: InboxArrowDownIcon,
-		path: '/recipe',
+		path: '/recipe/addPost',
 	},
 	{
 		label: 'Help',

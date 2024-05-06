@@ -1,11 +1,33 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { NewsLetterCard } from '../components/Card/NewsLetterCard';
 import { BlogCard } from '../components/Card/ItemCard';
 import CardPlaceholderSkeleton from '../components/Loaders/Skeleton';
 import { Select, Option, Input } from '@material-tailwind/react';
 import { FcSearch } from 'react-icons/fc';
+import { getAllRecipe } from '../api/store.services';
+import { toast } from 'react-toastify';
 
 export default function RecipeIndex() {
+	const [recipes, setRecipes] = useState(null);
+	const [loading, setLoading] = useState(false);
+
+	useEffect(() => {
+		try {
+			setLoading(true);
+			getAllRecipe()
+				.then((recipeData) => {
+					setRecipes(recipeData);
+					setLoading(false);
+				})
+				.catch((error) => {
+					setLoading(true);
+					toast.error('Error fetching recipes:', error.message);
+				});
+		} catch (error) {
+			setLoading(true);
+			toast.error('Error fetching recipes:', error.message);
+		}
+	}, []);
 	return (
 		<>
 			<div
@@ -23,14 +45,18 @@ export default function RecipeIndex() {
 				</div>
 				<div className='flex flex-col-reverse p-2 shadow-xl z-50 shadow-blue-gray-100 mt-10 rounded-lg bg-blue-gray-50 backdrop-blur-sm '>
 					<div className='flex flex-wrap gap-x-6 gap-y-8 justify-center py-10'>
-						<BlogCard />
-						<BlogCard />
-						<BlogCard />
-						<BlogCard />
-						<BlogCard />
-						<CardPlaceholderSkeleton />
+						{loading ? (
+							<CardPlaceholderSkeleton />
+						) : (
+							recipes &&
+							recipes.map((recipe) => (
+								<BlogCard
+									key={recipe.id}
+									data={recipe}
+								/>
+							))
+						)}
 					</div>
-
 					<div className='lg:col-span-1 px-4 border-l-blue-gray-400  border-b  h-full justify-items-center py-10 w-full z-50'>
 						<div className='w-full flex  gap-4 justify-center items-center sticky top-32'>
 							<div className='relative w-full gap-2 md:w-max'>

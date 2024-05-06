@@ -124,6 +124,41 @@ const getUserRecipe = async (userEmail) => {
 	}
 };
 
+const getAllRecipe = async () => {
+	const q = query(
+		collection(db, 'recipes'),
+		orderBy('timestamp', 'desc'),
+	);
+
+	try {
+		const querySnapshot = await getDocs(q);
+		const combinedRecipes = [];
+		const recipes = [];
+		const recipeId = [];
+		querySnapshot.forEach((doc) => {
+			const recipeData = doc.data();
+			const recipeId = doc.id;
+
+			// Combine recipe data with ID
+			const combinedRecipe = {
+				id: recipeId,
+				...recipeData,
+			};
+
+			combinedRecipes.push(combinedRecipe);
+		});
+
+		return combinedRecipes;
+	} catch (error) {
+		const errorCode = error.code;
+		// const errorMessage = error.message;
+
+		// Handle error
+		toast.error(errorCode);
+
+		// console.log('errorCode:', errorCode, 'errorMessage:', errorMessage);
+	}
+};
 const deleteRecipe = async (recipe) => {
 	try {
 		await deleteDoc(doc(db, 'recipes', recipe.id));
@@ -192,4 +227,5 @@ export {
 	deleteRecipe,
 	getIdWiseRecipeData,
 	updateRecipe,
+	getAllRecipe,
 };

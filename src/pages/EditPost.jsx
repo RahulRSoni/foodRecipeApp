@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PostForm from '../components/PostForm/PostForm';
-import Spinner from '../components/Spinner/Spinner';
+import Spinner from '../components/Loaders/Spinner';
 import { useParams } from 'react-router-dom';
 import { getIdWiseRecipeData } from '../api/store.services';
 import { toast } from 'react-toastify';

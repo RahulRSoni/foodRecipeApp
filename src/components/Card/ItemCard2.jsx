@@ -10,7 +10,6 @@ import { Link } from 'react-router-dom';
 
 export function BlogCard2({ recipes, onDelete, onEdit }) {
 	const { recipe, user, timestamp } = recipes;
-	console.log(recipe);
 
 	const formatMemberSince = (timestamp) => {
 		// Assuming timestamp is in milliseconds

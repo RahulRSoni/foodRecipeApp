@@ -6,9 +6,8 @@ import { BlogCard2 } from '../components/Card/ItemCard2';
 
 import { useNavigate } from 'react-router-dom';
 import { deleteRecipe, getUserRecipe } from '../api/store.services';
-import Spinner from '../components/Spinner/Spinner.jsx';
+import CardPlaceholderSkeleton from '../components/Loaders/Skeleton.jsx';
 import { toast } from 'react-toastify';
-import { Button } from '@material-tailwind/react';
 
 export default function Profile() {
 	const { currentUser } = useSelector((state) => state.user);
@@ -99,7 +98,7 @@ export default function Profile() {
 				<div className='mx-auto my-5 p-5 w-full'>
 					<div className='lg:flex lg:flex-no-wrap lg:-mx-2 '>
 						<div className='w-full lg:w-3/12 lg:mx-2 '>
-							<div className=' p-3 border-t-4 border-green-400 bg-blue-gray-50 backdrop-blur-sm py-8 rounded-lg'>
+							<div className=' p-3 border-t-4 border-green-400 bg-blue-gray-50 backdrop-blur-sm py-8 rounded-lg sticky top-0 -z-20'>
 								<div className='overflow-hidden'>
 									<img
 										className='h-[20.4rem] w-full mx-auto'
@@ -239,7 +238,7 @@ export default function Profile() {
 								</div>
 								<div className=' flex flex-wrap gap-6 justify-center items-center'>
 									{loading ? (
-										<Spinner />
+										<CardPlaceholderSkeleton />
 									) : (
 										data?.map((recipe, index) => (
 											<div
@@ -253,13 +252,6 @@ export default function Profile() {
 											</div>
 										))
 									)}
-								</div>
-								<div className='flex justify-center items-center mt-10'>
-									<Button
-										variant='text'
-										onClick={() => navigate('/recipe')}>
-										For More...
-									</Button>
 								</div>
 							</div>
 						</div>

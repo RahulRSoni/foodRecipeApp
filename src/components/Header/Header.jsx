@@ -60,10 +60,11 @@ export function Header() {
 				variant='small'
 				color='blue-gray'
 				className={`p-1 font-semibold text-blue-gray-400 ${
-					pathMatchRoute('/recipe') && 'text-black border-b-2 border-red-400'
+					pathMatchRoute('/recipes-index') &&
+					'text-black border-b-2 border-red-400'
 				}`}>
 				<a
-					href='/recipe'
+					href='/recipes-index'
 					className='flex items-center'>
 					Recipes
 				</a>
