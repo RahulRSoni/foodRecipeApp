@@ -4,9 +4,30 @@ import { Gallery } from '../components/gallery/gallery.jsx';
 import AboutCard from '../components/Card/AboutCard.jsx';
 import { BlogCard } from '../components/Card/ItemCard.jsx';
 import CardPlaceholderSkeleton from '../components/Loaders/Skeleton.jsx';
-import { Pagination } from '../components/Pagination/Pagination.jsx';
+import { useEffect, useState } from 'react';
+import { getAllRecipe } from '../api/store.services.js';
 
 function Home() {
+	const [recipes, setRecipes] = useState(null);
+	const [loading, setLoading] = useState(false);
+
+	useEffect(() => {
+		try {
+			setLoading(true);
+			getAllRecipe()
+				.then((recipeData) => {
+					setRecipes(recipeData);
+					setLoading(false);
+				})
+				.catch((error) => {
+					setLoading(true);
+					toast.error('Error fetching recipes:', error.message);
+				});
+		} catch (error) {
+			setLoading(true);
+			toast.error('Error fetching recipes:', error.message);
+		}
+	}, []);
 	return (
 		<>
 			<div>
@@ -20,16 +41,23 @@ function Home() {
 					<Banner />
 					<Gallery />
 					<Menu />
-					<div className='grid lg:grid-cols-6  justify-items-center gap-8'>
-						<div className='grid lg:col-span-4 justify-items-center bg-blue-gray-50 backdrop-blur-sm py-8'>
-							<div className='flex flex-wrap gap-4 justify-center  rounded-lg'>
-								<CardPlaceholderSkeleton />
-							</div>
-							<div className='flex justify-center items-center mt-10'>
-								<Pagination />
+					<div className='grid lg:grid-cols-12  justify-items-center gap-8 sm:pl-24 py-12'>
+						<div className='grid lg:col-span-8 justify-items-center backdrop-blur-sm h-full lg:h-0'>
+							<div className='flex flex-wrap gap-6  w-full'>
+								{loading ? (
+									<CardPlaceholderSkeleton />
+								) : (
+									recipes &&
+									recipes.map((recipe) => (
+										<BlogCard
+											key={recipe.id}
+											data={recipe}
+										/>
+									))
+								)}
 							</div>
 						</div>
-						<div className='lg:grid lg:col-span-2 px-2 bg-blue-gray-50 backdrop-blur-sm py-8 rounded-lg hidden'>
+						<div className='lg:grid lg:col-span-4 px-2  bg-blue-gray-50 backdrop-blur-sm  rounded-lg hidden h-full'>
 							<AboutCard />
 						</div>
 					</div>

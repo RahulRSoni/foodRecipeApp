@@ -25,7 +25,7 @@ export function BlogCard({ data }) {
 	};
 
 	return (
-		<Card className='max-w-[24rem] overflow-hidden shadow-xl  cursor-context-menu'>
+		<Card className='h-[32rem] sm:w-[24rem] w-full overflow-hidden shadow-xl cursor-context-menu'>
 			<div className='rounded-lg'>
 				<CardHeader
 					floated={false}
@@ -52,7 +52,7 @@ export function BlogCard({ data }) {
 				<Typography
 					variant='lead'
 					color='gray'
-					className='mt-1 font-normal text-sm'>
+					className='mt-1 font-normal text-sm h-[5rem]'>
 					{data && recipe.content}
 				</Typography>
 			</CardBody>

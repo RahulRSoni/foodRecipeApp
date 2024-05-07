@@ -89,7 +89,7 @@ const PostForm = ({ posts, paramsId }) => {
 		try {
 			const formDataWithImages = {
 				...data,
-				recipesImages: [...(post.recipesImages || [])],
+				recipesImages: formData.imageURLs || post.recipesImages,
 			};
 
 			if (paramsId) {
@@ -475,9 +475,8 @@ const PostForm = ({ posts, paramsId }) => {
 					<Button
 						size='sm'
 						type='submit'
-						disabled={formState.isValid}
 						className=' bg-green-500'>
-						{post ? 'Update' : 'Submit'}
+						{post && post.title ? 'Update' : 'Submit'}
 					</Button>
 				</div>
 			</div>
