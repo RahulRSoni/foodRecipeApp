@@ -28,12 +28,7 @@ export function NewsLetterCard() {
 				/>
 			</CardBody>
 			<CardFooter className='pt-0'>
-				<Button
-					variant='gradient'
-					fullWidth>
-					Subscribers
-				</Button>
-				<div className='text-sm mt-6 flex justify-center items-center gap-1'>
+				<div className='text-sm  flex justify-center items-center gap-1'>
 					<input
 						type='checkbox'
 						className='form-checkbox mr-1 h-4 w-4 text-blue-500'
@@ -45,6 +40,12 @@ export function NewsLetterCard() {
 						terms & conditions.
 					</a>
 				</div>
+				<Button
+					variant='gradient'
+					fullWidth
+					className='mt-10'>
+					Subscribers
+				</Button>
 			</CardFooter>
 		</Card>
 	);

@@ -4,6 +4,7 @@ import {
 	CardBody,
 	Typography,
 	Avatar,
+	Rating,
 } from '@material-tailwind/react';
 
 function StarIcon() {
@@ -27,7 +28,7 @@ export function TestimonialCard() {
 		<Card
 			color='transparent'
 			shadow={false}
-			className='w-full max-w-[26rem] border border-separate p-2 shadow-lg'>
+			className='w-full max-w-[26rem] border border-separate p-2 shadow-lg cursor-context-menu'>
 			<CardHeader
 				color='transparent'
 				floated={false}
@@ -47,14 +48,13 @@ export function TestimonialCard() {
 							Tania Andrew
 						</Typography>
 						<div className='5 flex items-center gap-0'>
-							<StarIcon />
-							<StarIcon />
-							<StarIcon />
-							<StarIcon />
-							<StarIcon />
+							<Rating
+								value={4}
+								readonly
+							/>
+							;
 						</div>
 					</div>
-					<Typography color='blue-gray'>Frontend Lead @ Google</Typography>
 				</div>
 			</CardHeader>
 			<CardBody className='mb-6 p-0'>

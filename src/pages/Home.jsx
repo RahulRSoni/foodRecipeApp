@@ -1,97 +1,53 @@
+// Import necessary components and libraries
+import React, { useEffect, useState } from 'react';
 import Banner from '../components/Banner/Banner.jsx';
 import Menu from '../components/FoodMenu/Menu.jsx';
 import { Gallery } from '../components/gallery/gallery.jsx';
 import AboutCard from '../components/Card/AboutCard.jsx';
 import { BlogCard } from '../components/Card/ItemCard.jsx';
 import CardPlaceholderSkeleton from '../components/Loaders/Skeleton.jsx';
-import { useEffect, useState } from 'react';
 import { getAllImages, getAllRecipe } from '../api/store.services.js';
 import { toast } from 'react-toastify';
+import Spinner from '../components/Loaders/Spinner.jsx';
 
 function Home() {
+	// State variables for recipes, allImages, and loading
 	const [recipes, setRecipes] = useState(null);
 	const [allImages, setAllImages] = useState(null);
-	const [loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState(true);
 
+	// Fetch recipes and images from APIs
 	useEffect(() => {
-		try {
-			setLoading(true);
-			getAllRecipe()
-				.then((recipeData) => {
-					setRecipes(recipeData);
-					setLoading(false);
-				})
-				.catch((error) => {
-					setLoading(false); // Set loading to false on error
-					toast.error('Error fetching recipes:', error.message);
-				});
-		} catch (error) {
-			setLoading(false); // Set loading to false on error
-			toast.error('Error fetching recipes:', error.message);
-		}
+		Promise.all([getAllRecipe(), getAllImages()])
+			.then(([recipeData, imageData]) => {
+				setRecipes(recipeData);
+				setAllImages(imageData);
+				setLoading(false);
+			})
+			.catch((error) => {
+				setLoading(false);
+				toast.error('Error fetching data:', error.message);
+			});
 	}, []);
 
-	useEffect(() => {
-		try {
-			setLoading(true);
-			getAllImages()
-				.then((images) => {
-					setAllImages(images);
-					setLoading(false);
-				})
-				.catch((error) => {
-					setLoading(false); // Set loading to false on error
-					toast.error('Error fetching images:', error.message);
-				});
-		} catch (error) {
-			setLoading(false); // Set loading to false on error
-			console.error('Error fetching images:', error.message);
-		}
-	}, []);
-
-	// Function to generate random indexes after allImages is set
-	const generateRandomIndexes = (array) => {
-		if (!array) return []; // Check if array is null or undefined
-		if (array.length <= 11) {
-			return array.map((_, index) => index); // Return all indexes if array length is <= 10
-		}
-
+	// Function to generate random items from an array
+	const generateRandomItems = (array, count) => {
+		if (!array) return [];
 		const randomIndexes = [];
-		while (randomIndexes.length < 11) {
+		while (randomIndexes.length < count) {
 			const randomIndex = Math.floor(Math.random() * array.length);
 			if (!randomIndexes.includes(randomIndex)) {
 				randomIndexes.push(randomIndex);
 			}
 		}
-		return randomIndexes;
+		return randomIndexes.map((index) => array[index]);
 	};
 
-	// Call generateRandomIndexes when allImages changes
-	const randomIndexes = generateRandomIndexes(allImages);
+	// Generate random images
+	const randomImages = generateRandomItems(allImages, 12);
+	const randomImages2 = generateRandomItems(allImages, 8);
 
-	// Function to generate random indexes and get corresponding images
-	const generateRandomImages = (array, allImages) => {
-		if (!array || !allImages) return []; // Check if array or allImages is null or undefined
-		if (array.length <= 11) {
-			// Return all images if array length is <= 10
-			return array.map((index) => allImages[index]);
-		}
-
-		const randomIndexes = [];
-		while (randomIndexes.length < 11) {
-			const randomIndex = Math.floor(Math.random() * array.length);
-			if (!randomIndexes.includes(randomIndex)) {
-				randomIndexes.push(randomIndex);
-			}
-		}
-
-		// Get corresponding images for random indexes
-		return randomIndexes.map((index) => allImages[index]);
-	};
-
-	// Call generateRandomImages when allImages changes
-	const randomImages = generateRandomImages(randomIndexes, allImages);
-
+	// JSX for the Home component
 	return (
 		<>
 			<div>
@@ -102,9 +58,15 @@ function Home() {
 						filter: 'blur(2px) contrast(120%) brightness(50%)',
 					}}></div>
 				<div className='px-5 sm:pt-24 pt-16'>
-					<Banner />
-					<Gallery randomImages={randomImages} />
+					<div className='flex justify-center items-center flex-grow  w-full bg-transparent'>
+						{loading ? <Spinner /> : <Banner randomImages={randomImages2} />}
+					</div>
+					<div className='flex justify-center items-center flex-grow  w-full bg-transparent'>
+						{loading ? <Spinner /> : <Gallery randomImages={randomImages} />}
+					</div>
+
 					<Menu />
+
 					<div className='grid lg:grid-cols-12  justify-items-center gap-8 sm:pl-24 py-12'>
 						<div className='grid lg:col-span-8 justify-items-center backdrop-blur-sm h-full lg:h-0'>
 							<div className='flex flex-wrap gap-6  w-full'>
@@ -126,7 +88,6 @@ function Home() {
 						</div>
 					</div>
 				</div>
-				)
 			</div>
 		</>
 	);

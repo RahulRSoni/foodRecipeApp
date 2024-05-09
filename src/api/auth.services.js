@@ -53,6 +53,8 @@ const registerWithEmailAndPassword = async (data) => {
 			phoneNumber: '',
 			timestamp: timestamp,
 			about: '',
+			newsLetter: false,
+			status: true,
 		});
 
 		const docRef = doc(db, 'users', user.uid);
@@ -98,6 +100,8 @@ const signInWithGoogle = async () => {
 				phoneNumber: user.phoneNumber,
 				timestamp: timestamp,
 				about: '',
+				newsLetter: false,
+				status: true,
 			});
 		}
 

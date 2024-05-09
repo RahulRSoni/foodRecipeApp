@@ -1,7 +1,7 @@
 import React from 'react';
 import { ContactCard } from '../components/Card/ContactCard';
 import { Typography } from '@material-tailwind/react';
-import { NewsLetterCard } from '../components/Card/NewsLetterCard';
+import { FeedbackForm } from '../components/Card/FeedbackCard';
 
 export default function Contact() {
 	return (
@@ -52,7 +52,7 @@ export default function Contact() {
 					</div>
 				</div>
 				<div className='w-full xl:px-40 pt-20'>
-					<NewsLetterCard />
+					<FeedbackForm />
 				</div>
 			</div>
 		</>

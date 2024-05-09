@@ -8,7 +8,7 @@ import { NewsLetterCard } from './NewsLetterCard';
 
 function AboutCard() {
 	return (
-		<div className='w-full flex flex-col  items-center p-4 '>
+		<div className='w-full flex flex-col  items-center p-4 cursor-context-menu'>
 			<div className='border border-blue-gray-200 rounded-full border-dashed'>
 				<img
 					className='h-96 w-96 rounded-full object-cover object-center p-2'
@@ -52,7 +52,7 @@ function AboutCard() {
 				<Button
 					color='teal'
 					size='lg'>
-					contact us
+					<Link to='/contact'>contact us</Link>
 				</Button>
 			</div>
 			<div className='flex flex-col gap-3 py-4'>
