@@ -15,11 +15,13 @@ import { collection, addDoc } from 'firebase/firestore';
 import {
 	getDownloadURL,
 	getStorage,
+	listAll,
 	ref,
 	uploadBytesResumable,
 } from 'firebase/storage';
 import { toast } from 'react-toastify';
 import { getAuth } from 'firebase/auth';
+import firebase from 'firebase/compat/app';
 
 const auth = getAuth(app);
 const db = getFirestore(app);
@@ -125,10 +127,7 @@ const getUserRecipe = async (userEmail) => {
 };
 
 const getAllRecipe = async () => {
-	const q = query(
-		collection(db, 'recipes'),
-		orderBy('timestamp', 'desc'),
-	);
+	const q = query(collection(db, 'recipes'), orderBy('timestamp', 'desc'));
 
 	try {
 		const querySnapshot = await getDocs(q);
@@ -220,6 +219,39 @@ const updateRecipe = async (paramsId, data) => {
 	}
 };
 
+const getAllImages = async () => {
+	try {
+		// Reference to the default storage bucket
+		const listRef = ref(storage);
+
+		// List all items in the default storage bucket
+		const res = await listAll(listRef);
+
+		const urls = await Promise.all(
+			res.items.map(async (itemRef) => {
+				try {
+					const url = await getDownloadURL(itemRef);
+					return url;
+				} catch (error) {
+					console.error('Error getting download URL:', error);
+					return null;
+				}
+			}),
+		);
+
+		// Filter out null values (errors)
+		const filteredUrls = urls.filter((url) => url !== null);
+
+		// Now you have an array of image URLs
+		return filteredUrls;
+	} catch (error) {
+		// Uh-oh, an error occurred!
+		console.log(error);
+		// Handle error
+		toast.error(error.code);
+	}
+};
+
 export {
 	createRecipes,
 	storeImages,
@@ -228,4 +260,5 @@ export {
 	getIdWiseRecipeData,
 	updateRecipe,
 	getAllRecipe,
+	getAllImages,
 };
