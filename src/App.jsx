@@ -4,6 +4,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useSelector } from 'react-redux';
 import React, { useEffect, useState, memo } from 'react';
 import Spinner from './components/Loaders/Spinner.jsx';
+import { FeedbackForm } from './components/Card/FeedbackCard.jsx';
 
 const LazyContent = React.lazy(() => import('./LazyContent'));
 
@@ -47,6 +48,7 @@ function App() {
 					<Spinner />
 				</div>
 			)}
+
 			<Footer />
 		</>
 	);

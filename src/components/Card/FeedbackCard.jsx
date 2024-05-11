@@ -27,6 +27,7 @@ export function FeedbackForm() {
 				<Textarea
 					label='Message'
 					size='lg'
+					maxLength={170}
 				/>
 				<div className='flex items-center flex-col gap-2 font-bold text-blue-gray-500'>
 					<Typography

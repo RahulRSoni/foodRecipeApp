@@ -26,9 +26,9 @@ function StarIcon() {
 export function TestimonialCard() {
 	return (
 		<Card
-			color='transparent'
+			color=''
 			shadow={false}
-			className='w-full max-w-[26rem] border border-separate p-2 shadow-lg cursor-context-menu'>
+			className='w-full border border-separate p-2 shadow-lg cursor-context-menu'>
 			<CardHeader
 				color='transparent'
 				floated={false}
@@ -47,13 +47,12 @@ export function TestimonialCard() {
 							color='blue-gray'>
 							Tania Andrew
 						</Typography>
-						<div className='5 flex items-center gap-0'>
-							<Rating
-								value={4}
-								readonly
-							/>
-							;
-						</div>
+					</div>
+					<div className='5 flex items-center gap-0'>
+						<Rating
+							value={4}
+							readonly
+						/>
 					</div>
 				</div>
 			</CardHeader>

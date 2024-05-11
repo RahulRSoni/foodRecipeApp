@@ -3,12 +3,10 @@ import { CiYoutube, CiFacebook, CiInstagram, CiTwitter } from 'react-icons/ci';
 import { PiPinterestLogo } from 'react-icons/pi';
 import { Link } from 'react-router-dom';
 import { Button, Typography } from '@material-tailwind/react';
-import { TestimonialCard } from './TestimonialCard';
-import { NewsLetterCard } from './NewsLetterCard';
 
 function AboutCard() {
 	return (
-		<div className='w-full flex flex-col  items-center p-4 cursor-context-menu'>
+		<div className='w-full flex flex-col h-full items-center p-4 cursor-context-menu'>
 			<div className='border border-blue-gray-200 rounded-full border-dashed'>
 				<img
 					className='h-96 w-96 rounded-full object-cover object-center p-2'
@@ -54,14 +52,6 @@ function AboutCard() {
 					size='lg'>
 					<Link to='/contact'>contact us</Link>
 				</Button>
-			</div>
-			<div className='flex flex-col gap-3 py-4'>
-				<TestimonialCard />
-				<TestimonialCard />
-				<TestimonialCard />
-			</div>
-			<div className=' py-16'>
-				<NewsLetterCard />
 			</div>
 		</div>
 	);

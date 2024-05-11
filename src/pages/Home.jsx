@@ -9,6 +9,7 @@ import CardPlaceholderSkeleton from '../components/Loaders/Skeleton.jsx';
 import { getAllImages, getAllRecipe } from '../api/store.services.js';
 import { toast } from 'react-toastify';
 import Spinner from '../components/Loaders/Spinner.jsx';
+import ScrollCarousel from '../components/Scroll.jsx';
 
 function Home() {
 	// State variables for recipes, allImages, and loading
@@ -33,6 +34,7 @@ function Home() {
 	// Function to generate random items from an array
 	const generateRandomItems = (array, count) => {
 		if (!array) return [];
+		if (array.length < count) return [];
 		const randomIndexes = [];
 		while (randomIndexes.length < count) {
 			const randomIndex = Math.floor(Math.random() * array.length);
@@ -59,22 +61,22 @@ function Home() {
 					}}></div>
 				<div className='px-5 sm:pt-24 pt-16'>
 					<div className='flex justify-center items-center flex-grow  w-full bg-transparent'>
-						{loading ? <Spinner /> : <Banner randomImages={randomImages2} />}
+						{loading ? <Spinner /> : <Banner randomImages={randomImages} />}
 					</div>
 					<div className='flex justify-center items-center flex-grow  w-full bg-transparent'>
-						{loading ? <Spinner /> : <Gallery randomImages={randomImages} />}
+						{loading ? <Spinner /> : <Gallery randomImages={randomImages2} />}
 					</div>
 
 					<Menu />
 
-					<div className='grid lg:grid-cols-12  justify-items-center gap-8 sm:pl-24 py-12'>
-						<div className='grid lg:col-span-8 justify-items-center backdrop-blur-sm h-full lg:h-0'>
-							<div className='flex flex-wrap gap-6  w-full'>
+					<div className='grid lg:grid-cols-12 justify-items-center gap-1  py-12'>
+						<div className='grid lg:col-span-9 justify-items-center backdrop-blur-sm h-full '>
+							<div className='flex flex-wrap gap-6 w-full'>
 								{loading ? (
 									<CardPlaceholderSkeleton />
 								) : (
 									recipes &&
-									recipes.map((recipe) => (
+									recipes.slice(0, 6).map((recipe) => (
 										<BlogCard
 											key={recipe.id}
 											data={recipe}
@@ -83,10 +85,13 @@ function Home() {
 								)}
 							</div>
 						</div>
-						<div className='lg:grid lg:col-span-4 px-2  bg-blue-gray-50 backdrop-blur-sm  rounded-lg hidden h-full'>
+						<div className='lg:grid lg:col-span-3 px-2 bg-blue-gray-50 backdrop-blur-sm  rounded-lg hidden h-full'>
 							<AboutCard />
 						</div>
 					</div>
+				</div>
+				<div className='mx-6  backdrop:blur-2xl rounded-2xl'>
+					<ScrollCarousel />
 				</div>
 			</div>
 		</>
