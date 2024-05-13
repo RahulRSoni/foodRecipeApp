@@ -158,6 +158,7 @@ const getAllRecipe = async () => {
 		// console.log('errorCode:', errorCode, 'errorMessage:', errorMessage);
 	}
 };
+
 const deleteRecipe = async (recipe) => {
 	try {
 		await deleteDoc(doc(db, 'recipes', recipe.id));
@@ -233,7 +234,7 @@ const getAllImages = async () => {
 					const url = await getDownloadURL(itemRef);
 					return url;
 				} catch (error) {
-					console.error('Error getting download URL:', error);
+					// console.error('Error getting download URL:', error);
 					return null;
 				}
 			}),
@@ -246,9 +247,76 @@ const getAllImages = async () => {
 		return filteredUrls;
 	} catch (error) {
 		// Uh-oh, an error occurred!
-		console.log(error);
+		// console.log(error);
 		// Handle error
 		toast.error(error.code);
+	}
+};
+
+const addTestimonial = async (data) => {
+	try {
+		const user = auth.currentUser;
+
+		const docRef = doc(db, 'users', user.uid);
+		const docSnap = await getDoc(docRef);
+
+		const timestamp = serverTimestamp();
+
+		if (docSnap.exists()) {
+			const userInfo = docSnap.data();
+			const orderCollection = collection(db, 'testimonials');
+
+			const documentRef = await addDoc(orderCollection, {
+				testimonial: data,
+				user: userInfo,
+				timestamp,
+			});
+
+			return documentRef;
+		} else {
+			toast.error('Error: user not found or login');
+		}
+	} catch (error) {
+		const errorCode = error.code;
+		// const errorMessage = error.message;
+
+		// Handle error
+		toast.error(errorCode);
+
+		// console.log('errorCode:', errorCode, 'errorMessage:', errorMessage);
+	}
+};
+
+const getAllTestimonial = async () => {
+	const q = query(collection(db, 'testimonials'), orderBy('timestamp', 'desc'));
+
+	try {
+		const querySnapshot = await getDocs(q);
+		const combinedTestimonials = [];
+		const testimonial = [];
+		const testimonialId = [];
+		querySnapshot.forEach((doc) => {
+			const testimonialData = doc.data();
+			const testimonialId = doc.id;
+
+			// Combine recipe data with ID
+			const combinedTestimonial = {
+				id: testimonialId,
+				...testimonialData,
+			};
+
+			combinedTestimonials.push(combinedTestimonial);
+		});
+
+		return combinedTestimonials;
+	} catch (error) {
+		const errorCode = error.code;
+		const errorMessage = error.message;
+
+		// Handle error
+		toast.error(errorCode);
+
+		console.log('errorCode:', errorCode, 'errorMessage:', errorMessage);
 	}
 };
 
@@ -261,4 +329,6 @@ export {
 	updateRecipe,
 	getAllRecipe,
 	getAllImages,
+	addTestimonial,
+	getAllTestimonial,
 };
