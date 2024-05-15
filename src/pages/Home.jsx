@@ -18,8 +18,6 @@ function Home() {
 	const [allImages, setAllImages] = useState(null);
 	const [loading, setLoading] = useState(true);
 
-	console.log(recipes);
-
 	// Fetch recipes and images from APIs
 	useEffect(() => {
 		Promise.all([getAllRecipe(), getAllImages()])
