@@ -18,29 +18,21 @@ export default function RecipeIndex() {
 	const [inputData, setInputData] = useState('');
 	const [cuisineData, setCuisineData] = useState('');
 	const [keywordData, setKeywordData] = useState('');
-	const [courseData, setCourseData] = useState('' || params.courses);
+	const [courseData, setCourseData] = useState(params.courses || '');
 
 	const handleInputSearch = debounce(() => {
-		let filtered = recipes;
-
-		if (inputData.trim() !== '') {
-			filtered = filtered.filter((res) => {
-				const { slug, title } = res.recipe;
-				return slug.includes(inputData) || title.includes(inputData);
-			});
-		}
-
-		if (cuisineData !== '') {
-			filtered = filtered.filter((res) => res.recipe.cuisine === cuisineData);
-		}
-
-		if (courseData !== '') {
-			filtered = filtered.filter((res) => res.recipe.course === courseData);
-		}
-
-		if (keywordData !== '') {
-			filtered = filtered.filter((res) => res.recipe.keyword === keywordData);
-		}
+		const filtered = recipes
+			.filter(
+				(res) =>
+					inputData.trim() === '' ||
+					res.recipe.slug.includes(inputData) ||
+					res.recipe.title.includes(inputData),
+			)
+			.filter((res) => cuisineData === '' || res.recipe.cuisine === cuisineData)
+			.filter((res) => courseData === '' || res.recipe.course === courseData)
+			.filter(
+				(res) => keywordData === '' || res.recipe.keyword === keywordData,
+			);
 
 		setFilteredRecipes(filtered);
 	}, 300);
@@ -52,9 +44,9 @@ export default function RecipeIndex() {
 				const recipeData = await getAllRecipe();
 				setRecipes(recipeData);
 				setFilteredRecipes(recipeData);
-				setLoading(false);
 			} catch (error) {
-				toast.error(`Error fetching recipes: ${error}`);
+				toast.error(`Error fetching recipes: ${error.message || error}`);
+			} finally {
 				setLoading(false);
 			}
 		}
@@ -64,6 +56,10 @@ export default function RecipeIndex() {
 	useEffect(() => {
 		handleInputSearch();
 	}, [inputData, cuisineData, recipes, keywordData, courseData]);
+
+	useEffect(() => {
+		setCourseData(params.courses || '');
+	}, [params.courses]);
 
 	return (
 		<>
