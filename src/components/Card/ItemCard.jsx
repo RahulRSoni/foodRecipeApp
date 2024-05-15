@@ -42,53 +42,53 @@ export function BlogCard({ data }) {
 	};
 
 	return (
-		<Card className='h-[28rem] sm:w-[19rem] w-full overflow-hidden shadow-xl cursor-context-menu'>
-			<div className='rounded-lg'>
-				<CardHeader
-					floated={false}
-					shadow={false}
-					color='transparent'
-					className='m-0 hover:scale-110 transition-all hover:duration-1000 '>
-					<Link
-						className='content'
-						to={`/recipe/${recipe.course}/${id}`}>
+		<Link
+			className='content'
+			to={`/recipe/${recipe.course}/${id}`}>
+			<Card className='h-[28rem] sm:w-[19rem] w-full overflow-hidden shadow-xl cursor-context-menu'>
+				<div className='rounded-lg'>
+					<CardHeader
+						floated={false}
+						shadow={false}
+						color='transparent'
+						className='m-0 hover:scale-110 transition-all hover:duration-1000 '>
 						<img
 							src={data && recipe.recipesImages[0]}
 							alt='ui/ux review check'
 							className='h-56 w-full object-cover'
 						/>
-					</Link>
-				</CardHeader>
-			</div>
-			<CardBody className='pb-0 px-4'>
-				<Typography
-					variant='h6'
-					color='blue-gray'>
-					{data && recipe.title}
-				</Typography>
-				<Typography
-					variant='lead'
-					color='gray'
-					className='mt-1 text-sm h-[5rem]'>
-					{data && truncateString(recipe.content)}
-				</Typography>
-			</CardBody>
-			<CardFooter className='flex items-center justify-between '>
-				<div className='flex items-center -space-x-3'>
-					<Tooltip content={data && user.displayName}>
-						<Avatar
-							size='sm'
-							variant='circular'
-							alt='natali craig'
-							src={data && user.photoURL}
-							className='border-2 border-white hover:z-10'
-						/>
-					</Tooltip>
+					</CardHeader>
 				</div>
-				<Typography className='font-normal'>
-					{timestamp ? formatMemberSince(timestamp.seconds) : ''}
-				</Typography>
-			</CardFooter>
-		</Card>
+				<CardBody className='pb-0 px-4'>
+					<Typography
+						variant='h6'
+						color='blue-gray'>
+						{data && recipe.title}
+					</Typography>
+					<Typography
+						variant='lead'
+						color='gray'
+						className='mt-1 text-sm h-[5rem]'>
+						{data && truncateString(recipe.content)}
+					</Typography>
+				</CardBody>
+				<CardFooter className='flex items-center justify-between '>
+					<div className='flex items-center -space-x-3'>
+						<Tooltip content={data && user.displayName}>
+							<Avatar
+								size='sm'
+								variant='circular'
+								alt='natali craig'
+								src={data && user.photoURL}
+								className='border-2 border-white hover:z-10'
+							/>
+						</Tooltip>
+					</div>
+					<Typography className='font-normal'>
+						{timestamp ? formatMemberSince(timestamp.seconds) : ''}
+					</Typography>
+				</CardFooter>
+			</Card>
+		</Link>
 	);
 }

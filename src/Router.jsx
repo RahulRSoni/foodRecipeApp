@@ -88,7 +88,7 @@ const router = createBrowserRouter([
 				errorElement: <Error />,
 			},
 			{
-				path: '/recipes-index',
+				path: '/recipes-index/:courses?',
 				element: <RecipeIndex />,
 				errorElement: <Error />,
 			},

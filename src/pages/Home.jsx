@@ -1,7 +1,7 @@
 // Import necessary components and libraries
 import React, { useEffect, useState } from 'react';
 import Banner from '../components/Banner/Banner.jsx';
-import Menu from '../components/FoodMenu/Menu.jsx';
+
 import { Gallery } from '../components/Gallery/Gallery.jsx';
 import AboutCard from '../components/Card/AboutCard.jsx';
 import { BlogCard } from '../components/Card/ItemCard.jsx';
@@ -9,7 +9,7 @@ import CardPlaceholderSkeleton from '../components/Loaders/Skeleton.jsx';
 import { getAllImages, getAllRecipe } from '../api/store.services.js';
 import { toast } from 'react-toastify';
 import Spinner from '../components/Loaders/Spinner.jsx';
-import ScrollCarousel from '../components/Scroll.jsx';
+
 import { InfiniteMovingCardsDemo } from '../components/Moving Cards/InfiniteMovingCards.jsx';
 
 function Home() {
@@ -17,6 +17,8 @@ function Home() {
 	const [recipes, setRecipes] = useState(null);
 	const [allImages, setAllImages] = useState(null);
 	const [loading, setLoading] = useState(true);
+
+	console.log(recipes);
 
 	// Fetch recipes and images from APIs
 	useEffect(() => {
@@ -48,7 +50,7 @@ function Home() {
 
 	// Generate random images
 	const randomImages = generateRandomItems(allImages, 12);
-	const randomImages2 = generateRandomItems(allImages, 8);
+	const randomImages2 = generateRandomItems(allImages, 12);
 
 	// JSX for the Home component
 	return (
@@ -68,10 +70,11 @@ function Home() {
 						{loading ? <Spinner /> : <Gallery randomImages={randomImages2} />}
 					</div>
 
-					<Menu />
-
 					<div className='grid lg:grid-cols-12 justify-items-center gap-1  py-12'>
 						<div className='grid lg:col-span-9 justify-items-center backdrop-blur-sm h-full '>
+							<span className='m-6 text-xl font-semibold text-blue-gray-100 border-b-4 border-gray-400 '>
+								Update Recipes
+							</span>
 							<div className='flex flex-wrap gap-6 w-full'>
 								{loading ? (
 									<CardPlaceholderSkeleton />

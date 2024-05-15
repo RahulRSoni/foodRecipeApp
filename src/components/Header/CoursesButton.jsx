@@ -15,35 +15,43 @@ import { Link } from 'react-router-dom';
 const menuItems = [
 	{
 		title: 'Appetizer',
+		value: 'appetizer',
 		img: 'https://images.unsplash.com/photo-1485963631004-f2f00b1d6606?q=80&w=1375&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
 	},
 	{
 		title: 'Breakfast',
+		value: 'breakfast',
 		img: 'https://images.unsplash.com/photo-1513442542250-854d436a73f2?q=80&w=1547&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
 	},
 	{
 		title: 'Dessert',
+		value: 'dessert',
 		img: 'https://images.unsplash.com/photo-1587314168485-3236d6710814?q=80&w=1378&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
 	},
 
 	{
 		title: 'Drinks',
+		value: 'drinks',
 		img: 'https://images.unsplash.com/photo-1551024709-8f23befc6f87?q=80&w=1557&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
 	},
 	{
 		title: 'Main Course',
+		value: 'mainCourse',
 		img: 'https://images.unsplash.com/photo-1559847844-5315695dadae?q=80&w=1458&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
 	},
 	{
 		title: 'Starters',
+		value: 'starters',
 		img: 'https://images.unsplash.com/photo-1598515211932-b130a728a769?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
 	},
 	{
 		title: 'Snack',
+		value: 'snack',
 		img: 'https://plus.unsplash.com/premium_photo-1671559270002-29d0adb72540?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
 	},
 	{
 		title: 'Salad',
+		value: 'salad',
 		img: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
 	},
 ];
@@ -85,9 +93,9 @@ export default function Courses() {
 					</Typography>
 				</Card>
 				<ul className='lg:col-span-4 flex flex-wrap lg:w-[50rem] w-full gap-1 '>
-					{menuItems.map(({ title, img }) => (
+					{menuItems.map(({ title, img, value }) => (
 						<Link
-							href='#'
+							to={`/recipes-index/${value}`}
 							key={title}
 							className='hover:scale-105 transition-all duration-700 hover:text-blue-gray-400 text-blue-gray-50'>
 							<MenuItem>

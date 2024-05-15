@@ -29,11 +29,7 @@ export default withMT({
 	],
 
 	theme: {
-		colors: {
-			primary: 'blue',
-			secondary: 'red',
-			'text-base': 'white',
-		},
+		colors: colors,
 		extend: {
 			animation: {
 				scroll:
@@ -42,7 +38,7 @@ export default withMT({
 			keyframes: {
 				scroll: {
 					to: {
-						transform: 'translate(calc(-50% - 0.5rem))',
+						transform: 'translate(calc(-100% - 0.5rem))',
 					},
 				},
 			},

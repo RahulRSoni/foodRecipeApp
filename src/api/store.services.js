@@ -180,16 +180,17 @@ const getIdWiseRecipeData = async (paramsId) => {
 		const docSnap = await getDoc(docRef);
 		if (docSnap.exists()) {
 			const recipe = docSnap.data();
+
 			return recipe;
 		}
 	} catch (error) {
 		const errorCode = error.code;
-		// const errorMessage = error.message;
+		const errorMessage = error.message;
 
 		// Handle error
 		toast.error(errorCode);
 
-		// console.log('errorCode:', errorCode, 'errorMessage:', errorMessage);
+		console.log('errorCode:', errorCode, 'errorMessage:', errorMessage);
 	}
 };
 

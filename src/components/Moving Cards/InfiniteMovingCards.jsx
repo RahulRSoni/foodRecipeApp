@@ -1,5 +1,3 @@
-import { getAllTestimonial } from '../../api/store.services.js';
-import { cn } from './cn.js';
 import React, { useEffect, useState } from 'react';
 import {
 	Card,
@@ -9,29 +7,34 @@ import {
 	Avatar,
 	Rating,
 } from '@material-tailwind/react';
+import clsx from 'clsx';
+import { twMerge } from 'tailwind-merge';
+import { getAllTestimonial } from '../../api/store.services.js';
+import { toast } from 'react-toastify';
+
+export function cn(...inputs) {
+	return twMerge(clsx(inputs));
+}
 
 export function InfiniteMovingCardsDemo() {
 	const [testimonial, setTestimonial] = useState(null);
 
 	useEffect(() => {
-		try {
-			getAllTestimonial()
-				.then((data) => {
-					setTestimonial(data);
-				})
-				.catch((error) => {
-					toast.error('Error fetching recipes:', error.message);
-				});
-		} catch (error) {
-			toast.error('Error fetching recipes:', error.message);
-		}
+		getAllTestimonial()
+			.then((data) => {
+				setTestimonial(data);
+			})
+			.catch((error) => {
+				toast.error(`Error fetching testimonials: ${error.message}`);
+			});
 	}, []);
+
 	return (
 		<div className='rounded-md flex flex-col antialiased items-center justify-center relative overflow-hidden'>
 			<InfiniteMovingCards
 				items={testimonial}
 				direction='right'
-				speed='slow'
+				speed='fast'
 			/>
 		</div>
 	);
@@ -39,7 +42,7 @@ export function InfiniteMovingCardsDemo() {
 
 export const InfiniteMovingCards = ({
 	items,
-	direction = 'left',
+	direction = 'right',
 	speed = 'fast',
 	pauseOnHover = true,
 	className,
@@ -72,29 +75,19 @@ export const InfiniteMovingCards = ({
 
 	const getDirection = () => {
 		if (containerRef.current) {
-			if (direction === 'left') {
-				containerRef.current.style.setProperty(
-					'--animation-direction',
-					'forwards',
-				);
-			} else {
-				containerRef.current.style.setProperty(
-					'--animation-direction',
-					'reverse',
-				);
-			}
+			const directionValue = direction === 'left' ? 'forwards' : 'reverse';
+			containerRef.current.style.setProperty(
+				'--animation-direction',
+				directionValue,
+			);
 		}
 	};
 
 	const getSpeed = () => {
 		if (containerRef.current) {
-			if (speed === 'fast') {
-				containerRef.current.style.setProperty('--animation-duration', '20s');
-			} else if (speed === 'normal') {
-				containerRef.current.style.setProperty('--animation-duration', '40s');
-			} else {
-				containerRef.current.style.setProperty('--animation-duration', '80s');
-			}
+			const duration =
+				speed === 'fast' ? '30s' : speed === 'normal' ? '40s' : '80s';
+			containerRef.current.style.setProperty('--animation-duration', duration);
 		}
 	};
 
@@ -105,10 +98,10 @@ export const InfiniteMovingCards = ({
 				'scroller relative z-20 max-w-7xl overflow-hidden [mask-image:linear-gradient(to_right,transparent,white_20%,white_80%,transparent)]',
 				className,
 			)}>
-			<ul
+			<div
 				ref={scrollerRef}
 				className={cn(
-					'flex min-w-full shrink-0 gap-4 py-4 w-max flex-nowrap',
+					'flex min-w-full shrink-0 gap-4 py-4 flex-nowrap w-full',
 					start && 'animate-scroll',
 					pauseOnHover && 'hover:[animation-play-state:paused]',
 				)}>
@@ -118,7 +111,7 @@ export const InfiniteMovingCards = ({
 							color='white'
 							shadow={false}
 							key={item.id}
-							className='w-full max-w-full relative rounded-2xl border border-b-0 flex-shrink-0 border-slate-700 px-8 py-6'>
+							className='w-96 max-w-full relative rounded-2xl border border-b-0 flex-shrink-0 border-slate-700 px-8 py-6'>
 							<CardHeader
 								color='transparent'
 								floated={false}
@@ -128,7 +121,7 @@ export const InfiniteMovingCards = ({
 									size='lg'
 									variant='circular'
 									src={item.user.photoURL}
-									alt='tania andrew'
+									alt={item.user.displayName}
 								/>
 								<div className='flex w-full flex-col gap-0.5'>
 									<div className='flex items-center justify-between'>
@@ -151,7 +144,7 @@ export const InfiniteMovingCards = ({
 							</CardBody>
 						</Card>
 					))}
-			</ul>
+			</div>
 		</div>
 	);
 };

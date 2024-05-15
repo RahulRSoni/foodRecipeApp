@@ -20,13 +20,10 @@ import { toast } from 'react-toastify';
 // Function to merge commentBox and recipeImages
 function mergeCommentBoxAndRecipeImages(recipeData) {
 	const { commentBox, recipesImages, ...rest } = recipeData.recipe;
+
 	const mergedData = [];
 
-	if (
-		!commentBox ||
-		!recipesImages ||
-		commentBox.length !== recipesImages.length
-	) {
+	if (!commentBox || !recipesImages) {
 		// Handle error condition where commentBox or recipesImages are missing or have different lengths
 		console.error('Error: Missing or mismatched commentBox or recipesImages');
 		return null; // Or handle the error in an appropriate way
@@ -49,12 +46,15 @@ export default function RecipePage() {
 	const params = useParams();
 	const paramsId = params.recipeId;
 
+	console.log(recipes);
+
 	useEffect(() => {
 		try {
 			if (paramsId) {
 				getIdWiseRecipeData(paramsId)
 					.then((recipeData) => {
 						const mergedData = mergeCommentBoxAndRecipeImages(recipeData);
+						console.log(recipeData);
 						setRecipes(mergedData);
 					})
 					.catch((error) => {
