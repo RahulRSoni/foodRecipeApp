@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import Banner from '../components/Banner/Banner.jsx';
 import Menu from '../components/FoodMenu/Menu.jsx';
-import { Gallery } from '../components/gallery/gallery.jsx';
+import { Gallery } from '../components/Gallery/Gallery.jsx';
 import AboutCard from '../components/Card/AboutCard.jsx';
 import { BlogCard } from '../components/Card/ItemCard.jsx';
 import CardPlaceholderSkeleton from '../components/Loaders/Skeleton.jsx';
@@ -10,6 +10,7 @@ import { getAllImages, getAllRecipe } from '../api/store.services.js';
 import { toast } from 'react-toastify';
 import Spinner from '../components/Loaders/Spinner.jsx';
 import ScrollCarousel from '../components/Scroll.jsx';
+import { InfiniteMovingCardsDemo } from '../components/Moving Cards/InfiniteMovingCards.jsx';
 
 function Home() {
 	// State variables for recipes, allImages, and loading
@@ -91,7 +92,7 @@ function Home() {
 					</div>
 				</div>
 				<div className='mx-6  backdrop:blur-2xl rounded-2xl'>
-					<ScrollCarousel />
+					<InfiniteMovingCardsDemo />
 				</div>
 			</div>
 		</>

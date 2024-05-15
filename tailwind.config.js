@@ -5,6 +5,21 @@ const {
 	default: flattenColorPalette,
 } = require('tailwindcss/lib/util/flattenColorPalette');
 
+function addVariablesForColors({ addBase, theme }) {
+	// Flatten the color palette from the theme configuration
+	let allColors = flattenColorPalette(theme('colors'));
+
+	// Convert the flattened color palette into CSS variable declarations
+	let newVars = Object.fromEntries(
+		Object.entries(allColors).map(([key, val]) => [`--${key}`, val]),
+	);
+
+	// Add the CSS variables to the :root selector
+	addBase({
+		':root': newVars,
+	});
+}
+
 export default withMT({
 	content: [
 		'./index.html',
@@ -20,14 +35,16 @@ export default withMT({
 			'text-base': 'white',
 		},
 		extend: {
-			keyframes: {
-				marquee: {
-					'0%': { transform: 'translateX(0%)' },
-					'100%': { transform: 'translateX(-100%)' },
-				},
-			},
 			animation: {
-				'marquee-infinite': 'marquee 50s linear infinite',
+				scroll:
+					'scroll var(--animation-duration, 40s) var(--animation-direction, forwards) linear infinite',
+			},
+			keyframes: {
+				scroll: {
+					to: {
+						transform: 'translate(calc(-50% - 0.5rem))',
+					},
+				},
 			},
 		},
 		screens: {
@@ -40,5 +57,5 @@ export default withMT({
 		},
 	},
 
-	plugins: [],
+	plugins: [addVariablesForColors],
 });
