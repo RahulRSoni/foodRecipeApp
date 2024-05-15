@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import Banner from '../components/Banner/Banner.jsx';
 
-import { Gallery } from '../components/Gallery/Gallery.jsx';
+import { Gallery } from '../components/CardGallery/Gallery.jsx';
 import AboutCard from '../components/Card/AboutCard.jsx';
 import { BlogCard } from '../components/Card/ItemCard.jsx';
 import CardPlaceholderSkeleton from '../components/Loaders/Skeleton.jsx';

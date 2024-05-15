@@ -1,5 +1,3 @@
-import { Typography } from '@material-tailwind/react';
-
 export function Gallery({ randomImages }) {
 	return (
 		<div className='flex flex-col justify-center items-center '>
