@@ -96,7 +96,7 @@ export default function RecipeIndex() {
 							{params.courses.toUpperCase()}
 						</span>
 					) : (
-						<div className='lg:col-span-1 px-4 border-l-blue-gray-400 border-b h-full justify-items-center py-10 w-full sticky top-20 bg-white z-50'>
+						<div className='lg:col-span-1 px-4 py-2 border-l-blue-gray-400 border-b h-full justify-items-center  w-full sticky top-20 bg-white z-50'>
 							<div className='w-full flex gap-4 justify-center items-center sticky flex-wrap top-32'>
 								<div className='relative w-full gap-2 md:w-max'>
 									<Input
